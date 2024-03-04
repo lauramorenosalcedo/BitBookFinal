@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+{{> layout/head}}
+<body>
+{{> layout/nav}} <!-- Cuando carge la pagina va a sustituir lo que hay en nav.html aqui -->
+
+<!-- main -->
+<section class="container mt-5"></section>
+<h1>Category: {{ categoryName }}</h1>
+
+<h2>Books:</h2>
+<ul>
+    {{# books }}
+    <li>{{ title }} by {{ author }}</li>
+    {{/ books }}
+</ul>
+
+</body>
+{{> layout/footer}}
+</html>

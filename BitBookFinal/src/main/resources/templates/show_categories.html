@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+{{> layout/head}}
+<body>
+{{> layout/nav}} <!-- Cuando carge la pagina va a sustituir lo que hay en nav.html aqui -->
+
+<!-- main -->
+<section class="container mt-5"></section>
+<h2>Categories</h2>
+<ul class="items">
+    {{#categories}}
+    <li><a href="/categories/{{id}}">{{name}}</a></li>
+    {{/categories}}
+</ul>
+<button onclick="location.href='/newcategory'">New category</button>
+
+
+</body>
+{{> layout/footer}}
+</html>

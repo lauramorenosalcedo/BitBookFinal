@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+{{> layout/head}}
+<body>
+{{> layout/nav}} <!-- Cuando carge la pagina va a sustituir lo que hay en nav.html aqui -->
+
+<!-- main -->
+<section class="container mt-5"></section>
+<form action="/newcategory" method="post" enctype="multipart/form-data">
+    <h2>New Category</h2>
+    <div>
+        <label>Name: </label>
+        <input name="name" placeholder="name"/>
+    </div>
+    <p>
+        <button onclick="location.href='/'; return false;">Cancel</button>
+        <input type="submit" value="Save"/>
+    </p>
+</form>
+
+
+
+
+
+
+</body>
+{{> layout/footer}}
+</html>

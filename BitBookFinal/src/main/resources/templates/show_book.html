@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+{{> layout/head}}
+<body>
+{{> layout/nav}} <!-- Cuando carge la pagina va a sustituir lo que hay en nav.html aqui -->
+
+<!-- main -->
+<section class="container mt-5"></section>
+<h2>Book "{{book.title}}"</h2>
+
+<p>{{book.author}}</p>
+
+<p> <b>Categories where book is available:</b></p>
+<ul>
+    {{#book.categories}}
+    <li><a href="/categories/{{id}}">{{name}}</a></li>
+    {{/book.categories}}
+
+</ul>
+
+<p>
+    <button onclick="location.href='/'">Back to all books</button>
+    <button onclick="location.href='/book/{{book.id}}/delete'">Delete book</button>
+</p>
+
+
+
+
+
+
+</body>
+{{> layout/footer}}
+</html>
