@@ -9,7 +9,6 @@ import com.example.bitbookfinal.model.Review;
 import com.example.bitbookfinal.service.BookService;
 import com.example.bitbookfinal.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,7 +58,7 @@ public class BookController {
     }
 
     @PostMapping("/newbook")
-    public String newBookProcess(Model model, Book book, @RequestParam(required = false) List<Long> selectedCategories) throws IOException  {
+    public String newBookProcess(Model model, Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile multipartFile) {
 
         if (selectedCategories != null){
             List<Category> categories = categoryService.findByIds(selectedCategories);
@@ -71,7 +70,7 @@ public class BookController {
 //book.addCategory(category);
         }
 
-        Book newBook = bookService.save(book);
+        Book newBook = bookService.save(book,multipartFile);
 
 
         model.addAttribute("bookId", newBook.getId());

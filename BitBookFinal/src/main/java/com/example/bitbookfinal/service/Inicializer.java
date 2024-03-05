@@ -17,10 +17,15 @@ public class Inicializer {
 
     @PostConstruct
     public void init(){
+        //Create some books
         Book quijote= new Book("Quijote", "Miguel Cervantes");
+        quijote.setImage("quijote.jpg");
         Book campos=new Book("Campos de Castilla", "Antonio Machada");
+        campos.setImage("campos.jpg");
         Book znati=new Book("Znati en la escuela", "Dbid Rey");
+        znati.setImage("znati.jpg");
 
+        //Create some categories
         Category literatura= new Category("Literatura");
         Category aventura= new Category("Aventura");
         Category ficcion= new Category("Ficcion");
@@ -36,9 +41,9 @@ public class Inicializer {
         znati.addCategory(ficcion);
         ficcion.getBooks().add(znati);
 
-        bookService.save(quijote);
-        bookService.save(znati);
-        bookService.save(campos);
+        bookService.save(quijote,null);
+        bookService.save(znati,null);
+        bookService.save(campos,null);
 
         categoryService.save(aventura);
         categoryService.save(ficcion);
