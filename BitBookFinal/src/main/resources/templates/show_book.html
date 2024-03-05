@@ -18,6 +18,30 @@
 
 </ul>
 
+
+<form action="/book/{id}" method="post" enctype="multipart/form-data">
+    <h2>New Review</h2>
+    <div>
+        <label>Name: </label>
+        <input name="name" placeholder="name"/>
+    </div>
+    <div>
+        <label>Description: </label>
+        <input name="description" placeholder="description"/>
+    </div>
+    <p>
+        <input type="submit" value="Save"/>
+    </p>
+</form>
+
+<p> <b>Reviews of the book:</b></p>
+<ul>
+    {{#book.reviews}}
+    <li>{{name}} {{description}}</li>
+    {{/book.reviews}}
+
+</ul>
+
 <p>
     <button onclick="location.href='/'">Back to all books</button>
     <button onclick="location.href='/book/{{book.id}}/delete'">Delete book</button>

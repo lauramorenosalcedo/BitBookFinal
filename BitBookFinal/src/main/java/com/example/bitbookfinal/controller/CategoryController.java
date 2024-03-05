@@ -53,11 +53,11 @@ public class CategoryController {
     public String newBookProcess(Model model, Category category){
 
 
-        Category newCategory = categoryService.save(category);
+        Category newCategory=categoryService.save(category);
 
-        //model.addAttribute("bookId", newBook.getId());
+        model.addAttribute("categoryId", newCategory.getId());
 
-        return "redirect:/categories";
+        return "redirect:/categories/"+newCategory.getId();
     }
 
 }

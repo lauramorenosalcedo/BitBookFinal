@@ -41,6 +41,10 @@ public class Category {
     public void setBook(List<Book> books){
         this.books=books;
     }
+    public void deleteBook(Book book){
+       this.books.remove(book);
+
+    }
     @Override
     public String toString() {
         return "Category [id=" + id + ", name=" + name + ", listbooks=" + books + "]";

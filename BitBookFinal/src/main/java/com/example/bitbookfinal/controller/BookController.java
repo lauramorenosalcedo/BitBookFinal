@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
+import com.example.bitbookfinal.model.Review;
 import com.example.bitbookfinal.service.BookService;
 import com.example.bitbookfinal.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,10 +66,13 @@ public class BookController {
             book.setCategories(categories);
             for (Category category : categories){
                 category.getBooks().add(book);
+
             }
+//book.addCategory(category);
         }
 
         Book newBook = bookService.save(book);
+
 
         model.addAttribute("bookId", newBook.getId());
 
@@ -81,6 +85,19 @@ public class BookController {
         bookService.deleteById(id);
 
         return "deleted_post";
+    }
+
+    @PostMapping("/book/{id}")
+    public String newReview(Book book,Review review) throws IOException  {
+
+        book.setCategories(categories);
+
+        Review newReview = bookService.savereview(review);
+
+
+        model.addAttribute("bookId", newBook.getId());
+
+        return "redirect:/books/"+newBook.getId();
     }
 
 

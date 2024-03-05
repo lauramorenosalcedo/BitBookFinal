@@ -8,6 +8,7 @@ public class Book {
     private String title;
     private String author;
     private List<Category> categories;
+    private List<Review> reviews;
 
     public Book(){
 
@@ -17,6 +18,7 @@ public class Book {
         this.title = title;
         this.author = author;
         this.categories=new ArrayList<>();
+        this.reviews=new ArrayList<>();
     }
     public String getTitle() {
         return title;
@@ -44,17 +46,27 @@ public class Book {
         return categories;
     }
 
-    public void setCategories(List<Category>Categorys) {
+    public void setCategories(List<Category>categories) {
         this.categories = categories;
+    }
+
+    public List <Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review>reviews) {
+        this.reviews = reviews;
     }
 
     @Override
     public String toString() {
-        return "Libro [id=" + id + ", title=" + title + ", author=" + author + ", categories=" + categories + "]";
+        return "Libro [id=" + id + ", title=" + title + ", author=" + author + ", categories=" + categories +", reviews="+reviews +"]";
     }
     public void addCategory(Category category) {
         categories.add(category);
      //   category.getBooks().add(this);
     }
+
+
 
 }

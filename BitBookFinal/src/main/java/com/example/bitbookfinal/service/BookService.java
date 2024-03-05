@@ -2,6 +2,7 @@ package com.example.bitbookfinal.service;
 
 import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
+import com.example.bitbookfinal.model.Review;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,12 +38,20 @@ public class BookService {
         return book;
     }
 
-    public void deleteById(long id) {
+   /* public Review saveReview(Review review){
+        long id = nextId.getAndIncrement();
+        review.setId(id);
+
+    }*/
+
+   public void deleteById(long id) {
         this.mapbooks.remove(id);
+        /*Book book= this.mapbooks.get(id);
+        List<Category>categorias=book.getCategories();
+        for(Category categoria: categorias){
+            categoria.deleteBook(book);
+        }*/
+
     }
-
-
-
-
 
 }

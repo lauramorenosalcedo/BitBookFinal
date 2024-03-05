@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
 import org.springframework.stereotype.Service;
 @Service
@@ -38,5 +39,8 @@ public class CategoryService {
 
     public void delete(long id) {
         this.mapcategories.remove(id);
+
     }
+
+
 }
