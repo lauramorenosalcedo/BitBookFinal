@@ -78,6 +78,13 @@ public class BookController {
         return "redirect:/books/"+newBook.getId();
     }
 
+    @PostMapping("/book/{id}")
+    public String newReview(Review review,  Book book) {
+        book.getReviews().add(review);
+
+        return "redirect:/books/";
+    }
+
     @GetMapping("/book/{id}/delete")
     public String deletePost(Model model, @PathVariable long id) throws IOException {
 
