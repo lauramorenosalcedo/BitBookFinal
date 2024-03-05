@@ -2,7 +2,9 @@ package com.example.bitbookfinal.service;
 
 import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +15,9 @@ import java.util.concurrent.atomic.AtomicLong;
 public class BookService {
 
     //Creation of map tha contains the books, set with their ids.
+
+    @Autowired
+    private ImageService imageService;
     private AtomicLong nextId = new AtomicLong(1L);
     private ConcurrentHashMap<Long, Book> mapbooks = new ConcurrentHashMap<>();
 
@@ -30,7 +35,14 @@ public class BookService {
     }
 
     //Function used to save a book in the book map.
-    public Book save(Book book){
+    public Book save(Book book, MultipartFile imageField){
+        if (imageField != null && !imageField.isEmpty()){
+            String path = imageService.createImage(imageField);
+            book.setImage(path);
+        }
+
+        if(book.getImage() == null || book.getImage().isEmpty()) book.setImage("ListBookCard.jpg");
+
         long id = nextId.getAndIncrement();
         book.setId(id);
         mapbooks.put(id, book);

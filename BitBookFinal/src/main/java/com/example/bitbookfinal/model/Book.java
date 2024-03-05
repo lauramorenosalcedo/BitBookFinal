@@ -7,6 +7,7 @@ public class Book {
     private Long id=null;
     private String title;
     private String author;
+    private String image;
     private List<Category> categories;
 
     public Book(){
@@ -46,6 +47,14 @@ public class Book {
 
     public void setCategories(List<Category>Categorys) {
         this.categories = categories;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override
