@@ -7,6 +7,7 @@ public class Book {
     private Long id=null;
     private String title;
     private String author;
+    private String image;
     private List<Category> categories;
     private List<Review> reviews;
 
@@ -67,6 +68,11 @@ public class Book {
      //   category.getBooks().add(this);
     }
 
+    public String getImage() {
+        return image;
+    }
 
-
+    public void setImage(String image) {
+        this.image = image;
+    }
 }
