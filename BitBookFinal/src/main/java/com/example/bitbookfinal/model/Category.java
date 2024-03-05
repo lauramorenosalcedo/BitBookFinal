@@ -8,7 +8,7 @@ import java.util.List;
 public class Category {
     private Long id=null;
     private String name;
-    private List<Book> books;
+    private List<Book> books=new ArrayList<>();
 
     public Category(){
     }

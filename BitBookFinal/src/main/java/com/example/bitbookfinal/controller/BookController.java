@@ -86,7 +86,7 @@ public class BookController {
         return "deleted_post";
     }
 
-    @PostMapping("/book/{id}")
+    /*@PostMapping("/book/{id}")
     public String newReview(Book book,Review review) throws IOException  {
 
         book.setCategories(categories);
@@ -97,7 +97,7 @@ public class BookController {
         model.addAttribute("bookId", newBook.getId());
 
         return "redirect:/books/"+newBook.getId();
-    }
+    }*/
 
 
 

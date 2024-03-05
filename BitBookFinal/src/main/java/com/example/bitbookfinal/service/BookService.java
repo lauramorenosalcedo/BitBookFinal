@@ -50,6 +50,11 @@ public class BookService {
     }
 
     public void deleteById(long id) {
+        Book book= this.mapbooks.get(id);
+        List<Category>categorias=book.getCategories();
+        for(Category categoria: categorias){
+            categoria.deleteBook(book);
+        }
         this.mapbooks.remove(id);
     }
 
