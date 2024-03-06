@@ -59,7 +59,7 @@ public class BookController {
 
     @PostMapping("/newbook")
     public String newBookProcess(Model model, Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile multipartFile) {
-        if (true){//if (bookService.exist(book.getTitle())) {
+        if (bookService.exist(book.getTitle())) {
             return "error_book";
         } else {
 

@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -59,9 +61,16 @@ public class BookService {
         this.mapbooks.remove(id);
     }
 
-    /*public boolean exist(String title) {
-        return this.mapbooks.contains(book.ge);
-    }*/
+    public boolean exist(String title) {
+
+        Collection<Book> books = mapbooks.values();
+        for(Book book: books){
+            if(Objects.equals(book.getTitle(), title)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void addReview(Review review, long bookid) {
 
