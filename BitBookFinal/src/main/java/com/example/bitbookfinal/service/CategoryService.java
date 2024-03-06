@@ -46,5 +46,9 @@ public class CategoryService {
         this.mapcategories.remove(id);
     }
 
+    public void editById(long id){
+
+    }
+
 
 }

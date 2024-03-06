@@ -68,4 +68,22 @@ public class CategoryController {
         return "deleted_category";
     }
 
+    @GetMapping("/categories/{id}/editform")
+    public String editForm() {
+
+        return "editform";
+    }
+
+    @PostMapping("/categories/{id}/editform")
+    public String editCategory(Model model, Category category, @PathVariable long id){
+
+
+
+        Category newCategory=categoryService.save(category);
+
+        model.addAttribute("categoryId", newCategory.getId());
+
+        return "redirect:/categories/{id}"+newCategory.getId();
+    }
+
 }

@@ -62,7 +62,6 @@ public class BookService {
     }
 
     public boolean exist(String title) {
-
         Collection<Book> books = mapbooks.values();
         for(Book book: books){
             if(Objects.equals(book.getTitle(), title)){
