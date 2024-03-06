@@ -75,4 +75,9 @@ public class Book {
     public void setImage(String image) {
         this.image = image;
     }
+
+    public void deleteCategory(Category category){
+        this.categories.remove(category);
+
+    }
 }

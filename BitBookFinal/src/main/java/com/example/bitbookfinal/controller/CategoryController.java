@@ -60,4 +60,12 @@ public class CategoryController {
         return "redirect:/categories/"+newCategory.getId();
     }
 
+    @GetMapping("/categories/{id}/delete")
+    public String deletePost(Model model, @PathVariable long id) throws IOException {
+
+        categoryService.deleteById(id);
+
+        return "deleted_category";
+    }
+
 }

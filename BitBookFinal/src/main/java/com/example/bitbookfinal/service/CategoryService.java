@@ -37,9 +37,13 @@ public class CategoryService {
         return categories;
     }
 
-    public void delete(long id) {
+    public void deleteById(long id) {
+        Category category= this.mapcategories.get(id);
+        List<Book>books=category.getBooks();
+        for(Book book: books){
+            book.deleteCategory(category);
+        }
         this.mapcategories.remove(id);
-
     }
 
 

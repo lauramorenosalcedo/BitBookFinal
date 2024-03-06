@@ -82,7 +82,7 @@ public class BookController {
         }
     }
 
-    @PostMapping("/book/{id}/addreview")
+    @PostMapping("/books/{id}/addreview")
     public String newReview(Review review,  @PathVariable long id ) {
         bookService.addReview(review, id);
 
