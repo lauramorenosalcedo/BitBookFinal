@@ -21,7 +21,7 @@ public class Book {
         this.categories=new ArrayList<>();
         this.reviews=new ArrayList<>();
     }
-    public String getTitle() {
+    public String getTitle(String title) {
         return title;
     }
 

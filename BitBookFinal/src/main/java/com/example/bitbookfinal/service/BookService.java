@@ -2,6 +2,7 @@ package com.example.bitbookfinal.service;
 
 import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
+import com.example.bitbookfinal.model.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -58,8 +59,11 @@ public class BookService {
         this.mapbooks.remove(id);
     }
 
+    /*public boolean exist(String title) {
+        return this.mapbooks.contains(book.ge);
+    }*/
 
+    public void addReview(Review review, long bookid) {
 
-
-
+    }
 }

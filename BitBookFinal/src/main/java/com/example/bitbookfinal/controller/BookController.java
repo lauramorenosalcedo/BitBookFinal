@@ -59,28 +59,32 @@ public class BookController {
 
     @PostMapping("/newbook")
     public String newBookProcess(Model model, Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile multipartFile) {
+        if (true){//if (bookService.exist(book.getTitle())) {
+            return "error_book";
+        } else {
 
-        if (selectedCategories != null){
-            List<Category> categories = categoryService.findByIds(selectedCategories);
-            book.setCategories(categories);
-            for (Category category : categories){
-                category.getBooks().add(book);
+            if (selectedCategories != null) {
+                List<Category> categories = categoryService.findByIds(selectedCategories);
+                book.setCategories(categories);
+                for (Category category : categories) {
+                    category.getBooks().add(book);
 
-            }
+                }
 //book.addCategory(category);
+            }
+
+            Book newBook = bookService.save(book, multipartFile);
+
+
+            model.addAttribute("bookId", newBook.getId());
+
+            return "redirect:/books/" + newBook.getId();
         }
-
-        Book newBook = bookService.save(book,multipartFile);
-
-
-        model.addAttribute("bookId", newBook.getId());
-
-        return "redirect:/books/"+newBook.getId();
     }
 
-    @PostMapping("/book/{id}")
-    public String newReview(Review review,  Book book) {
-        book.getReviews().add(review);
+    @PostMapping("/book/{id}/addreview")
+    public String newReview(Review review,  @PathVariable long id ) {
+        bookService.addReview(review, id);
 
         return "redirect:/books/";
     }
