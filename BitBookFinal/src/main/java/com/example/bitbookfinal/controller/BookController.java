@@ -86,7 +86,7 @@ public class BookController {
     public String newReview(Review review,  @PathVariable long id ) {
         bookService.addReview(review, id);
 
-        return "redirect:/books/";
+        return "redirect:/books/{id}";
     }
 
     @GetMapping("/book/{id}/delete")
