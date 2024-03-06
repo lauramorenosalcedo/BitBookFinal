@@ -23,6 +23,7 @@ public class BookService {
     private ImageService imageService;
     private AtomicLong nextId = new AtomicLong(1L);
     private ConcurrentHashMap<Long, Book> mapbooks = new ConcurrentHashMap<>();
+    private AtomicLong nextReviewId = new AtomicLong(1L);
 
 
     //Functions used to search books, either all of them, or one identified by it´s id.
@@ -72,7 +73,18 @@ public class BookService {
     }
 
     public void addReview(Review review, long bookid) {
+        Collection<Book> books = mapbooks.values();
+        for (Book book : books) {
+            if (Objects.equals(book.getId(), bookid)) {
+                long id = nextReviewId.getAndIncrement();
+                review.setId(id);
 
 
+                List<Review> bookReviews = book.getReviews();
+                bookReviews.add(review);
+                book.setReviews(bookReviews);
+            }
+        }
     }
+
 }
