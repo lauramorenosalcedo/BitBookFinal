@@ -78,8 +78,6 @@ public class BookService {
             if (Objects.equals(book.getId(), bookid)) {
                 long id = nextReviewId.getAndIncrement();
                 review.setId(id);
-
-
                 List<Review> bookReviews = book.getReviews();
                 bookReviews.add(review);
                 book.setReviews(bookReviews);
