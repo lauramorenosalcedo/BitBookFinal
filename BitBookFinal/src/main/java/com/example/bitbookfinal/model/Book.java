@@ -1,14 +1,24 @@
 package com.example.bitbookfinal.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Book {
+    public interface Basic{};
+    public interface Categories{};
+    @JsonView(Basic.class)
     private Long id=null;
+    @JsonView(Basic.class)
     private String title;
+    @JsonView(Basic.class)
     private String author;
+    @JsonView(Basic.class)
     private String image;
+    @JsonView(Categories.class)
     private List<Category> categories;
+    @JsonView(Basic.class)
     private List<Review> reviews;
 
     public Book(){

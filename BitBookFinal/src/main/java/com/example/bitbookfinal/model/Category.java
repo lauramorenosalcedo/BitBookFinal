@@ -1,13 +1,19 @@
 package com.example.bitbookfinal.model;
 
 import com.example.bitbookfinal.model.Book;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Category {
+    public interface Basic{};
+   public interface Books{};
+    @JsonView(Basic.class)
     private Long id=null;
+    @JsonView(Basic.class)
     private String name;
+    @JsonView(Books.class)
     private List<Book> books=new ArrayList<>();
 
     public Category(){

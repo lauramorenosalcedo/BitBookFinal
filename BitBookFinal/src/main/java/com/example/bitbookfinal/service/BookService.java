@@ -53,6 +53,15 @@ public class BookService {
         return book;
     }
 
+    public Book save(Book book){
+
+        long id = nextId.getAndIncrement();
+        book.setId(id);
+        mapbooks.put(id, book);
+        return book;
+    }
+
+
     public void deleteById(long id) {
         Book book= this.mapbooks.get(id);
         List<Category>categorias=book.getCategories();
