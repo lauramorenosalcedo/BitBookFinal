@@ -34,7 +34,7 @@ public class RestControllerBook {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}/delete")
     public ResponseEntity<Optional<Book>> deleteBook(@PathVariable long id) {
 
         Optional<Book> book = bookService.findById(id);
