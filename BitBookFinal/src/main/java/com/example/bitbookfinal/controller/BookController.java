@@ -97,19 +97,6 @@ public class BookController {
         return "deleted_post";
     }
 
-    /*@PostMapping("/book/{id}")
-    public String newReview(Book book,Review review) throws IOException  {
-
-        book.setCategories(categories);
-
-        Review newReview = bookService.savereview(review);
-
-
-        model.addAttribute("bookId", newBook.getId());
-
-        return "redirect:/books/"+newBook.getId();
-    }*/
-
 
 
 
