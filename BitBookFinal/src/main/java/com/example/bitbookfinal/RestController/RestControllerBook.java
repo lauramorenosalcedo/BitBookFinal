@@ -4,11 +4,13 @@ import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
 import com.example.bitbookfinal.service.BookService;
 
+import com.example.bitbookfinal.service.CategoryService;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +57,7 @@ public class RestControllerBook {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping("/newbook")
     public ResponseEntity<Book> createBook(@RequestBody Book book) {
 
         bookService.save(book);

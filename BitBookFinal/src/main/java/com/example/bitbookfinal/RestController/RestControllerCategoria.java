@@ -1,7 +1,6 @@
 package com.example.bitbookfinal.RestController;
 import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
-import com.example.bitbookfinal.service.BookService;
 
 import com.example.bitbookfinal.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +45,22 @@ public class RestControllerCategoria {
 
         if (category.isPresent()) {
             categoryService.deleteById(id);
+            return ResponseEntity.ok(category);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Optional<Category>> replaceItem(@PathVariable long id, @RequestBody Category newCategory) {
+
+         Optional<Category> category= categoryService.findById(id);
+
+        if (category.isPresent()) {
+
+            newCategory.setId(id);
+            categoryService.save(newCategory);
+
             return ResponseEntity.ok(category);
         } else {
             return ResponseEntity.notFound().build();

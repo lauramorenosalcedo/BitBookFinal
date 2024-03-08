@@ -66,7 +66,7 @@ public class BookController {
     }
 
     @PostMapping("/newbook")
-    public String newBookProcess(Model model, Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile multipartFile) {
+    public String newBookProcess(Model model, Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile imageFile) {
         if (bookService.exist(book.getTitle())) {
             return "error_book";
         } else {
@@ -78,10 +78,9 @@ public class BookController {
                     category.getBooks().add(book);
 
                 }
-//book.addCategory(category);
             }
 
-            Book newBook = bookService.save(book, multipartFile);
+            Book newBook = bookService.save(book, imageFile);
 
 
             model.addAttribute("bookId", newBook.getId());
@@ -89,6 +88,8 @@ public class BookController {
             return "redirect:/books/" + newBook.getId();
         }
     }
+
+
 
     @PostMapping("/books/{id}/addreview")
     public String newReview(Review review,  @PathVariable long id ) {
@@ -105,19 +106,6 @@ public class BookController {
         return "deleted_post";
     }
 
-    /*@PostMapping("/book/{id}")
-    public String newReview(Book book,Review review) throws IOException  {
-
-        book.setCategories(categories);
-
-        Review newReview = bookService.savereview(review);
-
-
-        model.addAttribute("bookId", newBook.getId());
-
-        return "redirect:/books/"+newBook.getId();
-    }*/
-
 
 
     @GetMapping("/books/{id}/image")
@@ -130,7 +118,7 @@ public class BookController {
             Resource poster = ImageService.getImage(book.getImage());
             return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg").body(poster);
         }else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Film not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found");
         }
     }
 
