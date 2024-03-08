@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Book {
-
     public interface Basic{};
     public interface Categories{};
     @JsonView(Basic.class)

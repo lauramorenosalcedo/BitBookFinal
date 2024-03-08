@@ -2,7 +2,6 @@ package com.example.bitbookfinal.service;
 import java.io.IOException;
 import java.util.List;
 
-import com.example.bitbookfinal.model.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.example.bitbookfinal.model.Book;
@@ -25,7 +24,6 @@ public class Inicializer {
         campos.setImage("campos.jpg");
         Book znati=new Book("Znati en la escuela", "Dbid Rey");
         znati.setImage("znati.jpg");
-
 
         //Create some categories
         Category literatura= new Category("Literatura");
