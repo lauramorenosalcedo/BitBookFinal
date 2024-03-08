@@ -46,8 +46,8 @@ public class CategoryService {
         this.mapcategories.remove(id);
     }
 
-    public void editById(long id){
-
+    public void editById(Category category, long id){
+        this.mapcategories.get(id).setName(category.getName());
     }
 
 

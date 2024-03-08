@@ -52,7 +52,6 @@ public class CategoryController {
     @PostMapping("/newcategory")
     public String newBookProcess(Model model, Category category){
 
-
         Category newCategory=categoryService.save(category);
 
         model.addAttribute("categoryId", newCategory.getId());
@@ -75,15 +74,11 @@ public class CategoryController {
     }
 
     @PostMapping("/categories/{id}/editform")
-    public String editCategory(Model model, Category category, @PathVariable long id){
+    public String editCategory(Category category, @PathVariable long id){
 
+        categoryService.editById(category, id);
 
-
-        Category newCategory=categoryService.save(category);
-
-        model.addAttribute("categoryId", newCategory.getId());
-
-        return "redirect:/categories/{id}"+newCategory.getId();
+        return "redirect:/categories";
     }
 
 }
