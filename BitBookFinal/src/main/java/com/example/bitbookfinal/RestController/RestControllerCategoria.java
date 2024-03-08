@@ -54,8 +54,6 @@ public class RestControllerCategoria {
         }
     }
 
-
-
     @PutMapping("/edit/{id}")
     public ResponseEntity<String> editCategory(@RequestBody Category category, @PathVariable long id) {
         categoryService.editById(category, id);
