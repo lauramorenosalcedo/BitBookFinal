@@ -6,35 +6,23 @@
 
 <!-- main -->
 <section class="container mt-5"></section>
-<div class="container-contact100">
-    <div class="wrap-contact100">
-        <form action="/newcategory" method="post" class="contact100-form validate-form" enctype="multipart/form-data">
-            <span class="contact100-form-title">
-                New Category
-            </span>
-
-            <div class="wrap-input100 validate-input" data-validate="Please enter a new category name">
-                <input class="input100" type="text" name="name" placeholder="Category Name" required>
-                <span class="focus-input100"></span>
-            </div>
-
-
-            <div class="container-contact100-form-btn">
-                <button type="button" onclick="location.href='/';" class="contact100-form-btn" style="margin-right: 10px;">
-                    Cancel
-                </button>
-                <button type="submit" class="contact100-form-btn">
-                    Save
-                </button>
-            </div>
-        </form>
-
+<form action="/newcategory" method="post" enctype="multipart/form-data">
+    <h2>New Category</h2>
+    <div>
+        <label>Name: </label>
+        <input name="name" placeholder="name"/>
     </div>
-</div>
+    <p>
+        <button onclick="location.href='/'; return false;">Cancel</button>
+        <input type="submit" value="Save"/>
+    </p>
+</form>
+
+
+
 
 
 
 </body>
 {{> layout/footer}}
 </html>
-

@@ -94,15 +94,4 @@ public class BookService {
         }
     }
 
-    public void deleteReviewById(long id, long reviewid) {
-
-        Book book= this.mapbooks.get(id);
-        List<Review>reviews=book.getReviews();
-        for(Review review: reviews){
-            if(review.getId()== reviewid){
-                reviews.remove(review);
-            }
-        }
-        book.setReviews(reviews);
-    }
 }
