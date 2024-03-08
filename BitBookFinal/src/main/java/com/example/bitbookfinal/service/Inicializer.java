@@ -20,11 +20,11 @@ public class Inicializer {
     public void init(){
         //Create some books
         Book quijote= new Book("Quijote", "Miguel Cervantes");
-        quijote.setImage("quijote.jpg");
+        quijote.setImage("quijote.jpeg");
         Book campos=new Book("Campos de Castilla", "Antonio Machada");
-        campos.setImage("campos.jpg");
+        campos.setImage("campos.jpeg");
         Book znati=new Book("Znati en la escuela", "Dbid Rey");
-        znati.setImage("znati.jpg");
+        znati.setImage("znati.jpeg");
 
 
         //Create some categories

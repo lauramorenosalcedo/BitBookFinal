@@ -121,6 +121,14 @@ public class BookController {
         }
     }
 
+    @GetMapping("/book/{id}/review/{reviewid}/delete")
+    public String deleteReview(Model model, @PathVariable("id") long id, @PathVariable("reviewid") long reviewid) throws IOException {
+
+        bookService.deleteReviewById(id, reviewid);
+
+        return "deleted_review";
+    }
+
 
 
 }
