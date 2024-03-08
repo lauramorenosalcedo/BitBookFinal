@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:c="">
 {{> layout/head}}
 <body>
 {{> layout/nav}} <!-- Cuando carge la pagina va a sustituir lo que hay en nav.html aqui -->
@@ -44,6 +44,9 @@
 <ul>
     {{#book.reviews}}
     <li><p> La opinión de: {{name}} es que es :{{description}}</p>
+        <c:forEach items="${book.reviews}" var="review">
+            <button onclick="location.href='/book/${book.id}/review/${review.id}/delete'">Delete review</button>
+        </c:forEach>
     </li>
     {{/book.reviews}}
 
