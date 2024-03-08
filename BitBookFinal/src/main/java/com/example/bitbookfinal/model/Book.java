@@ -75,7 +75,7 @@ public class Book {
     }
     public void addCategory(Category category) {
         categories.add(category);
-     //   category.getBooks().add(this);
+        //   category.getBooks().add(this);
     }
 
     public String getImage() {

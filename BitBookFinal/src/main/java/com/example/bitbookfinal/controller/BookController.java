@@ -35,7 +35,7 @@ public class BookController {
 
     @GetMapping("/")
     public String showHome(){
-       return "index";
+        return "index";
     }
 
     @GetMapping("/books")
@@ -105,6 +105,19 @@ public class BookController {
         return "deleted_post";
     }
 
+    /*@PostMapping("/book/{id}")
+    public String newReview(Book book,Review review) throws IOException  {
+
+        book.setCategories(categories);
+
+        Review newReview = bookService.savereview(review);
+
+
+        model.addAttribute("bookId", newBook.getId());
+
+        return "redirect:/books/"+newBook.getId();
+    }*/
+
 
 
     @GetMapping("/books/{id}/image")
@@ -119,6 +132,14 @@ public class BookController {
         }else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Film not found");
         }
+    }
+
+    @GetMapping("/book/{id}/review/{reviewid}/delete")
+    public String deleteReview(Model model, @PathVariable("id") long id, @PathVariable("reviewid") long reviewid) throws IOException {
+
+        bookService.deleteReviewById(id, reviewid);
+
+        return "deleted_review";
     }
 
 

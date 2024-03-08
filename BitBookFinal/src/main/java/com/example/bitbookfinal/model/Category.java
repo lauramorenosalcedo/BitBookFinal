@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Category {
     public interface Basic{};
-   public interface Books{};
+    public interface Books{};
     @JsonView(Basic.class)
     private Long id=null;
     @JsonView(Basic.class)
@@ -48,7 +48,7 @@ public class Category {
         this.books=books;
     }
     public void deleteBook(Book book){
-       this.books.remove(book);
+        this.books.remove(book);
 
     }
     @Override
@@ -57,5 +57,6 @@ public class Category {
     }
 
 }
+
 
 

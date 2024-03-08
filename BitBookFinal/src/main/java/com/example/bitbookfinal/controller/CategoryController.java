@@ -71,7 +71,7 @@ public class CategoryController {
     public String editForm(Model model, @PathVariable long id) {
         Optional<Category> category =categoryService.findById(id);
         model.addAttribute("category", category);
-;
+        ;
         return "editform";
     }
 

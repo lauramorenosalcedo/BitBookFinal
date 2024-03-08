@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:c="">
 {{> layout/head}}
 <body>
 {{> layout/nav}} <!-- Cuando carge la pagina va a sustituir lo que hay en nav.html aqui -->
@@ -12,7 +12,7 @@
 
 
 {{#book.image}}
-<img class="img-thumbnail" src="/books/{{book.id}}/image">
+<img class="rounded " src="/books/{{book.id}}/image" style="height: 300px">
 {{/book.image}}
 
 
@@ -44,14 +44,19 @@
 <ul>
     {{#book.reviews}}
     <li><p> La opinión de: {{name}} es que es :{{description}}</p>
+        <c:forEach items="${book.reviews}" var="review">
+            <button onclick="location.href='/book/${book.id}/review/${review.id}/delete'">Delete review</button>
+        </c:forEach>
     </li>
     {{/book.reviews}}
 
 </ul>
 
 <p>
-    <button onclick="location.href='/books'">Back to all books</button>
-    <button onclick="location.href='/book/{{book.id}}/delete'">Delete book</button>
+
+    <button class="btn card-button" onclick="location.href='/books'">Back to all books</button>
+    <button class="btn card-button" onclick="location.href='/book/{{book.id}}/delete'">Delete book</button>
+
 </p>
 
 
