@@ -40,7 +40,7 @@ public class ImageService {
         return fileName;
     }
 
-    public Resource getImage(String imageName) {
+    public static Resource getImage(String imageName) {
         Path imagePath = IMAGES_FOLDER.resolve(imageName);
         try {
             return new UrlResource(imagePath.toUri());
