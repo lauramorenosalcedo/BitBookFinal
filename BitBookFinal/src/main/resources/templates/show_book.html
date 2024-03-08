@@ -11,7 +11,9 @@
 <p>{{book.author}}</p>
 
 
-<img class="img-thumbnail" src="/img/new/ListBookCard.jpg">
+{{#book.image}}
+<img class="img-thumbnail" src="/books/{{book.id}}/image">
+{{/book.image}}
 
 
 <p> <b>Categories where book is available:</b></p>

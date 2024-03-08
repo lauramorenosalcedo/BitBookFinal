@@ -16,7 +16,7 @@ import java.util.UUID;
 public class ImageService {
 
     //private static final Path IMAGES_FOLDER = Paths.get(System.getProperty("user.dir"), "images");
-    private static final Path IMAGES_FOLDER = Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "static", "img", "new");
+    private static final Path IMAGES_FOLDER = Paths.get(System.getProperty("user.dir"),"images");
 
 
     public String createImage(MultipartFile multiPartFile) {

@@ -106,7 +106,7 @@ public class BookController {
     }
 
 
-    /*
+
     @GetMapping("/books/{id}/image")
     public ResponseEntity<Object> downloadImage(@PathVariable long id) throws SQLException {
 
@@ -120,7 +120,7 @@ public class BookController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Film not found");
         }
     }
-    */
+
 
 
 }
