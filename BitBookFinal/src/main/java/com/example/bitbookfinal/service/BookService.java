@@ -45,7 +45,7 @@ public class BookService {
             book.setImage(path);
         }
 
-        if(book.getImage() == null || book.getImage().isEmpty()) book.setImage("ListBookCard.jpg");
+        if(book.getImage() == null || book.getImage().isEmpty()) book.setImage("no-image.jpg");
 
         long id = nextId.getAndIncrement();
         book.setId(id);
