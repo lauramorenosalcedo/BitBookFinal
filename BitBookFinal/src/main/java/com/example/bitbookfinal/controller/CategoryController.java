@@ -68,8 +68,10 @@ public class CategoryController {
     }
 
     @GetMapping("/categories/{id}/editform")
-    public String editForm() {
-
+    public String editForm(Model model, @PathVariable long id) {
+        Optional<Category> category =categoryService.findById(id);
+        model.addAttribute("category", category);
+;
         return "editform";
     }
 
