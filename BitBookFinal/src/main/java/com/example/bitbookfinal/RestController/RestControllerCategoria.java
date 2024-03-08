@@ -3,8 +3,11 @@ import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
 
 import com.example.bitbookfinal.service.CategoryService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.annotation.JsonView;
+
+import java.net.URI;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -51,21 +54,20 @@ public class RestControllerCategoria {
         }
     }
 
+
+
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Optional<Category>> replaceItem(@PathVariable long id, @RequestBody Category newCategory) {
-
-         Optional<Category> category= categoryService.findById(id);
-
-        if (category.isPresent()) {
-
-            newCategory.setId(id);
-            categoryService.save(newCategory);
-
-            return ResponseEntity.ok(category);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<String> editCategory(@RequestBody Category category, @PathVariable long id) {
+        categoryService.editById(category, id);
+        return ResponseEntity.status(HttpStatus.OK).body("Category updated successfully");
     }
 
-
+    @PostMapping("/newcategory")
+    public ResponseEntity<Category> newCategory(@RequestBody Category category) {
+        Category newCategory = categoryService.save(category);
+        return ResponseEntity.created(URI.create("/categories/" + newCategory.getId())).body(newCategory);
+    }
 }
+
+
+
