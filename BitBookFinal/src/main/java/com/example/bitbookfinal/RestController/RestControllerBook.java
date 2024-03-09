@@ -2,6 +2,7 @@ package com.example.bitbookfinal.RestController;
 
 import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
+import com.example.bitbookfinal.model.Review;
 import com.example.bitbookfinal.service.BookService;
 
 import com.example.bitbookfinal.service.CategoryService;
@@ -90,6 +91,13 @@ public class RestControllerBook {
 
             return ResponseEntity.ok(newBook);
         }
+    }
+
+    @PostMapping("/books/{id}/addreview")
+    public ResponseEntity<Void> newReview(@RequestBody Review review, @PathVariable long id) {
+        bookService.addReview(review, id);
+
+        return ResponseEntity.noContent().build();
     }
 
 
