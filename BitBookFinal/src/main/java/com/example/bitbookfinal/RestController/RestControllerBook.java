@@ -93,12 +93,13 @@ public class RestControllerBook {
         }
     }
 
-    @PostMapping("/books/{id}/addreview")
+    @PostMapping("/{id}/addreview")
     public ResponseEntity<Void> newReview(@RequestBody Review review, @PathVariable long id) {
         bookService.addReview(review, id);
 
         return ResponseEntity.noContent().build();
     }
+
 
 
 
