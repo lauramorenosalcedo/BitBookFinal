@@ -6,6 +6,7 @@ import com.example.bitbookfinal.service.BookService;
 
 import com.example.bitbookfinal.service.CategoryService;
 import com.fasterxml.jackson.annotation.JsonView;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
@@ -23,6 +25,9 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 public class RestControllerBook {
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private CategoryService categoryService;
     @JsonView(Book.Basic.class)
     @GetMapping("/")
     public Collection<Book> getBooks() {
@@ -57,7 +62,7 @@ public class RestControllerBook {
         }
     }
 
-    @PostMapping("/newbook")
+   /* @PostMapping("/newbook")
     public ResponseEntity<Book> createBook(@RequestBody Book book) {
 
         bookService.save(book);
@@ -65,6 +70,26 @@ public class RestControllerBook {
         URI location = fromCurrentRequest().path("/{id}").buildAndExpand(book.getId()).toUri();
 
         return ResponseEntity.created(location).body(book);
+    }*/
+
+    @PostMapping("/newbook")
+    public ResponseEntity<Book> newBook(@RequestBody Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile imageFile) throws Exception {
+        if (bookService.exist(book.getTitle())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } else {
+
+            if (selectedCategories != null) {
+                List<Category> categories = categoryService.findByIds(selectedCategories);
+                book.setCategories(categories);
+                for (Category category : categories) {
+                    category.getBooks().add(book);
+                }
+            }
+
+            Book newBook = bookService.save(book, imageFile);
+
+            return ResponseEntity.ok(newBook);
+        }
     }
 
 
