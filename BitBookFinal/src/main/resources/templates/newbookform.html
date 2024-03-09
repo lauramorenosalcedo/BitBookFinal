@@ -6,32 +6,51 @@
 
 <!-- main -->
 <section class="container mt-5"></section>
-<form action="/newbook" method="post" enctype="multipart/form-data">
-    <h2>New Book</h2>
-    <div>
-        <label>Title: </label>
-        <input name="title" placeholder="title"/>
+<div class="container-contact100">
+    <div class="wrap-contact100">
+        <form action="/newbook" method="post" class="contact100-form validate-form" enctype="multipart/form-data">
+            <span class="contact100-form-title">
+                New Book
+            </span>
+
+            <div class="wrap-input100 validate-input" data-validate="Please enter a new book name">
+                <input class="input100" type="text" name="name" placeholder="Book Name" required>
+                <span class="focus-input100"></span>
+            </div>
+
+            <div class="wrap-input100 validate-input" data-validate="Please enter a new book name">
+                <input class="input100" type="text" name="Author" placeholder="Book Author" required>
+                <span class="focus-input100"></span>
+            </div>
+
+            <p>Image: </p>
+            <input type='file' name='imageFile' accept=".jpg, .jpeg" />
+
+            <p>Categories: </p>
+
+            <select name="selectedCategories" multiple>
+                {{#availableCategories}}
+                <option value="{{ id }}">{{ name }}</option>
+                {{/availableCategories}}
+            </select>
+
+
+
+            <div class="container-contact100-form-btn">
+                <button type="button" onclick="location.href='/';" class="contact100-form-btn" style="margin-right: 10px;">
+                    Cancel
+                </button>
+                <button type="submit" class="contact100-form-btn">
+                    Save
+                </button>
+            </div>
+        </form>
+
     </div>
-    <div>
-        <label>Author: </label>
-        <textarea name="Author" placeholder="author"></textarea>
-    </div>
+</div>
 
-    <p>Image: </p>
-    <input type='file' name='imageFile' accept=".jpg, .jpeg" />
 
-    <p>Categorys: </p>
 
-    <select name="selectedCategories" multiple>
-        {{#availableCategories}}
-        <option value="{{ id }}">{{ name }}</option>
-        {{/availableCategories}}
-    </select>
-    <p>
-        <button onclick="location.href='/'; return false;">Cancel</button>
-        <input type="submit" value="Save"/>
-    </p>
-</form>
 
 </body>
 {{> layout/footer}}

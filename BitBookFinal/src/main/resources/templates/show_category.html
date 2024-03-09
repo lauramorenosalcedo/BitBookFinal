@@ -6,22 +6,39 @@
 
 <!-- main -->
 <section class="container mt-5"></section>
-<h1>Category: {{ categoryName }}</h1>
+<section class="wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center mb-5">
+                <h1 class="display-4 font-weight-bolder">{{ categoryName }}</h1>
+                <p class="lead">{{ categoryName }} books</p>
+            </div>
+        </div>
+    </div>
+    <div class="row mx-auto">
+        {{# books }}
+        <div class="col-sm-12 col-md-6 col-lg-3 mb-4" onclick="window.location.href = '/books/{{id}}';"><div class="card text-dark card-has-bg click-col" style="background-image:url('/img/ListBookCard.jpg'); background-size: cover; ">
+            <div class="card-img-overlay d-flex flex-column">
+                <div class="card-body">
+                    <small class="card-meta mb-2">{{ author }}</small>
+                    <h4 class="card-title mt-0 "><a class="text-dark" href="/books">{{ title }}</a></h4>
+                </div>
+            </div>
+        </div></div>
+        {{/ books }}
+    </div>
+</section>
 
-<h2>Books:</h2>
-<ul>
-    {{# books }}
-    <li>{{ title }} by {{ author }}</li>
-    {{/ books }}
-</ul>
-<p>
 
-    <button class="btn card-button" onclick="location.href='/categories'">Back to all categories</button>
-    <button class="btn card-button" onclick="location.href='/categories/{{id}}/delete'">Delete category</button>
-    <button class="btn card-button" onclick="location.href='/categories/{{id}}/editform'">Edit category</button>
+<section class="container mt-2 mb-5">
+    <div class="text-center">
+        <button class="btn card-button" onclick="location.href='/categories'">Back to all categories</button>
+        <button class="btn card-button" onclick="location.href='/categories/{{id}}/delete'">Delete category</button>
+        <button class="btn card-button" onclick="location.href='/categories/{{id}}/editform'">Edit category</button>
+    </div>
 
+</section>
 
-</p>
 
 </body>
 {{> layout/footer}}

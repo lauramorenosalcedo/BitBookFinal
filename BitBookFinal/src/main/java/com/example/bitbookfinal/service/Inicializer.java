@@ -20,7 +20,7 @@ public class Inicializer {
         //Create some books
         Book quijote= new Book("Quijote", "Miguel Cervantes");
         quijote.setImage("quijote.jpeg");
-        Book campos=new Book("Campos de Castilla", "Antonio Machada");
+        Book campos=new Book("Campos de Castilla", "Antonio Machado");
         campos.setImage("campos.jpeg");
         Book znati=new Book("Znati en la escuela", "Dbid Rey");
         znati.setImage("znati.jpeg");
