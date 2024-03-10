@@ -1,12 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Error</title>
-</head>
+
+{{> layout/head}}
+
 <body>
-<h1>Error</h1>
-<p>Ocurrió un error con el código {{statusCode}}.</p>
+{{> layout/nav}}
+<section class="container mt-5"></section>
+<section class="wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center mb-5">
+                <h1 class="display-4 font-weight-bolder">Error {{statusCode}}</h1>
+                <p class="lead">Press the botton to return to home page</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-2 mb-5">
+    <div class="text-center">
+        <button class="btn card-button" onclick="location.href='/ '">Back</button>
+    </div>
+</section>
 </body>
+
 </html>

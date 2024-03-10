@@ -6,9 +6,16 @@
 
 <!-- main -->
 <section class="container mt-5"></section>
-<h2>Book "{{book.title}}"</h2>
-
-<p>{{book.author}}</p>
+<section class="wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center mb-5">
+                <h1 class="display-4 font-weight-bolder">{{book.title}}</h1>
+                <p class="lead">{{book.author}}</p>
+            </div>
+        </div>
+    </div>
+</section>
 
 
 {{#book.image}}
@@ -55,9 +62,6 @@
     <button class="btn card-button" onclick="location.href='/book/{{book.id}}/delete'">Delete book</button>
 
 </p>
-
-
-
 
 
 
