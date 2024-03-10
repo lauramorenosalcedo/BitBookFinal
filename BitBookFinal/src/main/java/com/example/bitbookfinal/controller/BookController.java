@@ -29,16 +29,16 @@ public class BookController {
 
     @Autowired
     private CategoryService categoryService;
-
     @Autowired
     private BookService bookService;
 
-    @GetMapping("/")
+
+    @GetMapping("/") //This get mapping returns the home page, showing the index.html.
     public String showHome(){
         return "index";
     }
 
-    @GetMapping("/books")
+    @GetMapping("/books") //
     public String showBooks(Model model){
         model.addAttribute("books", bookService.findAll());
         return "show_books";
@@ -89,7 +89,13 @@ public class BookController {
         }
     }
 
+    @GetMapping("/book/{id}/delete")
+    public String deletePost(Model model, @PathVariable long id) throws IOException {
 
+        bookService.deleteById(id);
+
+        return "deleted_post";
+    }
 
     @PostMapping("/books/{id}/addreview")
     public String newReview(Review review,  @PathVariable long id ) {
@@ -98,12 +104,19 @@ public class BookController {
         return "redirect:/books/{id}";
     }
 
-    @GetMapping("/book/{id}/delete")
-    public String deletePost(Model model, @PathVariable long id) throws IOException {
+    @GetMapping("/book/{id}/review/{reviewid}")
+    public String deleteReview(Model model, @PathVariable("id") long id, @PathVariable("reviewid") long reviewid) throws IOException {
 
-        bookService.deleteById(id);
+        Optional<Book> book = bookService.findById(id);
 
-        return "deleted_post";
+        if(book.isPresent()){
+            Book realBook = book.get();
+            bookService.deleteReviewById(id, reviewid);
+        }
+
+
+        return "deleted_review";
+
     }
 
 
@@ -122,13 +135,6 @@ public class BookController {
         }
     }
 
-    @GetMapping("/book/{id}/review/{reviewid}/delete")
-    public String deleteReview(Model model, @PathVariable("id") long id, @PathVariable("reviewid") long reviewid) throws IOException {
-
-        bookService.deleteReviewById(id, reviewid);
-
-        return "deleted_review";
-    }
 
 
 

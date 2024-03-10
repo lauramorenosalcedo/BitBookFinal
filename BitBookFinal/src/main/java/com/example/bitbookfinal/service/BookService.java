@@ -34,6 +34,7 @@ public class BookService {
         return Optional.empty();
     }
 
+
     public List<Book> findAll() {
         return this.mapbooks.values().stream().toList();
     }
@@ -98,11 +99,16 @@ public class BookService {
 
         Book book= this.mapbooks.get(id);
         List<Review>reviews=book.getReviews();
+
         for(Review review: reviews){
             if(review.getId()== reviewid){
                 reviews.remove(review);
+                break;
             }
         }
+
         book.setReviews(reviews);
+        this.mapbooks.put(id, book);
+
     }
 }

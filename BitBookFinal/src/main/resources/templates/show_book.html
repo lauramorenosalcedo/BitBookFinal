@@ -44,16 +44,13 @@
 <ul>
     {{#book.reviews}}
     <li><p> La opinión de: {{name}} es que es :{{description}}</p>
-        <c:forEach items="${book.reviews}" var="review">
-            <button onclick="location.href='/book/${book.id}/review/${review.id}/delete'">Delete review</button>
-        </c:forEach>
+        <button class="btn card-button" onclick="location.href='/book/{{book.id}}/review/{{id}}'">Delete Review</button>
     </li>
     {{/book.reviews}}
 
 </ul>
 
 <p>
-
     <button class="btn card-button" onclick="location.href='/books'">Back to all books</button>
     <button class="btn card-button" onclick="location.href='/book/{{book.id}}/delete'">Delete book</button>
 
