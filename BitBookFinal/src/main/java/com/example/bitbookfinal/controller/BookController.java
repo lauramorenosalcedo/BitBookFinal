@@ -1,5 +1,4 @@
 package com.example.bitbookfinal.controller;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -33,18 +32,18 @@ public class BookController {
     private BookService bookService;
 
 
-    @GetMapping("/") //This get mapping returns the home page, showing the index.html.
+    @GetMapping("/") //This get mapping returns the home page, showing the index.html, from where you can access both the books and the categories.
     public String showHome(){
         return "index";
     }
 
-    @GetMapping("/books") //
+    @GetMapping("/books") // Passes all the books with a book service function, to the show_books html, where the user can view all the books.
     public String showBooks(Model model){
         model.addAttribute("books", bookService.findAll());
         return "show_books";
     }
 
-    @GetMapping("/books/{id}")
+    @GetMapping("/books/{id}") // Shows a single book identified by it´s id.
     public String showBook(Model model, @PathVariable long id) {
 
         Optional<Book> book = bookService.findById(id);
@@ -57,7 +56,7 @@ public class BookController {
 
     }
 
-    @GetMapping("/newbook")
+    @GetMapping("/newbook") //This function handles the GET method part of creating a new book. This is linked to the button that shows up on the show_books html, and redirects to the form used to create a new book.
     public String newBook(Model model) {
 
         model.addAttribute("availableCategories", categoryService.findAll());
@@ -65,7 +64,7 @@ public class BookController {
         return "newbookform";
     }
 
-    @PostMapping("/newbook")
+    @PostMapping("/newbook") // Recieves data from the newbookform, and saves it into the database as a new book using the BookService.
     public String newBookProcess(Model model, Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile imageFile) {
         if (bookService.exist(book.getTitle())) {
             return "error_book";
@@ -89,31 +88,28 @@ public class BookController {
         }
     }
 
-    @GetMapping("/book/{id}/delete")
-    public String deletePost(Model model, @PathVariable long id) throws IOException {
+    @GetMapping("/book/{id}/delete") //Function used to remove a book using the id embeded in the url.
+    public String deletePost(@PathVariable long id){
 
         bookService.deleteById(id);
 
         return "deleted_post";
     }
 
-    @PostMapping("/books/{id}/addreview")
+    @PostMapping("/books/{id}/addreview") // This function recieves data from the form embeded in the show_books html, and saves it in the review list of the specified book.
     public String newReview(Review review,  @PathVariable long id ) {
         bookService.addReview(review, id);
 
         return "redirect:/books/{id}";
     }
 
-    @GetMapping("/book/{id}/review/{reviewid}")
-    public String deleteReview(Model model, @PathVariable("id") long id, @PathVariable("reviewid") long reviewid) throws IOException {
+    @GetMapping("/book/{id}/review/{reviewid}") //This function is used to remove a specific review of a specific book, they are both identified by their id, embeded in the url.
+    public String deleteReview(@PathVariable("id") long id, @PathVariable("reviewid") long reviewid){
 
         Optional<Book> book = bookService.findById(id);
-
         if(book.isPresent()){
-            Book realBook = book.get();
             bookService.deleteReviewById(id, reviewid);
         }
-
 
         return "deleted_review";
 
