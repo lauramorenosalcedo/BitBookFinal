@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class RestControllerError {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody ResponseEntity<String> errorRest() {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("URL no encontrada");
+    public @ResponseBody ResponseEntity<String> errorRest() { //If the url is not included in one of the RestControllers or is incorrect, it returns: "URL not found"
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("URL not found");
     }
 }
