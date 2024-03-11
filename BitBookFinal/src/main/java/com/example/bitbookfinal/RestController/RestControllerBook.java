@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -18,8 +17,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
-
-import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @RestController
 @RequestMapping("/api/books")
@@ -30,12 +27,12 @@ public class RestControllerBook {
     @Autowired
     private CategoryService categoryService;
     @JsonView(Book.Basic.class)
-    @GetMapping("/")
+    @GetMapping("/")   //
     public Collection<Book> getBooks() {
         return bookService.findAll();
     }
 
-    interface BookDetail extends Book.Basic, Book.Categories, Category.Basic{};
+    interface BookDetail extends Book.Categories, Category.Basic, Book.Basic, Review.Basic{}
 
     @JsonView(BookDetail.class)
     @GetMapping("/{id}")
@@ -63,18 +60,8 @@ public class RestControllerBook {
         }
     }
 
-   /* @PostMapping("/newbook")
-    public ResponseEntity<Book> createBook(@RequestBody Book book) {
-
-        bookService.save(book);
-
-        URI location = fromCurrentRequest().path("/{id}").buildAndExpand(book.getId()).toUri();
-
-        return ResponseEntity.created(location).body(book);
-    }*/
-
     @PostMapping("/newbook")
-    public ResponseEntity<Book> newBook(@RequestBody Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile imageFile) throws Exception {
+    public ResponseEntity<Book> newBook(@RequestBody Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile imageFile){
         if (bookService.exist(book.getTitle())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } else {

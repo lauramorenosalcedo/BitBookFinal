@@ -64,7 +64,7 @@ public class BookController {
         return "newbookform";
     }
 
-    @PostMapping("/newbook") // Recieves data from the newbookform, and saves it into the database as a new book using the BookService.
+    @PostMapping("/newbook") // Receives data from the newbookform, and saves it into the database as a new book using the BookService.
     public String newBookProcess(Model model, Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile imageFile) {
         if (bookService.exist(book.getTitle())) {
             return "error_book";
@@ -118,7 +118,7 @@ public class BookController {
 
 
     @GetMapping("/books/{id}/image")
-    public ResponseEntity<Object> downloadImage(@PathVariable long id) throws SQLException {
+    public ResponseEntity<Object> downloadImage(@PathVariable long id){
 
         Optional<Book> op = bookService.findById(id);
 

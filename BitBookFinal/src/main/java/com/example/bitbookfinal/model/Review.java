@@ -1,8 +1,14 @@
 package com.example.bitbookfinal.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 public class Review {
+    public interface Basic{}
+   // @JsonView(Book.Basic.class)
     private Long id;
+    @JsonView(Book.Basic.class)
     private String name;
+    @JsonView(Book.Basic.class)
     private String description;
     public Review(){
 

@@ -8,6 +8,7 @@ import java.util.List;
 public class Book {
     public interface Basic{}
     public interface Categories{}
+
     @JsonView(Basic.class)
     private Long id=null;
     @JsonView(Basic.class)
