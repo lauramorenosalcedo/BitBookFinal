@@ -9,53 +9,74 @@
 <section class="wrapper">
     <div class="container">
         <div class="row">
-            <div class="col text-center mb-5">
+            <div class="col text-center mb-1">
                 <h1 class="display-4 font-weight-bolder">{{book.title}}</h1>
                 <p class="lead">{{book.author}}</p>
             </div>
         </div>
     </div>
+    <div class="card mx-auto" style="width: 50rem">
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col mx-auto">
+                    {{#book.image}}
+                    <img class="rounded img-thumbnail" src="/books/{{book.id}}/image" style="height: 420px">
+                    {{/book.image}}
+                </div>
+                <div class="col">
+                    <p><b>Categories where book is available:</b></p>
+                    <ul>
+                        {{#book.categories}}
+                        <li><a href="/categories/{{id}}">{{name}}</a></li>
+                        {{/book.categories}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
+<section class="wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center mb-1">
+                <h1 class="display-4 font-weight-bolder">New Review</h1>
+                <p class="lead">Add a new review of {{book.title}} book </p>
+            </div>
+        </div>
+    </div>
 
-{{#book.image}}
-<img class="rounded " src="/books/{{book.id}}/image" style="height: 300px">
-{{/book.image}}
-
-
-<p> <b>Categories where book is available:</b></p>
-<ul>
-    {{#book.categories}}
-    <li><a href="/categories/{{id}}">{{name}}</a></li>
-    {{/book.categories}}
-
-</ul>
 
 
 <form action="/books/{{id}}/addreview" method="post" enctype="multipart/form-data">
-    <h2>New Review</h2>
     <div>
         <label>Name: </label>
-        <input name="name" placeholder="name"/>
+        <input class="form-control" name="name" placeholder="name"/>
     </div>
     <div>
         <label>Description: </label>
-        <input name="description" placeholder="description"/>
+        <input class="form-control" name="description" placeholder="description"/>
     </div>
     <p>
-        <input type="submit" value="Save"/>
+        <button class="btn card-button mt-2"  type="submit">Save</button>
     </p>
 </form>
 
-<p> <b>Reviews of the book:</b></p>
-<ul>
-    {{#book.reviews}}
-    <li><p> La opinión de: {{name}} es que es :{{description}}</p>
-        <button class="btn card-button" onclick="location.href='/book/{{book.id}}/review/{{id}}'">Delete Review</button>
-    </li>
-    {{/book.reviews}}
 
-</ul>
+    <div class="row mx-auto">
+        {{#book.reviews}}
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-4"><div class="card text-dark card-has-bg click-col" style="background-image:url('/img/ListBookCard.jpg'); background-size: cover; ">
+            <div class="card-img-overlay d-flex flex-column">
+                <div class="card-body">
+                    <small class="card-meta mb-2">{{book.title}} review</small>
+                    <h4 class="card-title mt-0 "><a class="text-dark" href="/books">{{name}} review: {{description}}</a></h4>
+                    <button class="btn card-button" onclick="location.href='/book/{{book.id}}/review/{{id}}'">Delete Review</button>
+                </div>
+            </div>
+        </div></div>
+        {{/book.reviews}}
+    </div>
+
 
 <p>
     <button class="btn card-button" onclick="location.href='/books'">Back to all books</button>
@@ -63,8 +84,7 @@
 
 </p>
 
-
-
+</section>
 </body>
 {{> layout/footer}}
 </html>
