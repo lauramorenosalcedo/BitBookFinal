@@ -20,12 +20,12 @@ public class Book {
     @JsonView(Categories.class)
     private List<Category> categories;
     @JsonView(Basic.class)
-    private List<Review> reviews;
+    private List<Review> reviews=new ArrayList<>();
 
     public Book(){
 
     }
-    public Book (String title, String author) { //This is the book entity, its atributes are a tittle, author, a list of the categories it belongs to, and a list of reviews it has.
+    public Book (String title, String author) { //This is the book entity, its attributes are a tittle, author, a list of the categories it belongs to, and a list of reviews it has.
         super();
         this.title = title;
         this.author = author;
@@ -91,6 +91,7 @@ public class Book {
         categories.add(category);
         //   category.getBooks().add(this);
     }
+
 
     public void deleteCategory(Category category){ //Function used to delete a category from the list of categories.
         this.categories.remove(category);
