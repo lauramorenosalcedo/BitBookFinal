@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 @RestController
 @RequestMapping("/api/categories")
 
-public class RestControllerCategoria {
+public class RestControllerCategory {
     @Autowired
     private CategoryService categoryService;
     @JsonView(Category.Basic.class)
@@ -26,7 +26,7 @@ public class RestControllerCategoria {
         return categoryService.findAll();
     }
 
-    interface CategoryDetail extends Book.Basic,  Category.Basic, Category.Books{};
+    interface CategoryDetail extends Book.Basic,  Category.Basic, Category.Books{}
     @JsonView(CategoryDetail.class)
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Category>> getCategory(@PathVariable long id) {
