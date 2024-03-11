@@ -15,18 +15,18 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 @Service
 
-public class BookService {
+public class BookService { //This service is dedicated to offer the necesary functionalitites to the book class.
 
     //Creation of map tha contains the books, set with their ids.
 
     @Autowired
     private ImageService imageService;
-    private AtomicLong nextId = new AtomicLong(1L);
+    private AtomicLong nextId = new AtomicLong(1L); // This attribute is used to assing a unique id to each object of this class.
     private ConcurrentHashMap<Long, Book> mapbooks = new ConcurrentHashMap<>();
     private AtomicLong nextReviewId = new AtomicLong(1L);
 
 
-    //Functions used to search books, either all of them, or one identified by it´s id.
+    //The next two functions used to search books, either all of them, or one identified by it´s id.
     public Optional<Book> findById(long id) {
         if(this.mapbooks.containsKey(id)) {
             return Optional.of(this.mapbooks.get(id));
@@ -34,13 +34,12 @@ public class BookService {
         return Optional.empty();
     }
 
-
     public List<Book> findAll() {
         return this.mapbooks.values().stream().toList();
     }
 
-    //Function used to save a book in the book map.
-    public Book save(Book book, MultipartFile imageField){
+
+    public Book save(Book book, MultipartFile imageField){ //Function used to save a book in the book map.
         if (imageField != null && !imageField.isEmpty()){
             String path = imageService.createImage(imageField);
             book.setImage(path);
@@ -54,7 +53,7 @@ public class BookService {
         return book;
     }
 
-    public Book save(Book book){
+    public Book save(Book book){ //Function used to save a book in the book map, without an image.
 
         long id = nextId.getAndIncrement();
         book.setId(id);
@@ -63,7 +62,7 @@ public class BookService {
     }
 
 
-    public void deleteById(long id) {
+    public void deleteById(long id) { // This function can identify a book by its id and remove it from the map of books, and from the categories it belongs to.
         Book book= this.mapbooks.get(id);
         List<Category>categorias=book.getCategories();
         for(Category categoria: categorias){
@@ -72,7 +71,7 @@ public class BookService {
         this.mapbooks.remove(id);
     }
 
-    public boolean exist(String title) {
+    public boolean exist(String title) { //Function used to see if a title is already assigned to a book.
         Collection<Book> books = mapbooks.values();
         for(Book book: books){
             if(Objects.equals(book.getTitle(), title)){
@@ -82,7 +81,7 @@ public class BookService {
         return false;
     }
 
-    public void addReview(Review review, long bookid) {
+    public void addReview(Review review, long bookid) { // Function used to add a review to a specific book.
         Collection<Book> books = mapbooks.values();
         for (Book book : books) {
             if (Objects.equals(book.getId(), bookid)) {
@@ -95,7 +94,7 @@ public class BookService {
         }
     }
 
-    public void deleteReviewById(long id, long reviewid) {
+    public void deleteReviewById(long id, long reviewid) {// Function used to remove a specific review from a specific book.
 
         Book book= this.mapbooks.get(id);
         List<Review>reviews=book.getReviews();

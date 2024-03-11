@@ -19,7 +19,7 @@ public class ImageService {
     private static final Path IMAGES_FOLDER = Paths.get(System.getProperty("user.dir"),"images");
 
 
-    public String createImage(MultipartFile multiPartFile) {
+    public String createImage(MultipartFile multiPartFile) { //Function used to create an image.
 
         String originalName = multiPartFile.getOriginalFilename();
 
@@ -40,7 +40,7 @@ public class ImageService {
         return fileName;
     }
 
-    public static Resource getImage(String imageName) {
+    public static Resource getImage(String imageName) { //Function used to retrieve an image from the image folder.
         Path imagePath = IMAGES_FOLDER.resolve(imageName);
         try {
             return new UrlResource(imagePath.toUri());
@@ -49,7 +49,7 @@ public class ImageService {
         }
     }
 
-    public void deleteImage(String image_url) {
+    public void deleteImage(String image_url) { //Function used to delete an image from the image folder.
         String[] tokens = image_url.split("/");
         String image_name = tokens[tokens.length -1 ];
 

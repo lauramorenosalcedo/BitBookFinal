@@ -1,16 +1,14 @@
 package com.example.bitbookfinal.service;
 
-import com.example.bitbookfinal.model.Book;
-import com.example.bitbookfinal.model.Category;
 import com.example.bitbookfinal.model.Review;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class ReviewService {
+public class ReviewService { //This service is dedicated to offer the necesary functionalitites to the review class, like the asignation of a unique id to each object of this class.
     private AtomicLong nextId = new AtomicLong(1L);
     private ConcurrentHashMap<Long, Review> mapreviews = new ConcurrentHashMap<>();
-    public Review save(Review review) {
+    public Review save(Review review) { // This function saves a review into the map of reviews.
         long id = nextId.getAndIncrement();
         review.setId(id);
         mapreviews.put(id, review);

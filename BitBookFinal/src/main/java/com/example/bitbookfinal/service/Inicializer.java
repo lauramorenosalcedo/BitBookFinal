@@ -1,6 +1,4 @@
 package com.example.bitbookfinal.service;
-import java.io.IOException;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -8,7 +6,7 @@ import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
 import jakarta.annotation.PostConstruct;
 @Component
-public class Inicializer {
+public class Inicializer { //The incializer is used to create varius objects of our different entities to load before the user can intercat with the page.
     @Autowired
     private CategoryService categoryService;
 
@@ -30,8 +28,10 @@ public class Inicializer {
         Category aventura= new Category("Aventura");
         Category ficcion= new Category("Ficcion");
 
+        //Add the categories to the category list of the book.
         quijote.addCategory(aventura);
         quijote.addCategory(ficcion);
+        //Add the book to the book list of the category.
         aventura.getBooks().add(quijote);
         ficcion.getBooks().add(quijote);
 
@@ -41,6 +41,7 @@ public class Inicializer {
         znati.addCategory(ficcion);
         ficcion.getBooks().add(znati);
 
+        //Save both the book and the categories.
         bookService.save(quijote,null);
         bookService.save(znati,null);
         bookService.save(campos,null);
