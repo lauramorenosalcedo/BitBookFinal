@@ -1,21 +1,19 @@
 package com.example.bitbookfinal.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Review {
     private Long id;
     private String name;
     private String description;
     public Review(){
 
-    };
-    public Review( String name, String description){
+    }
+    public Review( String name, String description){ //This is the category entity, its atributes are a name(author name) and a description.
         super();
         this.name=name;
         this.description=description;
     }
 
+    //Getters and setters of this entity.
     public String getName() {
         return name;
     }

@@ -1,14 +1,13 @@
 package com.example.bitbookfinal.model;
 
-import com.example.bitbookfinal.model.Book;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Category {
-    public interface Basic{};
-    public interface Books{};
+    public interface Basic{}
+    public interface Books{}
     @JsonView(Basic.class)
     private Long id=null;
     @JsonView(Basic.class)
@@ -19,11 +18,13 @@ public class Category {
     public Category(){
     }
 
-    public Category( String name){
+    public Category( String name){ //This is the category entity, its atributes are a name and a list of books it has.
         super();
         this.name=name;
         this.books=new ArrayList<>();
     }
+
+    //Getters and setters of this entity.
     public Long getId() {
         return id;
     }

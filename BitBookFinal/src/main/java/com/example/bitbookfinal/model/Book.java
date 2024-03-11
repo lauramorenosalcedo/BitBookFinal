@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Book {
-    public interface Basic{};
-    public interface Categories{};
+    public interface Basic{}
+    public interface Categories{}
     @JsonView(Basic.class)
     private Long id=null;
     @JsonView(Basic.class)
@@ -24,13 +24,15 @@ public class Book {
     public Book(){
 
     }
-    public Book (String title, String author) {
+    public Book (String title, String author) { //This is the book entity, its atributes are a tittle, author, a list of the categories it belongs to, and a list of reviews it has.
         super();
         this.title = title;
         this.author = author;
         this.categories=new ArrayList<>();
         this.reviews=new ArrayList<>();
     }
+
+    //Getters and setters of this entity.
     public String getTitle() {
         return title;
     }
@@ -69,14 +71,6 @@ public class Book {
         this.reviews = reviews;
     }
 
-    @Override
-    public String toString() {
-        return "Libro [id=" + id + ", title=" + title + ", author=" + author + ", categories=" + categories +", reviews="+reviews +"]";
-    }
-    public void addCategory(Category category) {
-        categories.add(category);
-        //   category.getBooks().add(this);
-    }
 
     public String getImage() {
         return image;
@@ -86,7 +80,18 @@ public class Book {
         this.image = image;
     }
 
-    public void deleteCategory(Category category){
+    @Override
+    public String toString() {
+        return "Libro [id=" + id + ", title=" + title + ", author=" + author + ", categories=" + categories +", reviews="+reviews +"]";
+    }
+
+
+    public void addCategory(Category category) { // Function used to add a category to the list of categories.
+        categories.add(category);
+        //   category.getBooks().add(this);
+    }
+
+    public void deleteCategory(Category category){ //Function used to delete a category from the list of categories.
         this.categories.remove(category);
 
     }
