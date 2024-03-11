@@ -1,0 +1,305 @@
+{
+	"info": {
+		"_postman_id": "dd3cdb40-e7b2-45c4-bc30-d53cc778a5ad",
+		"name": "BitBook",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33432060"
+	},
+	"item": [
+		{
+			"name": "GET /api/books (showBooks)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8080/api/books/",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/books/newbook (newBook)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"ppppp\",\r\n    \"author\": \"Miguelvantes\",\r\n    \r\n    \"categories\": [\r\n        \r\n        {\r\n            \"id\": 2,\r\n            \"name\": \"Ficcion\"\r\n        }\r\n    ],\r\n    \"reviews\": [\r\n        {\r\n            \"name\": \"aaaaaae\",\r\n            \"description\": \"tttt\"\r\n        },\r\n        {\r\n            \"name\": \"tttttttttte\",\r\n            \"description\": \"tttt\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8080/api/books/newbook",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						"newbook"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/books/:bookid (showBook)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8080/api/books/3",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /api/books/:bookid/delete (bookDelete)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8080/api/books/2/delete",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						"2",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/books/:bookid/addreview (addReview)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"Marta\", \"description\":\"muy divertido\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8080/api/books/3/addreview",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						"3",
+						"addreview"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /api/books/:bookid/review/:reviewid (deleteReview)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8080/api/books/1/review/1",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"books",
+						"1",
+						"review",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/categories (showCategories)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8080/api/categories/",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"categories",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/categories/:categoryid (showCategory)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8080/api/categories/3",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"categories",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /api/categories/:categoryid/delete (categoryDelete)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8080/api/categories/3/delete",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"categories",
+						"3",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /api/categories/edit/:categoryid (editCategory)",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"eknjwv\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8080/api/categories/edit/2",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"categories",
+						"edit",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/categories/newcategory (newCategory)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"drama\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8080/api/categories/newcategory",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"categories",
+						"newcategory"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
