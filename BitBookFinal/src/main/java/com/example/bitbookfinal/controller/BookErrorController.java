@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
-public class BookErrorController  implements ErrorController {
-    @RequestMapping("/error")
+public class BookErrorController  implements ErrorController { //The error controller is used to customize the base spring error displays.
+    @RequestMapping("/error") // This function is used to redirect a faulty url request to the custom showError html. It also captures the error code to display in the html.
     public String handleError(Model model, HttpServletRequest request){
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
