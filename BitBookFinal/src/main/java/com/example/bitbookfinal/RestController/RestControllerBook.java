@@ -100,6 +100,17 @@ public class RestControllerBook {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/{id}/review/{reviewid}")
+    public ResponseEntity<String> deleteReview(@PathVariable("id") long id, @PathVariable("reviewid") long reviewid) {
+        Optional<Book> book = bookService.findById(id);
+        if (book.isPresent()) {
+            bookService.deleteReviewById(id, reviewid);
+            return ResponseEntity.ok("Review deleted successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
 
 
