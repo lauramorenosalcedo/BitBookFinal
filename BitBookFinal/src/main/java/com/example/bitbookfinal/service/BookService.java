@@ -3,6 +3,8 @@ package com.example.bitbookfinal.service;
 import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
 import com.example.bitbookfinal.model.Review;
+import com.example.bitbookfinal.repository.BookRepository;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,21 +23,27 @@ public class BookService { //This service is dedicated to offer the necesary fun
 
     @Autowired
     private ImageService imageService;
-    private AtomicLong nextId = new AtomicLong(1L); // This attribute is used to assing a unique id to each object of this class.
-    private ConcurrentHashMap<Long, Book> mapbooks = new ConcurrentHashMap<>();
-    private AtomicLong nextReviewId = new AtomicLong(1L);
+
+    @Autowired
+    private BookRepository bookRepository;
+
+    @Autowired
+    private EntityManager entityManager;
+    @Autowired
+    private CategoryService categoryService;
+
+    //private AtomicLong nextId = new AtomicLong(1L); // This attribute is used to assing a unique id to each object of this class.
+    //private ConcurrentHashMap<Long, Book> mapbooks = new ConcurrentHashMap<>();
+   // private AtomicLong nextReviewId = new AtomicLong(1L);
 
 
     //The next two functions used to search books, either all of them, or one identified by it´s id.
     public Optional<Book> findById(long id) {
-        if(this.mapbooks.containsKey(id)) {
-            return Optional.of(this.mapbooks.get(id));
-        }
-        return Optional.empty();
+        return bookRepository.findById(id);
     }
 
     public List<Book> findAll() {
-        return this.mapbooks.values().stream().toList();
+        return bookRepository.findAll();
     }
 
 
@@ -47,19 +55,20 @@ public class BookService { //This service is dedicated to offer the necesary fun
 
         if(book.getImage() == null || book.getImage().isEmpty()) book.setImage("no-image.jpg");
 
+       /* long id = nextId.getAndIncrement();
+        book.setId(id);
+        mapbooks.put(id, book);
+        return book;*/
+        return bookRepository.save(book);
+    }
+
+    /*public Book save(Book book){ //Function used to save a book in the book map, without an image.
+
         long id = nextId.getAndIncrement();
         book.setId(id);
         mapbooks.put(id, book);
         return book;
-    }
-
-    public Book save(Book book){ //Function used to save a book in the book map, without an image.
-
-        long id = nextId.getAndIncrement();
-        book.setId(id);
-        mapbooks.put(id, book);
-        return book;
-    }
+    }*/
 
 
     public void deleteById(long id) { // This function can identify a book by its id and remove it from the map of books, and from the categories it belongs to.
@@ -72,13 +81,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
     }
 
     public boolean exist(String title) { //Function used to see if a title is already assigned to a book.
-        Collection<Book> books = mapbooks.values();
-        for(Book book: books){
-            if(Objects.equals(book.getTitle(), title)){
-                return true;
-            }
-        }
-        return false;
+        return bookRepository.findByTitle(title);
     }
 
     public void addReview(Review review, long bookid) { // Function used to add a review to a specific book.

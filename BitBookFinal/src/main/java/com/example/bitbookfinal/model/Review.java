@@ -1,9 +1,16 @@
 package com.example.bitbookfinal.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
+@Entity
 public class Review {
     public interface Basic{}
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
    @JsonView(Book.Basic.class)
     private Long id;
     @JsonView(Book.Basic.class)
