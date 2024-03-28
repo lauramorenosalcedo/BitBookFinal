@@ -4,14 +4,24 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+@Entity
 public class Category {
     public interface Basic{}
     public interface Books{}
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonView(Basic.class)
     private Long id=null;
     @JsonView(Basic.class)
     private String name;
+
+    @ManyToMany(mappedBy="categories")
     @JsonView(Books.class)
     private List<Book> books=new ArrayList<>();
 

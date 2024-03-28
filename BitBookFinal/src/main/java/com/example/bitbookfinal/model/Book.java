@@ -5,10 +5,18 @@ import com.fasterxml.jackson.annotation.JsonView;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+@Entity
 public class Book {
     public interface Basic{}
     public interface Categories{}
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonView(Basic.class)
     private Long id=null;
     @JsonView(Basic.class)
@@ -17,6 +25,8 @@ public class Book {
     private String author;
     @JsonView(Basic.class)
     private String image;
+
+    @ManyToMany
     @JsonView(Categories.class)
     private List<Category> categories;
     @JsonView(Basic.class)
