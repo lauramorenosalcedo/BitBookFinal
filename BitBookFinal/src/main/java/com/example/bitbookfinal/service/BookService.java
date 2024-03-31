@@ -108,7 +108,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
         review.setBook(book);
         ReviewRepository.save(review);
     }
-
+/*
     public void deleteReviewById(long id, long reviewid) {// Function used to remove a specific review from a specific book.
         Book book = bookRepository.findBookById(id);
         //Book book= this.mapbooks.get(id);
@@ -123,8 +123,8 @@ public class BookService { //This service is dedicated to offer the necesary fun
         book.setReviews(reviews);
         this.mapbooks.put(id, book);
 
-    }
-/*
+    }*/
+
     public void deleteReviewById(long bookId, long reviewId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + bookId));
@@ -136,7 +136,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
             throw new IllegalArgumentException("Review not associated with book");
         }
 
-        book.removeReview(review);
+        book.deleteReview(review);
         bookRepository.save(book);
-    }*/
+    }
 }

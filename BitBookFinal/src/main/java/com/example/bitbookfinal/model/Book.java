@@ -104,6 +104,9 @@ public class Book {
 
     public void deleteCategory(Category category){ //Function used to delete a category from the list of categories.
         this.categories.remove(category);
+    }
 
+    public void deleteReview(Review review){
+        this.reviews.remove(review);
     }
 }
