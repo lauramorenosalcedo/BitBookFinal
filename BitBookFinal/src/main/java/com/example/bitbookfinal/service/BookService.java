@@ -4,6 +4,7 @@ import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
 import com.example.bitbookfinal.model.Review;
 import com.example.bitbookfinal.repository.BookRepository;
+import com.example.bitbookfinal.repository.ReviewRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,8 @@ public class BookService { //This service is dedicated to offer the necesary fun
 
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @Autowired
     private EntityManager entityManager;
@@ -44,6 +47,9 @@ public class BookService { //This service is dedicated to offer the necesary fun
 
     public List<Book> findAll() {
         return bookRepository.findAll();
+    }
+    public boolean exist(String title) { //Function used to see if a title is already assigned to a book.
+        return bookRepository.findByTitle(title);
     }
 
 
@@ -72,17 +78,17 @@ public class BookService { //This service is dedicated to offer the necesary fun
 
 
     public void deleteById(long id) { // This function can identify a book by its id and remove it from the map of books, and from the categories it belongs to.
-        Book book= this.mapbooks.get(id);
+        Book book = bookRepository.findBookById(id);
+       // Book book= this.mapbooks.get(id);
         List<Category>categorias=book.getCategories();
         for(Category categoria: categorias){
             categoria.deleteBook(book);
         }
-        this.mapbooks.remove(id);
+        bookRepository.deleteById(id);;
+       // this.mapbooks.remove(id);
     }
 
-    public boolean exist(String title) { //Function used to see if a title is already assigned to a book.
-        return bookRepository.findByTitle(title);
-    }
+
 
     public void addReview(Review review, long bookid) { // Function used to add a review to a specific book.
         Collection<Book> books = mapbooks.values();
@@ -97,11 +103,16 @@ public class BookService { //This service is dedicated to offer the necesary fun
         }
     }
 
+    public void addReview(Review review, long bookId) {
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + bookId));
+        review.setBook(book);
+        ReviewRepository.save(review);
+    }
+
     public void deleteReviewById(long id, long reviewid) {// Function used to remove a specific review from a specific book.
-
-        Book book= this.mapbooks.get(id);
+        Book book = bookRepository.findBookById(id);
+        //Book book= this.mapbooks.get(id);
         List<Review>reviews=book.getReviews();
-
         for(Review review: reviews){
             if(review.getId()== reviewid){
                 reviews.remove(review);
@@ -113,4 +124,19 @@ public class BookService { //This service is dedicated to offer the necesary fun
         this.mapbooks.put(id, book);
 
     }
+/*
+    public void deleteReviewById(long bookId, long reviewId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + bookId));
+
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new IllegalArgumentException("Review not found with id: " + reviewId));
+
+        if (!book.getReviews().contains(review)) {
+            throw new IllegalArgumentException("Review not associated with book");
+        }
+
+        book.removeReview(review);
+        bookRepository.save(book);
+    }*/
 }

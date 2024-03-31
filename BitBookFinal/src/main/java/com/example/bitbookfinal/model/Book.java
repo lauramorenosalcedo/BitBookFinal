@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 
 @Entity
 public class Book {
+
     public interface Basic{}
     public interface Categories{}
     @Id
