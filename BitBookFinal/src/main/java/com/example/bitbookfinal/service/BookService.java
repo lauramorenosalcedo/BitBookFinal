@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -30,8 +31,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
     @Autowired
     private ReviewRepository reviewRepository;
 
-    @Autowired
-    private EntityManager entityManager;
+
     @Autowired
     private CategoryService categoryService;
 
