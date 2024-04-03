@@ -30,7 +30,7 @@ public class CategoryService { //This service is dedicated to offer the necesary
     }
 
     public List<Category> findAll() {
-        return this.findAll();
+        return this.categoryRepository.findAll();
     }
 
     public List<Category> findByIds(List<Long> ids){

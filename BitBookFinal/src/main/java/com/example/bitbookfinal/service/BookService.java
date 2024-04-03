@@ -48,8 +48,15 @@ public class BookService { //This service is dedicated to offer the necesary fun
     public List<Book> findAll() {
         return bookRepository.findAll();
     }
-    public boolean exist(String title) { //Function used to see if a title is already assigned to a book.
+    /*public boolean exist(String title) { //Function used to see if a title is already assigned to a book.
         return bookRepository.findByTitle(title);
+    }*/
+    public boolean exist(String title) {
+        // Busca el libro por título
+        Book existingBook = bookRepository.findByTitle(title);
+
+        // Verifica si se encontró un libro con el título especificado
+        return existingBook != null;
     }
 
 
@@ -90,7 +97,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
 
 
 
-    public void addReview(Review review, long bookid) { // Function used to add a review to a specific book.
+   /* public void addReview(Review review, long bookid) { // Function used to add a review to a specific book.
         Collection<Book> books = mapbooks.values();
         for (Book book : books) {
             if (Objects.equals(book.getId(), bookid)) {
