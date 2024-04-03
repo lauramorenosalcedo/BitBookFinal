@@ -15,6 +15,7 @@ public class Inicializer { //The incializer is used to create varius objects of 
 
     @PostConstruct
     public void init(){
+
         //Create some books
         Book quijote= new Book("Quijote", "Miguel Cervantes");
         quijote.setImage("quijote.jpeg");
@@ -23,10 +24,10 @@ public class Inicializer { //The incializer is used to create varius objects of 
         Book znati=new Book("Znati en la escuela", "Dbid Rey");
         znati.setImage("znati.jpeg");
 
-        //Create some categories
         Category literatura= new Category("Literatura");
         Category aventura= new Category("Aventura");
         Category ficcion= new Category("Ficcion");
+
 
         //Add the categories to the category list of the book.
         quijote.addCategory(aventura);

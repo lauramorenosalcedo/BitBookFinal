@@ -68,13 +68,13 @@ public class BookService { //This service is dedicated to offer the necesary fun
         return bookRepository.save(book);
     }
 
-    /*public Book save(Book book){ //Function used to save a book in the book map, without an image.
-
-        long id = nextId.getAndIncrement();
+    public Book save(Book book){ //Function used to save a book in the book map, without an image.
+        return bookRepository.save(book);
+        /*long id = nextId.getAndIncrement();
         book.setId(id);
         mapbooks.put(id, book);
-        return book;
-    }*/
+        return book;*/
+    }
 
 
     public void deleteById(long id) { // This function can identify a book by its id and remove it from the map of books, and from the categories it belongs to.

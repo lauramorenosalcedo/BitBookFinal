@@ -23,13 +23,15 @@ public class Book {
     @JsonView(Basic.class)
     private String image;
 
-    @ManyToMany
+
     @JsonView(Categories.class)
+    @ManyToMany
     private List<Category> categories;
 
     @OneToMany (cascade=CascadeType.ALL)
     @JsonView(Basic.class)
-    private List<Review> reviews=new ArrayList<>();
+    private List<Review> reviews;
+    //private List<Review> reviews=new ArrayList<>();
 
     public Book(){
 
