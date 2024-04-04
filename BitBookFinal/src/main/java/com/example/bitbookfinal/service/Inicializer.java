@@ -6,6 +6,7 @@ import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
 import jakarta.annotation.PostConstruct;
 @Component
+
 public class Inicializer { //The incializer is used to create varius objects of our different entities to load before the user can intercat with the page.
     @Autowired
     private CategoryService categoryService;
