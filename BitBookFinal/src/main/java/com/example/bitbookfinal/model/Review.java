@@ -1,10 +1,7 @@
 package com.example.bitbookfinal.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Review {
@@ -15,6 +12,7 @@ public class Review {
     private Long id;
     @JsonView(Book.Basic.class)
     private String name;
+    @Column(columnDefinition = "TEXT")
     @JsonView(Book.Basic.class)
     private String description;
     public Review(){

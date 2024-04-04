@@ -85,12 +85,12 @@ public class BookService { //This service is dedicated to offer the necesary fun
 
 
     public void deleteById(long id) { // This function can identify a book by its id and remove it from the map of books, and from the categories it belongs to.
-        Book book = bookRepository.findBookById(id);
+       /* Book book = bookRepository.findBookById(id);
        // Book book= this.mapbooks.get(id);
         List<Category>categorias=book.getCategories();
         for(Category categoria: categorias){
             categoria.deleteBook(book);
-        }
+        }*/
         bookRepository.deleteById(id);;
        // this.mapbooks.remove(id);
     }
