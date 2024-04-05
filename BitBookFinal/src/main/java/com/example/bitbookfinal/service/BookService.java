@@ -94,6 +94,23 @@ public class BookService { //This service is dedicated to offer the necesary fun
         bookRepository.deleteById(id);;
        // this.mapbooks.remove(id);
     }
+    public void addReview(Review review, long bookId) {
+        // Busca el libro por su ID
+        Optional<Book> optionalBook = bookRepository.findById(bookId);
+
+        if (optionalBook.isPresent()) {
+            Book book = optionalBook.get();
+            // No es necesario establecer el ID de la reseña, se generará automáticamente en la base de datos
+            // Agrega la reseña al libro
+            book.getReviews().add(review);
+            // Guarda el libro actualizado en la base de datos
+            bookRepository.save(book);
+        } else {
+            // Maneja el caso en el que no se encuentre el libro
+            throw new IllegalArgumentException("Book not found with id: " + bookId);
+        }
+    }
+
 
 
 
@@ -109,13 +126,6 @@ public class BookService { //This service is dedicated to offer the necesary fun
             }
         }
     }
-
-    public void addReview(Review review, long bookId) {
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + bookId));
-        review.setBook(book);
-        ReviewRepository.save(review);
-    }
-/*
     public void deleteReviewById(long id, long reviewid) {// Function used to remove a specific review from a specific book.
         Book book = bookRepository.findBookById(id);
         //Book book= this.mapbooks.get(id);

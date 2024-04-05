@@ -79,12 +79,12 @@ public class RestControllerBook {
         }
     }
 
-   /*@PostMapping("/{id}/addreview")
+   @PostMapping("/{id}/addreview")
     public ResponseEntity<Void> newReview(@RequestBody Review review, @PathVariable long id) { //adds a review to a specific book whose id is passed
         bookService.addReview(review, id);
 
         return ResponseEntity.noContent().build();
-    }*/
+    }
 
     @DeleteMapping("/{id}/review/{reviewid}")
     public ResponseEntity<String> deleteReview(@PathVariable("id") long id, @PathVariable("reviewid") long reviewid) {  //deletes a certain review of a certain book, to do so the id of each one is passed
