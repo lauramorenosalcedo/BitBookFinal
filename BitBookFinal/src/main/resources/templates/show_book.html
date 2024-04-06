@@ -46,24 +46,80 @@
         </div>
     </div>
 
+ <!--Review form -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+    <form action="/books/{{id}}/addreview" method="post" enctype="multipart/form-data">
+        <div>
+            <label>Name: </label>
+            <input class="form-control" name="name" placeholder="Name"/>
+        </div>
+        <div>
+            <label>Description: </label>
+            <div id="editor"></div>
+            <textarea style="display: none;" id="description-textarea" name="description"></textarea>
+        </div>
+        <p>
+            <button class="btn card-button mt-2" type="submit">Save</button>
+        </p>
+    </form>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var quill = new Quill('#editor', {
+                theme: 'snow'
+            });
+
+            quill.on('text-change', function () {
+                var html = quill.root.innerHTML;
+                document.getElementById('description-textarea').value = html;
+            });
+        });
+
+    </script>
 
 
-<form action="/books/{{id}}/addreview" method="post" enctype="multipart/form-data">
-    <div>
-        <label>Name: </label>
-        <input class="form-control" name="name" placeholder="name"/>
+
+    <!--<form action="/books/{{id}}/addreview" method="post" enctype="multipart/form-data">
+        <div>
+            <label>Name: </label>
+            <input class="form-control" name="name" placeholder="name"/>
+        </div>
+        <div>
+            <label>Description: </label>
+            <input class="form-control" name="description" placeholder="description"/>
+        </div>
+        <p>
+            <button class="btn card-button mt-2"  type="submit">Save</button>
+        </p>
+    </form> -->
+
+<!--Show review -->
+   <div class="row mx-auto">
+        {{#book.reviews}}
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+            <div class="card text-dark card-has-bg click-col" style="background-image:url('/img/ListBookCard.jpg'); background-size: cover;">
+                <div class="card-img-overlay d-flex flex-column">
+                    <div class="card-body">
+                        <small class="card-meta mb-2">{{book.title}} review</small>
+
+                        <div class="review-content">
+
+                            <h4 class="card-title mt-0">{{name}} review:</h4>
+                            <div class="description">{{{description}}}</div>
+                        </div>
+                        <button class="btn card-button" onclick="location.href='/book/{{book.id}}/review/{{id}}'">Delete Review</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/book.reviews}}
     </div>
-    <div>
-        <label>Description: </label>
-        <input class="form-control" name="description" placeholder="description"/>
-    </div>
-    <p>
-        <button class="btn card-button mt-2"  type="submit">Save</button>
-    </p>
-</form>
 
 
-    <div class="row mx-auto">
+   <!-- <div class="row mx-auto">
         {{#book.reviews}}
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4"><div class="card text-dark card-has-bg click-col" style="background-image:url('/img/ListBookCard.jpg'); background-size: cover; ">
             <div class="card-img-overlay d-flex flex-column">
@@ -75,7 +131,7 @@
             </div>
         </div></div>
         {{/book.reviews}}
-    </div>
+    </div> -->
 
 
 <p>
@@ -83,6 +139,7 @@
     <button class="btn card-button" onclick="location.href='/book/{{book.id}}/delete'">Delete book</button>
 
 </p>
+
 
 </section>
 </body>
