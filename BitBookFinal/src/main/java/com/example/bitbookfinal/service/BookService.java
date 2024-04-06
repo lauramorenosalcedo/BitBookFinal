@@ -17,6 +17,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 @Service
 
 public class BookService { //This service is dedicated to offer the necesary functionalitites to the book class.
@@ -100,6 +104,9 @@ public class BookService { //This service is dedicated to offer the necesary fun
 
         if (optionalBook.isPresent()) {
             Book book = optionalBook.get();
+            // Codifica la descripción enriquecida antes de guardarla
+            String encodedDescription = encodeHTML(review.getDescription());
+            review.setDescription(encodedDescription);
             // No es necesario establecer el ID de la reseña, se generará automáticamente en la base de datos
             // Agrega la reseña al libro
             book.getReviews().add(review);
@@ -110,6 +117,29 @@ public class BookService { //This service is dedicated to offer the necesary fun
             throw new IllegalArgumentException("Book not found with id: " + bookId);
         }
     }
+
+    // Método para codificar descripción HTML
+    private String encodeHTML(String input) {
+
+        //Ahora decodificamos y limpiamos la entrada
+        String decoded = input.replaceAll("&amp;", "&")
+                .replaceAll("&lt;", "<")
+                .replaceAll("&gt;", ">")
+                .replaceAll("&quot;", "\"")
+                .replaceAll("&#x27;", "'");
+        Whitelist whitelist = new Whitelist().addTags("p", "strong", "em", "u", "h1", "h2", "h3", "ol", "ul", "li", "br");
+        // Limpiamos la cadena de entrada de elementos no permitidos
+        String cleanedHTML = Jsoup.clean(decoded, whitelist);
+
+        // Se realizan las conversiones de acuerdo con las reglas
+        String encoded = cleanedHTML.replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll("\"", "&quot;")
+                .replaceAll("'", "&#x27;");
+        return encoded;
+    }
+
 
 
 
