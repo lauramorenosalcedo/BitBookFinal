@@ -99,7 +99,6 @@ public class BookService { //This service is dedicated to offer the necesary fun
        // this.mapbooks.remove(id);
     }
     public void addReview(Review review, long bookId) {
-        // Busca el libro por su ID
         Optional<Book> optionalBook = bookRepository.findById(bookId);
 
         if (optionalBook.isPresent()) {
@@ -110,6 +109,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
             // No es necesario establecer el ID de la reseña, se generará automáticamente en la base de datos
             // Agrega la reseña al libro
             book.getReviews().add(review);
+          //  reviewRepository.save(review);
             // Guarda el libro actualizado en la base de datos
             bookRepository.save(book);
         } else {
@@ -117,6 +117,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
             throw new IllegalArgumentException("Book not found with id: " + bookId);
         }
     }
+
 
     // Método para codificar descripción HTML
     private String encodeHTML(String input) {

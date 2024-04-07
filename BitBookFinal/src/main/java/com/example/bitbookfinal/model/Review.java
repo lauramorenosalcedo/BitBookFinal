@@ -15,6 +15,8 @@ public class Review {
     @Column(columnDefinition = "TEXT")
     @JsonView(Book.Basic.class)
     private String description;
+    /*@ManyToOne
+    private Book book;*/
     public Review(){
 
     }
@@ -22,6 +24,7 @@ public class Review {
         super();
         this.name=name;
         this.description=description;
+       // this.book=book;
     }
 
     //Getters and setters of this entity.
