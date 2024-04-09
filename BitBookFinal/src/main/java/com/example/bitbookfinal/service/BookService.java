@@ -4,7 +4,9 @@ import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
 import com.example.bitbookfinal.model.Review;
 import com.example.bitbookfinal.repository.BookRepository;
+import com.example.bitbookfinal.repository.CategoryRepository;
 import com.example.bitbookfinal.repository.ReviewRepository;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +25,7 @@ import org.jsoup.safety.Whitelist;
 
 @Service
 
-public class BookService { //This service is dedicated to offer the necesary functionalitites to the book class.
+public class BookService { //This service is dedicated to offer the necesary funcentityManagertionalitites to the book class.
 
     //Creation of map tha contains the books, set with their ids.
 
@@ -34,6 +36,9 @@ public class BookService { //This service is dedicated to offer the necesary fun
     private BookRepository bookRepository;
     @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
 
     @Autowired
@@ -55,6 +60,30 @@ public class BookService { //This service is dedicated to offer the necesary fun
     /*public boolean exist(String title) { //Function used to see if a title is already assigned to a book.
         return bookRepository.findByTitle(title);
     }*/
+    @SuppressWarnings("unchecked")
+    public List<Book> findAll(Integer from, Integer to, String author) {
+
+        String query = "SELECT * FROM Book";
+        if( (from != null && to != null) || isNotEmptyField(author)) {
+            query+=" WHERE";
+        }
+        if(from != null && to != null) {
+            query+=" price BETWEEN "+from+" AND "+to;
+        }
+        if( from != null && to != null && isNotEmptyField(author)) {
+            query+=" AND";
+        }
+        if(isNotEmptyField(author)) {
+            query+=" author='"+author+"'";
+        }
+        return (List<Book>) entityManager.createNativeQuery(query, Book.class).getResultList();
+    }
+
+    private boolean isNotEmptyField(String field) {
+        return field != null && !field.isEmpty();
+    }
+
+
     public boolean exist(String title) {
         // Busca el libro por título
         Book existingBook = bookRepository.findByTitle(title);

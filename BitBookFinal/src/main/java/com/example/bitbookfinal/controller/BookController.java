@@ -42,9 +42,14 @@ public class BookController {
     }
 
     @GetMapping("/books") // Passes all the books with a book service function, to the show_books html, where the user can view all the books.
-    public String showBooks(Model model){
-        model.addAttribute("books", bookService.findAll());
+    public String showBooks(Model model, @RequestParam(required = false) Integer from, @RequestParam(required = false) Integer to, @RequestParam(required = false) String author){
+        /*model.addAttribute("books", bookService.findAll());
+        return "show_books";*/
+
+        model.addAttribute("books", bookService.findAll(from, to, author));
+
         return "show_books";
+
     }
 
     @GetMapping("/books/{id}") // Shows a single book identified by it´s id.
