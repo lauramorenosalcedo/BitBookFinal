@@ -1,7 +1,9 @@
 package com.example.bitbookfinal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,9 @@ public class Book {
     @JsonView(Basic.class)
     private String image;
 
+    @Lob
+    @JsonIgnore
+    private Blob imageFile;
 
     @JsonView(Categories.class)
     @ManyToMany
