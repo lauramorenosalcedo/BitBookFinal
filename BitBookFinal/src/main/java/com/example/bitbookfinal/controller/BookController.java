@@ -52,28 +52,11 @@ public class BookController {
         Optional<Book> optionalBook = bookService.findById(id);
         if (optionalBook.isPresent()) {
             Book book = optionalBook.get();
-            // Decodificar HTML en la descripción de cada revisión
-            for (Review review : book.getReviews()) {
-                review.setDescription(decodeHTML(review.getDescription()));
-            }
             model.addAttribute("book", book);
             return "show_book";
         } else {
             return "show_books";
         }
-    }
-
-    // Método para decodificar HTML selectivamente
-    private String decodeHTML(String input) {
-        // Se realiza la decodificación de acuerdo con las reglas
-        String decoded = input.replaceAll("&amp;", "&")
-                .replaceAll("&lt;", "<")
-                .replaceAll("&gt;", ">")
-                .replaceAll("&quot;", "\"")
-                .replaceAll("&#x27;", "'");
-        // Configuramos la lista blanca personalizada
-
-        return decoded;
     }
 
     @GetMapping("/newbook") //This function handles the GET method part of creating a new book. This is linked to the button that shows up on the show_books html, and redirects to the form used to create a new book.

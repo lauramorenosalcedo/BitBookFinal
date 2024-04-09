@@ -72,6 +72,8 @@ public class BookService { //This service is dedicated to offer the necesary fun
 
         if(book.getImage() == null || book.getImage().isEmpty()) book.setImage("no-image.jpg");
 
+        //convertir la imagen a hexadecimal
+
        /* long id = nextId.getAndIncrement();
         book.setId(id);
         mapbooks.put(id, book);
@@ -105,8 +107,8 @@ public class BookService { //This service is dedicated to offer the necesary fun
         if (optionalBook.isPresent()) {
             Book book = optionalBook.get();
             // Codifica la descripción enriquecida antes de guardarla
-            String encodedDescription = encodeHTML(review.getDescription());
-            review.setDescription(encodedDescription);
+            String cleanedDescripion = cleanedHTML(review.getDescription());
+            review.setDescription(cleanedDescripion);
             // No es necesario establecer el ID de la reseña, se generará automáticamente en la base de datos
             // Agrega la reseña al libro
             book.getReviews().add(review);
@@ -120,28 +122,15 @@ public class BookService { //This service is dedicated to offer the necesary fun
     }
 
 
-    // Método para codificar descripción HTML
-    private String encodeHTML(String input) {
+    private String cleanedHTML(String inputDescription) {
 
-        //Ahora decodificamos y limpiamos la entrada
-        String decoded = input.replaceAll("&amp;", "&")
-                .replaceAll("&lt;", "<")
-                .replaceAll("&gt;", ">")
-                .replaceAll("&quot;", "\"")
-                .replaceAll("&#x27;", "'");
+        //Creamos una whitelist que solo permite las siguientes etiquetas (las demás las borras)
         Whitelist whitelist = new Whitelist().addTags("p", "strong", "em", "u", "h1", "h2", "h3", "ol", "ul", "li", "br");
         // Limpiamos la cadena de entrada de elementos no permitidos
-        String cleanedHTML = Jsoup.clean(decoded, whitelist);
+        String cleanedHTML = Jsoup.clean(inputDescription, whitelist); //Si hay una etiqueta no permitida en el input se va a borrar la etiqueta y lo que contenga dentro
 
-        // Se realizan las conversiones de acuerdo con las reglas
-        String encoded = cleanedHTML.replaceAll("&", "&amp;")
-                .replaceAll("<", "&lt;")
-                .replaceAll(">", "&gt;")
-                .replaceAll("\"", "&quot;")
-                .replaceAll("'", "&#x27;");
-        return encoded;
+        return cleanedHTML;
     }
-
 
 
 

@@ -25,9 +25,9 @@ public class Book {
     @JsonView(Basic.class)
     private String image;
 
-    @Lob
+    /*@Lob
     @JsonIgnore
-    private Blob imageFile;
+    private Blob imageFile;*/
 
     @JsonView(Categories.class)
     @ManyToMany
