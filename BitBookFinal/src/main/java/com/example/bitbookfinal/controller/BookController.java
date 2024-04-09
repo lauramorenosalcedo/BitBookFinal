@@ -116,11 +116,11 @@ public class BookController {
         return "deleted_post";
     }
 
-    @PostMapping("/books/{id}/addreview") // This function recieves data from the form embeded in the show_books html, and saves it in the review list of the specified book.
-    public String newReview(Review review,  @PathVariable long id ) {
-        bookService.addReview(review, id);
+    @PostMapping("/books/{bookId}/addreview") // This function recieves data from the form embeded in the show_books html, and saves it in the review list of the specified book.
+    public String newReview(Review review,  @PathVariable long bookId ) {
+        bookService.addReview(review, bookId);
 
-        return "redirect:/books/{id}";
+        return "redirect:/books/"+bookId;
     }
 
     @GetMapping("/book/{id}/review/{reviewid}") //This function is used to remove a specific review of a specific book, they are both identified by their id, embeded in the url.

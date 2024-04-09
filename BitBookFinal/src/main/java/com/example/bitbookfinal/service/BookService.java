@@ -99,6 +99,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
        // this.mapbooks.remove(id);
     }
     public void addReview(Review review, long bookId) {
+        //review.setId(null);
         Optional<Book> optionalBook = bookRepository.findById(bookId);
 
         if (optionalBook.isPresent()) {

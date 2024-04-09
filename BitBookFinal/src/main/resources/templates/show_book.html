@@ -50,7 +50,7 @@
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
-    <form action="/books/{{id}}/addreview" method="post" enctype="multipart/form-data">
+    <form action="/books/{{book.id}}/addreview" method="post" enctype="multipart/form-data">
         <div>
             <label>Name: </label>
             <input class="form-control" name="name" placeholder="Name"/>
