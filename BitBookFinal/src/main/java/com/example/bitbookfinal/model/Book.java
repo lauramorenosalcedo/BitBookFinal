@@ -21,7 +21,7 @@ public class Book {
     @JsonView(Basic.class)
     private String title;
     @JsonView(Basic.class)
-    private float price;
+    private int price;
     @JsonView(Basic.class)
     private String author;
     @JsonView(Basic.class)
@@ -43,7 +43,7 @@ public class Book {
     public Book(){
 
     }
-    public Book (String title, String author, float price) { //This is the book entity, its attributes are a tittle, author, a list of the categories it belongs to, and a list of reviews it has.
+    public Book (String title, String author, int price) { //This is the book entity, its attributes are a tittle, author, a list of the categories it belongs to, and a list of reviews it has.
         super();
         this.title = title;
         this.author = author;
@@ -52,11 +52,11 @@ public class Book {
         this.reviews=new ArrayList<>();
     }
 
-    public float getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
