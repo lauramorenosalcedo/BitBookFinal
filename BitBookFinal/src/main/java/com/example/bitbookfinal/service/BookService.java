@@ -12,6 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import java.util.HashMap;
+import java.util.Map;
 
 import java.util.Collection;
 import java.util.List;
@@ -40,26 +44,44 @@ public class BookService { //This service is dedicated to offer the necesary fun
     @Autowired
     private EntityManager entityManager;
 
-
     @Autowired
     private CategoryService categoryService;
 
-    //private AtomicLong nextId = new AtomicLong(1L); // This attribute is used to assing a unique id to each object of this class.
-    //private ConcurrentHashMap<Long, Book> mapbooks = new ConcurrentHashMap<>();
-   // private AtomicLong nextReviewId = new AtomicLong(1L);
+    private NamedParameterJdbcTemplate jdbcTemplate;
 
-
-    //The next two functions used to search books, either all of them, or one identified by it´s id.
-    public Optional<Book> findById(long id) {
-        return bookRepository.findById(id);
+    public BookService(NamedParameterJdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Book> findAll() {
-        return bookRepository.findAll();
+    public List<Book> findAll(Integer from, Integer to, String author) {
+        String query = "SELECT * FROM Book WHERE 1=1"; // Consulta base
+
+        Map<String, Object> paramMap = new HashMap<>(); // Mapa de parámetros
+
+        if (from != null && to != null) {
+            query += " AND price BETWEEN :fromPrice AND :toPrice"; // Agregar condición para precio
+            paramMap.put("fromPrice", from);
+            paramMap.put("toPrice", to);
+        }
+        if (isNotEmptyField(author)) {
+            query += " AND author = :author"; // Agregar condición para autor
+            paramMap.put("author", author);
+        }
+
+        return jdbcTemplate.query(query, paramMap, (rs, rowNum) -> {
+            // Mapeo de resultados a objetos Book
+            Book book = new Book();
+            // Mapea las columnas del ResultSet a las propiedades del objeto Book
+            book.setId(rs.getLong("id"));
+            book.setTitle(rs.getString("title"));
+            book.setPrice(rs.getInt("price"));
+            book.setAuthor(rs.getString("author"));
+            return book;
+        });
     }
-    /*public boolean exist(String title) { //Function used to see if a title is already assigned to a book.
-        return bookRepository.findByTitle(title);
-    }*/
+
+    /*
+
     @SuppressWarnings("unchecked")
     public List<Book> findAll(Integer from, Integer to, String author) {
 
@@ -78,10 +100,22 @@ public class BookService { //This service is dedicated to offer the necesary fun
         }
         return (List<Book>) entityManager.createNativeQuery(query, Book.class).getResultList();
     }
+     */
 
     private boolean isNotEmptyField(String field) {
         return field != null && !field.isEmpty();
     }
+
+
+    //The next two functions used to search books, either all of them, or one identified by it´s id.
+    public Optional<Book> findById(long id) {
+        return bookRepository.findById(id);
+    }
+
+    public List<Book> findAll() {
+        return bookRepository.findAll();
+    }
+
 
 
     public boolean exist(String title) {
