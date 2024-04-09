@@ -24,16 +24,16 @@ public class Inicializer { //The incializer is used to create varius objects of 
         categoryService.save(literatura);
 
         //Create some books
-        Book quijote= new Book("Quijote", "Miguel Cervantes");
+        Book quijote= new Book("Quijote", "Miguel Cervantes", 8.99F);
         quijote.setImage("quijote.jpeg");
         quijote.getCategories().add(aventura);
         quijote.getCategories().add(ficcion);
 
-        Book campos=new Book("Campos de Castilla", "Antonio Machado");
+        Book campos=new Book("Campos de Castilla", "Antonio Machado", 0.01F);
         campos.setImage("campos.jpeg");
         campos.getCategories().add(literatura);
 
-        Book znati=new Book("Znati en la escuela", "Dbid Rey");
+        Book znati=new Book("Znati en la escuela", "Dbid Rey", 999.99F);
         znati.setImage("znati.jpeg");
         znati.getCategories().add(aventura);
 

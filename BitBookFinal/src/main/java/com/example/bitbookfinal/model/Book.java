@@ -21,6 +21,8 @@ public class Book {
     @JsonView(Basic.class)
     private String title;
     @JsonView(Basic.class)
+    private float price;
+    @JsonView(Basic.class)
     private String author;
     @JsonView(Basic.class)
     private String image;
@@ -41,12 +43,21 @@ public class Book {
     public Book(){
 
     }
-    public Book (String title, String author) { //This is the book entity, its attributes are a tittle, author, a list of the categories it belongs to, and a list of reviews it has.
+    public Book (String title, String author, float price) { //This is the book entity, its attributes are a tittle, author, a list of the categories it belongs to, and a list of reviews it has.
         super();
         this.title = title;
         this.author = author;
+        this.price = price;
         this.categories=new ArrayList<>();
         this.reviews=new ArrayList<>();
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
     }
 
     //Getters and setters of this entity.
@@ -99,7 +110,7 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Libro [id=" + id + ", title=" + title + ", author=" + author + ", categories=" + categories +", reviews="+reviews +"]";
+        return "Libro [id=" + id + ", title=" + title + ", author=" + author + ", categories=" + categories +", reviews="+reviews +  ", price=" + price +"]";
     }
 
 
