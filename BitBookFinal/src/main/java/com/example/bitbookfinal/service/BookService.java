@@ -41,6 +41,8 @@ public class BookService { //This service is dedicated to offer the necesary fun
 
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private FileService pdfService;
 
     @Autowired
     private BookRepository bookRepository;
@@ -133,19 +135,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
     }
 
 
-    public Book save2(Book book, MultipartFile imageField){ //Function used to save a book in the book map.
-        if (imageField != null && !imageField.isEmpty()){
-            String path = imageService.createImage(imageField);
-            book.setImage(path);
-        }
-
-        if(book.getImage() == null || book.getImage().isEmpty()) book.setImage("no-image.jpg");
-
-        return bookRepository.save(book);
-    }
-
-
-    public Book save(Book book, MultipartFile imageField) throws IOException, SQLException { //Function used to save a book in the book map.
+    public Book save(Book book, MultipartFile imageField, MultipartFile pdfField) throws IOException, SQLException { //Function used to save a book in the book map.
         if (imageField != null && !imageField.isEmpty()){
             //Convertimos el contenido del archivo a un tipo Blob
             String path = imageField.getOriginalFilename();
@@ -156,6 +146,11 @@ public class BookService { //This service is dedicated to offer the necesary fun
         }else{
             book.setImage("no-image.jpg");
         }
+        if (pdfField != null && !pdfField.isEmpty()){
+            String path = pdfService.createPDF(pdfField);
+            book.setFilename(path);
+        }
+
         return bookRepository.save(book);
     }
 
@@ -166,6 +161,15 @@ public class BookService { //This service is dedicated to offer the necesary fun
         book.setId(id);
         mapbooks.put(id, book);
         return book;*/
+    }
+    public Book savebook(Book book, MultipartFile pdfField)throws IOException, SQLException{ //Function used to save a book in the book map, without an image.
+        if (pdfField != null && !pdfField.isEmpty()){
+            String path = pdfService.createPDF(pdfField);
+            book.setFilename(path);
+        }
+        return bookRepository.save(book);
+
+
     }
 
 
@@ -257,4 +261,6 @@ public class BookService { //This service is dedicated to offer the necesary fun
         book.deleteReview(review);
         bookRepository.save(book);
     }
+
+
 }

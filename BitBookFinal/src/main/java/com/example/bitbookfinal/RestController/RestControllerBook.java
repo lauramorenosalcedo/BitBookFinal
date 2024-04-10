@@ -64,7 +64,7 @@ public class RestControllerBook {
     }
 
     @PostMapping("/newbook")
-    public ResponseEntity<Book> newBook(@RequestBody Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile imageFile) throws SQLException, IOException {  //adds a book, passes a book, accepts several categories and an image
+    public ResponseEntity<Book> newBook(@RequestBody Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile imageFile, MultipartFile pdfFile) throws SQLException, IOException {  //adds a book, passes a book, accepts several categories and an image
         if (bookService.exist(book.getTitle())) {  //If the title already exists, the book is not created
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } else {
@@ -76,7 +76,7 @@ public class RestControllerBook {
                 }
             }
 
-            Book newBook = bookService.save(book, imageFile);  //the book is saved with its corresponding image
+            Book newBook = bookService.save(book, imageFile, pdfFile);  //the book is saved with its corresponding image
 
             return ResponseEntity.ok(newBook);
         }

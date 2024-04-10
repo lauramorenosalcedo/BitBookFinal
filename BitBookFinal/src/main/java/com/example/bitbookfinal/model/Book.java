@@ -26,6 +26,8 @@ public class Book {
     private String author;
     @JsonView(Basic.class)
     private String image;
+    @JsonView(Basic.class)
+    private String filename;
     @Lob
     @JsonIgnore
     @Column (nullable = true)
@@ -106,6 +108,13 @@ public class Book {
 
     public void setImage(String image) {
         this.image = image;
+    }
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public Blob getImageFile() {

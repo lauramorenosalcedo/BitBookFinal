@@ -1,6 +1,10 @@
 package com.example.bitbookfinal.controller;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
@@ -11,13 +15,16 @@ import com.example.bitbookfinal.model.Category;
 import com.example.bitbookfinal.model.Review;
 import com.example.bitbookfinal.service.BookService;
 import com.example.bitbookfinal.service.CategoryService;
+import com.example.bitbookfinal.service.FileService;
 import com.example.bitbookfinal.service.ImageService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,6 +34,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import java.io.FileInputStream;
 
 import javax.sql.rowset.serial.SerialBlob;
 
@@ -40,6 +48,8 @@ public class BookController {
     private CategoryService categoryService;
     @Autowired
     private BookService bookService;
+    @Autowired
+    private FileService pdfService;
 
 
     @GetMapping("/")
@@ -85,7 +95,7 @@ public class BookController {
     }*/
 
     @GetMapping("/books/{id}/image")
-    public ResponseEntity<Object> downloadImage(@PathVariable long id)throws SQLException {
+    public ResponseEntity<Object> downloadImage(@PathVariable long id) throws SQLException {
         Book book = bookService.findById(id).orElseThrow();
 
         if (book.getImageFile() != null) {
@@ -113,10 +123,6 @@ public class BookController {
         bookService.save(post);
         return ResponseEntity.created(location).build();
     }
-
-
-
-
 
 
     @GetMapping("/newbook")
@@ -154,7 +160,7 @@ public class BookController {
     }*/
 
     @PostMapping("/newbook")
-    public String newBookProcess(Model model, @RequestParam("title") String title, @RequestParam("price") int price, @RequestParam("Author") String author, @RequestParam("imageFile") MultipartFile imageFile, @RequestParam("selectedCategories") List<Long> selectedCategories) throws SQLException, IOException {
+    public String newBookProcess(Model model, @RequestParam("title") String title, @RequestParam("price") int price, @RequestParam("Author") String author, @RequestParam("imageFile") MultipartFile imageFile, @RequestParam("pdfFile") MultipartFile pdfFile, @RequestParam("selectedCategories") List<Long> selectedCategories) throws SQLException, IOException {
         if (imageFile.isEmpty()) {
             // Manejar el caso en el que no se haya proporcionado ninguna imagen
             return "error_book"; // Por ejemplo, puedes redirigir a una página de error
@@ -194,7 +200,7 @@ public class BookController {
 
         // Aquí puedes manejar la lógica para guardar el libro en tu base de datos
         // Por ejemplo, podrías llamar al servicio para guardar el libro
-        bookService.save(book);
+        bookService.savebook(book, pdfFile);
 
         // Finalmente, redirigir a la página de detalles del libro recién creado
         return "redirect:/books/" + book.getId();
@@ -239,6 +245,27 @@ public class BookController {
 
     }
 
+    @GetMapping("/download/pdf")
+    public void downloadFileFromLocal(@RequestParam String fileName, HttpServletResponse pdf) {
+        String fileBasePath = pdfService.getPath(fileName);
+        pdf.setContentType("application/octet-stream");
+        pdf.setHeader("Content-Disposition", "attachment; pdf=\"" + fileName + "\"");
+        try (FileInputStream inputStream = new FileInputStream(fileName)) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                pdf.getOutputStream().write(buffer, 0, bytesRead);
+            }
+
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+
 
 
    /* @GetMapping("/books/{id}/image")
@@ -266,4 +293,3 @@ public class BookController {
         }
     }*/
 
-}
