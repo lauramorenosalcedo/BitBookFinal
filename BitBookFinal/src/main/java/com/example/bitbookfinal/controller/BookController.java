@@ -154,32 +154,59 @@ public class BookController {
     }*/
 
     @PostMapping("/newbook")
-    public String newBookProcess(Model model, Book bookForm, @RequestParam("imageFile") MultipartFile imageFile) throws SQLException, IOException {
+    public String newBookProcess(Model model, @RequestParam("title") String title, @RequestParam("price") int price, @RequestParam("author") String author, @RequestParam("imageFile") MultipartFile imageFile, @RequestParam("selectedCategories") List<Long> selectedCategories) throws SQLException, IOException {
         if (imageFile.isEmpty()) {
             // Manejar el caso en el que no se haya proporcionado ninguna imagen
-            return "error"; // Por ejemplo, puedes redirigir a una página de error
+            return "error_book"; // Por ejemplo, puedes redirigir a una página de error
         }
 
         Book book = new Book();
-        book.setTitle(bookForm.getTitle());
-        book.setPrice(bookForm.getPrice());
-        book.setAuthor(bookForm.getAuthor());
+        book.setTitle(title);
+        book.setPrice(price);
+        book.setAuthor(author);
+
+        if (bookService.exist(book.getTitle())) {
+            return "error_book";
+        } else {
+
+            if (selectedCategories != null) {
+                List<Category> categories = categoryService.findByIds(selectedCategories);
+                book.setCategories(categories);
+                for (Category category : categories) {
+                    category.getBooks().add(book);
+
+                }
+            }
+        }
 
         try {
-            // Convertir el MultipartFile a un objeto Blob
-            Blob imageBlob = new SerialBlob(imageFile.getBytes());
-            // Asignar el objeto Blob al atributo imageFile del libro
+            // Convertir el MultipartFile a un arreglo de bytes (byte[])
+            byte[] imageBytes = imageFile.getBytes();
+            // Crear un objeto Blob a partir del arreglo de bytes
+            Blob imageBlob = createBlob(imageBytes);
+            // Asignar el objeto Blob al atributo image del libro
             book.setImageFile(imageBlob);
-        } catch (SQLException | IOException e) {
+        } catch (IOException e) {
             // Manejar cualquier excepción que pueda ocurrir durante la conversión
             e.printStackTrace();
-            return "error"; // Por ejemplo, puedes redirigir a una página de error
+            return "error_book"; // Por ejemplo, puedes redirigir a una página de error
         }
 
         // Aquí puedes manejar la lógica para guardar el libro en tu base de datos
+        // Por ejemplo, podrías llamar al servicio para guardar el libro
+        bookService.save(book);
 
         // Finalmente, redirigir a la página de detalles del libro recién creado
         return "redirect:/books/" + book.getId();
+    }
+
+    // Método para crear un objeto Blob a partir de un arreglo de bytes
+    private Blob createBlob(byte[] data) {
+        try {
+            return new javax.sql.rowset.serial.SerialBlob(data);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create Blob", e);
+        }
     }
 
 
