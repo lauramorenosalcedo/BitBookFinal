@@ -40,15 +40,26 @@ public class Inicializer { //The incializer is used to create varius objects of 
         Blob camposImageBlob = createBlob(camposImageBytes);
         Blob znatiImageBlob = createBlob(znatiImageBytes);
 
+        Category literatura= new Category("Literatura");
+        Category aventura= new Category("Aventura");
+        Category ficcion= new Category("Ficcion");
+        categoryService.save(aventura);
+        categoryService.save(ficcion);
+        categoryService.save(literatura);
+
         // Create books and set their images
         Book quijote = new Book("Quijote", "Miguel Cervantes", 8);
         quijote.setImageFile(quijoteImageBlob);
+        quijote.getCategories().add(aventura);
+        quijote.getCategories().add(ficcion);
 
         Book campos = new Book("Campos de Castilla", "Antonio Machado", 0);
         campos.setImageFile(camposImageBlob);
+        campos.getCategories().add(literatura);
 
         Book znati = new Book("Znati en la escuela", "Dbid Rey", 999);
         znati.setImageFile(znatiImageBlob);
+        znati.getCategories().add(aventura);
 
         // Save books
         bookService.save(quijote);
