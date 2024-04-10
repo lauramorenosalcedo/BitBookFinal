@@ -1,6 +1,7 @@
 package com.example.bitbookfinal.controller;
 import java.io.IOException;
 import java.net.URI;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +27,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+
+import javax.sql.rowset.serial.SerialBlob;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
@@ -124,7 +127,7 @@ public class BookController {
 
         return "newbookform";
     }
-
+/*
     @PostMapping("/newbook")
     // Receives data from the newbookform, and saves it into the database as a new book using the BookService.
     public String newBookProcess(Model model, Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile imageFile) throws SQLException, IOException {
@@ -148,7 +151,37 @@ public class BookController {
 
             return "redirect:/books/" + newBook.getId();
         }
+    }*/
+
+    @PostMapping("/newbook")
+    public String newBookProcess(Model model, Book bookForm, @RequestParam("imageFile") MultipartFile imageFile) throws SQLException, IOException {
+        if (imageFile.isEmpty()) {
+            // Manejar el caso en el que no se haya proporcionado ninguna imagen
+            return "error"; // Por ejemplo, puedes redirigir a una página de error
+        }
+
+        Book book = new Book();
+        book.setTitle(bookForm.getTitle());
+        book.setPrice(bookForm.getPrice());
+        book.setAuthor(bookForm.getAuthor());
+
+        try {
+            // Convertir el MultipartFile a un objeto Blob
+            Blob imageBlob = new SerialBlob(imageFile.getBytes());
+            // Asignar el objeto Blob al atributo imageFile del libro
+            book.setImageFile(imageBlob);
+        } catch (SQLException | IOException e) {
+            // Manejar cualquier excepción que pueda ocurrir durante la conversión
+            e.printStackTrace();
+            return "error"; // Por ejemplo, puedes redirigir a una página de error
+        }
+
+        // Aquí puedes manejar la lógica para guardar el libro en tu base de datos
+
+        // Finalmente, redirigir a la página de detalles del libro recién creado
+        return "redirect:/books/" + book.getId();
     }
+
 
     @GetMapping("/book/{id}/delete") //Function used to remove a book using the id embeded in the url.
     public String deletePost(@PathVariable long id) {
