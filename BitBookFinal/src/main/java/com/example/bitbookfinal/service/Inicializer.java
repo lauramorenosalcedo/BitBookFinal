@@ -6,8 +6,18 @@ import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
 import jakarta.annotation.PostConstruct;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.io.IOException;
 import java.sql.SQLException;
+
+
+import java.io.IOException;
+import java.sql.Blob;
+import java.util.Base64;
 
 @Component
 
@@ -20,7 +30,54 @@ public class Inicializer { //The incializer is used to create varius objects of 
 
     @PostConstruct
     public void init() throws SQLException, IOException {
-        Category literatura= new Category("Literatura");
+        // Load image files
+        byte[] quijoteImageBytes = loadImage("quijote.jpeg");
+        byte[] camposImageBytes = loadImage("campos.jpeg");
+        byte[] znatiImageBytes = loadImage("znati.jpeg");
+
+        // Convert image bytes to Blob objects
+        Blob quijoteImageBlob = createBlob(quijoteImageBytes);
+        Blob camposImageBlob = createBlob(camposImageBytes);
+        Blob znatiImageBlob = createBlob(znatiImageBytes);
+
+        // Create books and set their images
+        Book quijote = new Book("Quijote", "Miguel Cervantes", 8);
+        quijote.setImageFile(quijoteImageBlob);
+
+        Book campos = new Book("Campos de Castilla", "Antonio Machado", 0);
+        campos.setImageFile(camposImageBlob);
+
+        Book znati = new Book("Znati en la escuela", "Dbid Rey", 999);
+        znati.setImageFile(znatiImageBlob);
+
+        // Save books
+        bookService.save(quijote);
+        bookService.save(campos);
+        bookService.save(znati);
+    }
+
+        private byte[] loadImage(String imageName) {
+            try {
+                return new ClassPathResource("images/" + imageName).getInputStream().readAllBytes();
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to load image: " + imageName, e);
+            }
+        }
+
+        private Blob createBlob(byte[] data) {
+            try {
+                return new javax.sql.rowset.serial.SerialBlob(data);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to create Blob", e);
+            }
+        }
+
+
+
+
+
+
+        /*Category literatura= new Category("Literatura");
         Category aventura= new Category("Aventura");
         Category ficcion= new Category("Ficcion");
         categoryService.save(aventura);
@@ -60,13 +117,12 @@ public class Inicializer { //The incializer is used to create varius objects of 
         ficcion.getBooks().add(znati);*/
 
         //Save both the book and the categories.
-        bookService.save(quijote,null);
+       /* bookService.save(quijote,null);
         bookService.save(znati,null);
-        bookService.save(campos,null);
+        bookService.save(campos,null);*/
 
         /*categoryService.save(aventura);
         categoryService.save(ficcion);
         categoryService.save(literatura);*/
 
     }
-}

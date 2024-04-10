@@ -1,5 +1,6 @@
 package com.example.bitbookfinal.controller;
 import java.io.IOException;
+import java.net.URI;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +11,7 @@ import com.example.bitbookfinal.model.Review;
 import com.example.bitbookfinal.service.BookService;
 import com.example.bitbookfinal.service.CategoryService;
 import com.example.bitbookfinal.service.ImageService;
+import org.hibernate.engine.jdbc.BlobProxy;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 
 @Controller
@@ -93,6 +96,19 @@ public class BookController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+
+    @PostMapping("/books/{id}/image")
+    public ResponseEntity<Object> uploadImage(@PathVariable long id, @RequestParam MultipartFile imageFile) throws IOException {
+        Book post = bookService.findById(id).orElseThrow();
+
+        URI location = fromCurrentRequest().build().toUri();
+        post.setImage(location.toString());
+
+        post.setImageFile(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
+        bookService.save(post);
+        return ResponseEntity.created(location).build();
     }
 
 
