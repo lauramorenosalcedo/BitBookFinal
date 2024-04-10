@@ -1,8 +1,10 @@
 package com.example.bitbookfinal.controller;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Blob;
@@ -25,10 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -245,27 +244,22 @@ public class BookController {
 
     }
 
-    @GetMapping("/download/pdf")
-    public void downloadFileFromLocal(@RequestParam String fileName, HttpServletResponse pdf) {
-        String fileBasePath = pdfService.getPath(fileName);
-        pdf.setContentType("application/octet-stream");
-        pdf.setHeader("Content-Disposition", "attachment; pdf=\"" + fileName + "\"");
-        try (FileInputStream inputStream = new FileInputStream(fileName)) {
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                pdf.getOutputStream().write(buffer, 0, bytesRead);
-            }
 
 
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    @GetMapping("/descargar-pdf/{pdfName}")
+    public ResponseEntity<byte[]> descargarPDF(@PathVariable String pdfName) throws IOException {
+        File archivoPDF = pdfService.getPDF(pdfName); // Use su función getPDF existente
+        if (archivoPDF == null || !archivoPDF.exists()) {
+            return ResponseEntity.notFound().build();
         }
+        byte[] contenido = Files.readAllBytes(archivoPDF.toPath());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.attachment()
+                .filename(pdfName).build());
+        return new ResponseEntity<>(contenido, headers, HttpStatus.OK);
     }
 }
-
 
 
    /* @GetMapping("/books/{id}/image")
