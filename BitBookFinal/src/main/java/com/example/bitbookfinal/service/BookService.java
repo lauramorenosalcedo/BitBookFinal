@@ -141,11 +141,6 @@ public class BookService { //This service is dedicated to offer the necesary fun
 
         if(book.getImage() == null || book.getImage().isEmpty()) book.setImage("no-image.jpg");
 
-
-       /* long id = nextId.getAndIncrement();
-        book.setId(id);
-        mapbooks.put(id, book);
-        return book;*/
         return bookRepository.save(book);
     }
 

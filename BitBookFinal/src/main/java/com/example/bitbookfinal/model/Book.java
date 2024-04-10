@@ -28,6 +28,7 @@ public class Book {
     private String image;
     @Lob
     @JsonIgnore
+    @Column (nullable = true)
     private Blob imageFile;
 
     @JsonView(Categories.class)
