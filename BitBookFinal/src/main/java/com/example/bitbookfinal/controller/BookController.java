@@ -65,7 +65,7 @@ public class BookController {
             return "show_books";
         }
     }
-
+/*
     @GetMapping(value = "/books/{id}/image", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
     public byte[] showBookImage(@PathVariable long id) throws IOException, SQLException {
@@ -76,7 +76,12 @@ public class BookController {
         } else {
             return null;
         }
-    }
+    }*/
+
+    @GetMapping("/{id}/image")
+    public ResponseEntity<Object> downloadImage(@PathVariable long id)
+            throws SQLException {  Post post = posts.findById(id).orElseThrow();  if (post.getImageFile() != null) {    Resource file = new InputStreamResource(      post.getImageFile().getBinaryStream());    return ResponseEntity.ok()      .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")      .contentLength(post.getImageFile().length())      .body(file);  } else {    return ResponseEntity.notFound().build();  } }
+
 
 
     @GetMapping("/newbook")
