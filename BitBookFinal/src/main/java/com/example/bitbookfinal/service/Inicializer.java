@@ -5,6 +5,10 @@ import org.springframework.stereotype.Component;
 import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
 import jakarta.annotation.PostConstruct;
+
+import java.io.IOException;
+import java.sql.SQLException;
+
 @Component
 
 public class Inicializer { //The incializer is used to create varius objects of our different entities to load before the user can intercat with the page.
@@ -15,7 +19,7 @@ public class Inicializer { //The incializer is used to create varius objects of 
     private BookService bookService;
 
     @PostConstruct
-    public void init(){
+    public void init() throws SQLException, IOException {
         Category literatura= new Category("Literatura");
         Category aventura= new Category("Aventura");
         Category ficcion= new Category("Ficcion");

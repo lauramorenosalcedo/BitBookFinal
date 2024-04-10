@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +63,7 @@ public class RestControllerBook {
     }
 
     @PostMapping("/newbook")
-    public ResponseEntity<Book> newBook(@RequestBody Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile imageFile){  //adds a book, passes a book, accepts several categories and an image
+    public ResponseEntity<Book> newBook(@RequestBody Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile imageFile) throws SQLException, IOException {  //adds a book, passes a book, accepts several categories and an image
         if (bookService.exist(book.getTitle())) {  //If the title already exists, the book is not created
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } else {

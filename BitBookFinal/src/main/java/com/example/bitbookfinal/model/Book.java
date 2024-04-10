@@ -26,10 +26,9 @@ public class Book {
     private String author;
     @JsonView(Basic.class)
     private String image;
-
-    /*@Lob
+    @Lob
     @JsonIgnore
-    private Blob imageFile;*/
+    private Blob imageFile;
 
     @JsonView(Categories.class)
     @ManyToMany
@@ -106,6 +105,14 @@ public class Book {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Blob getImageFile() {
+        return imageFile;
+    }
+
+    public void setImageFile(Blob imageFile) {
+        this.imageFile = imageFile;
     }
 
     @Override

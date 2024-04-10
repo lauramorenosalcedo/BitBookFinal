@@ -1,4 +1,5 @@
 package com.example.bitbookfinal.controller;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import com.example.bitbookfinal.service.ImageService;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -73,7 +75,7 @@ public class BookController {
     }
 
     @PostMapping("/newbook") // Receives data from the newbookform, and saves it into the database as a new book using the BookService.
-    public String newBookProcess(Model model, Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile imageFile) {
+    public String newBookProcess(Model model, Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile imageFile) throws SQLException, IOException {
         if (bookService.exist(book.getTitle())) {
             return "error_book";
         } else {
@@ -125,7 +127,7 @@ public class BookController {
 
 
 
-    @GetMapping("/books/{id}/image")
+   /* @GetMapping("/books/{id}/image")
     public ResponseEntity<Object> downloadImage(@PathVariable long id){
 
         Optional<Book> op = bookService.findById(id);
@@ -138,8 +140,15 @@ public class BookController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found");
         }
     }
+    */
 
-
-
-
+    @GetMapping("/{id}/image")
+    public ResponseEntity<Object> downloadImage(@PathVariable long id) throws SQLException {
+        Book book = bookService.findById(id).orElseThrow(); if (book.getImageFile() != null) {
+            Resource file = new InputStreamResource( book.getImageFile().getBinaryStream());
+            return ResponseEntity.ok() .header(HttpHeaders.CONTENT_TYPE, "image/jpeg") .contentLength(book.getImageFile().length()) .body(file);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

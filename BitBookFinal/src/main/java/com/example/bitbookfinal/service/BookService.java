@@ -14,6 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +30,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+
+import javax.sql.rowset.serial.SerialBlob;
 
 @Service
 
@@ -127,7 +133,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
     }
 
 
-    public Book save(Book book, MultipartFile imageField){ //Function used to save a book in the book map.
+    public Book save2(Book book, MultipartFile imageField){ //Function used to save a book in the book map.
         if (imageField != null && !imageField.isEmpty()){
             String path = imageService.createImage(imageField);
             book.setImage(path);
@@ -135,7 +141,6 @@ public class BookService { //This service is dedicated to offer the necesary fun
 
         if(book.getImage() == null || book.getImage().isEmpty()) book.setImage("no-image.jpg");
 
-        //convertir la imagen a hexadecimal
 
        /* long id = nextId.getAndIncrement();
         book.setId(id);
@@ -144,6 +149,22 @@ public class BookService { //This service is dedicated to offer the necesary fun
         return bookRepository.save(book);
     }
 
+
+    public Book save(Book book, MultipartFile imageField) throws IOException, SQLException { //Function used to save a book in the book map.
+        if (imageField != null && !imageField.isEmpty()){
+            //Convertimos el contenido del archivo a un tipo Blob
+            String path = imageField.getOriginalFilename();
+            book.setImage(path);
+            byte[] imageBytes = imageField.getBytes();
+            Blob imageBlob = new SerialBlob(imageBytes);
+            book.setImageFile(imageBlob);
+        }else{
+            book.setImage("no-image.jpg");
+        }
+        return bookRepository.save(book);
+    }
+
+
     public Book save(Book book){ //Function used to save a book in the book map, without an image.
         return bookRepository.save(book);
         /*long id = nextId.getAndIncrement();
@@ -151,6 +172,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
         mapbooks.put(id, book);
         return book;*/
     }
+
 
 
     public void deleteById(long id) { // This function can identify a book by its id and remove it from the map of books, and from the categories it belongs to.
