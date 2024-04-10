@@ -154,7 +154,7 @@ public class BookController {
     }*/
 
     @PostMapping("/newbook")
-    public String newBookProcess(Model model, @RequestParam("title") String title, @RequestParam("price") int price, @RequestParam("author") String author, @RequestParam("imageFile") MultipartFile imageFile, @RequestParam("selectedCategories") List<Long> selectedCategories) throws SQLException, IOException {
+    public String newBookProcess(Model model, @RequestParam("title") String title, @RequestParam("price") int price, @RequestParam("Author") String author, @RequestParam("imageFile") MultipartFile imageFile, @RequestParam("selectedCategories") List<Long> selectedCategories) throws SQLException, IOException {
         if (imageFile.isEmpty()) {
             // Manejar el caso en el que no se haya proporcionado ninguna imagen
             return "error_book"; // Por ejemplo, puedes redirigir a una página de error
