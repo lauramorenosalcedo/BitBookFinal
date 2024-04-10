@@ -78,9 +78,25 @@ public class BookController {
         }
     }*/
 
-    @GetMapping("/{id}/image")
-    public ResponseEntity<Object> downloadImage(@PathVariable long id)
-            throws SQLException {  Post post = posts.findById(id).orElseThrow();  if (post.getImageFile() != null) {    Resource file = new InputStreamResource(      post.getImageFile().getBinaryStream());    return ResponseEntity.ok()      .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")      .contentLength(post.getImageFile().length())      .body(file);  } else {    return ResponseEntity.notFound().build();  } }
+    @GetMapping("/books/{id}/image")
+    public ResponseEntity<Object> downloadImage(@PathVariable long id)throws SQLException {
+        Book book = bookService.findById(id).orElseThrow();
+
+        if (book.getImageFile() != null) {
+            Resource file = new InputStreamResource(
+                    book.getImageFile().getBinaryStream());
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                    .contentLength(book.getImageFile().length())
+                    .body(file);
+
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+
 
 
 
