@@ -1,13 +1,10 @@
 package com.example.bitbookfinal.service;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
+
 
 import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
-import com.example.bitbookfinal.repository.BookRepository;
 import com.example.bitbookfinal.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -110,9 +110,8 @@ public class BookController {
 
     @PostMapping("/newbook")
     public String newBookProcess( @RequestParam("title") String title, @RequestParam("price") int price, @RequestParam("Author") String author, @RequestParam("imageFile") MultipartFile imageFile, @RequestParam("pdfFile") MultipartFile pdfFile, @RequestParam("selectedCategories") List<Long> selectedCategories) throws SQLException, IOException {
-        if (imageFile.isEmpty()) {
-            // Manejar el caso en el que no se haya proporcionado ninguna imagen
-            return "error_book"; // Por ejemplo, puedes redirigir a una página de error
+        if (imageFile.isEmpty()) { //No image case
+            return "error_book"; //Redirect to an error page
         }
 
         Book book = new Book();
@@ -135,27 +134,25 @@ public class BookController {
         }
 
         try {
-            // Convertir el MultipartFile a un arreglo de bytes (byte[])
+            // Convert  MultipartFile to bytes (byte[])
             byte[] imageBytes = imageFile.getBytes();
-            // Crear un objeto Blob a partir del arreglo de bytes
+            // Create a Blob object
             Blob imageBlob = createBlob(imageBytes);
-            // Asignar el objeto Blob al atributo image del libro
             book.setImageFile(imageBlob);
         } catch (IOException e) {
-            // Manejar cualquier excepción que pueda ocurrir durante la conversión
+
             e.printStackTrace();
-            return "error_book"; // Por ejemplo, puedes redirigir a una página de error
+            return "error_book";
         }
 
-        // Aquí puedes manejar la lógica para guardar el libro en tu base de datos
-        // Por ejemplo, podrías llamar al servicio para guardar el libro
+
         bookService.savebook(book, pdfFile);
 
-        // Finalmente, redirigir a la página de detalles del libro recién creado
+
         return "redirect:/books/" + book.getId();
     }
 
-    // Método para crear un objeto Blob a partir de un arreglo de bytes
+    //Method to create a Blob object from bytes
     private Blob createBlob(byte[] data) {
         try {
             return new javax.sql.rowset.serial.SerialBlob(data);
@@ -198,7 +195,7 @@ public class BookController {
 
     @GetMapping("/descargar-pdf/{pdfName}")
     public ResponseEntity<byte[]> descargarPDF(@PathVariable String pdfName) throws IOException {
-        File archivoPDF = pdfService.getPDF(pdfName); // Use su función getPDF existente
+        File archivoPDF = pdfService.getPDF(pdfName);
         if (archivoPDF == null || !archivoPDF.exists()) {
             return ResponseEntity.notFound().build();
         }

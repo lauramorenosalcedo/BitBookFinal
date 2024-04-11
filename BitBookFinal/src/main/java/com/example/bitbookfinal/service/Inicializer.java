@@ -7,17 +7,15 @@ import com.example.bitbookfinal.model.Category;
 import jakarta.annotation.PostConstruct;
 
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Component;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import java.io.IOException;
 import java.sql.SQLException;
 
 
-import java.io.IOException;
+
 import java.sql.Blob;
-import java.util.Base64;
+
 
 @Component
 

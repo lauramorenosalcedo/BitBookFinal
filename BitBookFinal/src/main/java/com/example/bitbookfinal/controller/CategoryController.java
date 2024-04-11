@@ -67,7 +67,7 @@ public class CategoryController {
         return "editform";
     }
 
-    @PostMapping("/categories/{id}/editform") // Funtion used to edit a single category identified by it´s id embeded in the url.
+    @PostMapping("/categories/{id}/editform") // Function used to edit a single category identified by it´s id embeded in the url.
     public String editCategory(Category category, @PathVariable long id){
 
         categoryService.editById(category, id);
