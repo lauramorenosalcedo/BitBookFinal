@@ -67,18 +67,6 @@ public class BookController {
             return "show_books";
         }
     }
-/*
-    @GetMapping(value = "/books/{id}/image", produces = MediaType.IMAGE_JPEG_VALUE)
-    @ResponseBody
-    public byte[] showBookImage(@PathVariable long id) throws IOException, SQLException {
-        Optional<Book> optionalBook = bookService.findById(id);
-        if (optionalBook.isPresent()) {
-            Book book = optionalBook.get();
-            return book.getImageFile().getBytes(1, (int) book.getImageFile().length());
-        } else {
-            return null;
-        }
-    }*/
 
     @GetMapping("/books/{id}/image")
     public ResponseEntity<Object> downloadImage(@PathVariable long id) throws SQLException {
@@ -119,34 +107,9 @@ public class BookController {
 
         return "newbookform";
     }
-/*
-    @PostMapping("/newbook")
-    // Receives data from the newbookform, and saves it into the database as a new book using the BookService.
-    public String newBookProcess(Model model, Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile imageFile) throws SQLException, IOException {
-        if (bookService.exist(book.getTitle())) {
-            return "error_book";
-        } else {
-
-            if (selectedCategories != null) {
-                List<Category> categories = categoryService.findByIds(selectedCategories);
-                book.setCategories(categories);
-                for (Category category : categories) {
-                    category.getBooks().add(book);
-
-                }
-            }
-
-            Book newBook = bookService.save(book, imageFile);
-
-
-            model.addAttribute("bookId", newBook.getId());
-
-            return "redirect:/books/" + newBook.getId();
-        }
-    }*/
 
     @PostMapping("/newbook")
-    public String newBookProcess(Model model, @RequestParam("title") String title, @RequestParam("price") int price, @RequestParam("Author") String author, @RequestParam("imageFile") MultipartFile imageFile, @RequestParam("pdfFile") MultipartFile pdfFile, @RequestParam("selectedCategories") List<Long> selectedCategories) throws SQLException, IOException {
+    public String newBookProcess( @RequestParam("title") String title, @RequestParam("price") int price, @RequestParam("Author") String author, @RequestParam("imageFile") MultipartFile imageFile, @RequestParam("pdfFile") MultipartFile pdfFile, @RequestParam("selectedCategories") List<Long> selectedCategories) throws SQLException, IOException {
         if (imageFile.isEmpty()) {
             // Manejar el caso en el que no se haya proporcionado ninguna imagen
             return "error_book"; // Por ejemplo, puedes redirigir a una página de error
@@ -249,28 +212,5 @@ public class BookController {
 }
 
 
-   /* @GetMapping("/books/{id}/image")
-    public ResponseEntity<Object> downloadImage(@PathVariable long id){
 
-        Optional<Book> op = bookService.findById(id);
-
-        if(op.isPresent()) {
-            Book book = op.get();
-            Resource poster = ImageService.getImage(book.getImage());
-            return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg").body(poster);
-        }else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found");
-        }
-    }
-    */
-
-   /* @GetMapping("/{id}/image")
-    public ResponseEntity<Object> downloadImage(@PathVariable long id) throws SQLException {
-        Book book = bookService.findById(id).orElseThrow(); if (book.getImageFile() != null) {
-            Resource file = new InputStreamResource( book.getImageFile().getBinaryStream());
-            return ResponseEntity.ok() .header(HttpHeaders.CONTENT_TYPE, "image/jpeg") .contentLength(book.getImageFile().length()) .body(file);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }*/
 
