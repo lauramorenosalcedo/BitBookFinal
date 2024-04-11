@@ -32,16 +32,20 @@
                         <li><a href="/categories/{{id}}">{{name}}</a></li>
                         {{/book.categories}}
                     </ul>
+                    <div class="col">
                         <p><b>Book price:</b></p>
-                        <li><a>{{book.price}}&euro;</a></li>
-                </div>
+                        <ul>
+                            <li><a>{{book.price}}&euro;</a></li>
+                        </ul>
 
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<section>
+<section class="wrapper">
     <div class="text-right">
         <div>
             <button class="btn card-button mr-2" onclick="window.location.href='/descargar-pdf/{{book.filename}}'">Descargar PDF</button>
@@ -91,21 +95,6 @@
     </script>
 
 
-
-    <!--<form action="/books/{{id}}/addreview" method="post" enctype="multipart/form-data">
-        <div>
-            <label>Name: </label>
-            <input class="form-control" name="name" placeholder="name"/>
-        </div>
-        <div>
-            <label>Description: </label>
-            <input class="form-control" name="description" placeholder="description"/>
-        </div>
-        <p>
-            <button class="btn card-button mt-2"  type="submit">Save</button>
-        </p>
-    </form> -->
-
 <!--Show review -->
    <div class="row mx-auto">
         {{#book.reviews}}
@@ -128,20 +117,6 @@
         {{/book.reviews}}
     </div>
 
-
-   <!-- <div class="row mx-auto">
-        {{#book.reviews}}
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4"><div class="card text-dark card-has-bg click-col" style="background-image:url('/img/ListBookCard.jpg'); background-size: cover; ">
-            <div class="card-img-overlay d-flex flex-column">
-                <div class="card-body">
-                    <small class="card-meta mb-2">{{book.title}} review</small>
-                    <h4 class="card-title mt-0 "><a class="text-dark" href="/books">{{name}} review: {{description}}</a></h4>
-                    <button class="btn card-button" onclick="location.href='/book/{{book.id}}/review/{{id}}'">Delete Review</button>
-                </div>
-            </div>
-        </div></div>
-        {{/book.reviews}}
-    </div> -->
 
 
 <p>
