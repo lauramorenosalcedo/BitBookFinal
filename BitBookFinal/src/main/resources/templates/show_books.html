@@ -16,21 +16,25 @@
             </div>
         </div>
 
-        <form class="row" action="/books">
+        <div class="row mt-5 mb-5">
             <div class="col">
-                <input name="from" type="number" class="form-control" placeholder="Starting price">
+                <form class="row" action="/books">
+                    <div class="col">
+                        <input name="from" type="number" class="form-control" placeholder="Starting price">
+                    </div>
+                    <div class="col">
+                        <input name="to" type="number" class="form-control" placeholder="Maximum price">
+                    </div>
+                    <div class="col">
+                        <input name="author" type="text" class="form-control" placeholder="Author">
+                    </div>
+                    <div class="col">
+                        <input class="btn card-button" type="submit" value="Search">
+                    </div>
+                </form>
             </div>
-            <div class="col">
-                <input name="to" type="number" class="form-control" placeholder="Maximum price">
-            </div>
-            <div class="col">
-                <input name="author" type="text" class="form-control" placeholder="Author">
-            </div>
-            <div class="col">
-                <input class="btn btn-outline-primary" type="submit" value="Search">
-            </div>
+        </div>
 
-        </form>
 
         <div class="row mx-auto">
             {{#books}}
