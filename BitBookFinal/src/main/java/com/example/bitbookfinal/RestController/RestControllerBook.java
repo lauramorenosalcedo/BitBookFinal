@@ -7,6 +7,7 @@ import com.example.bitbookfinal.service.BookService;
 
 import com.example.bitbookfinal.service.CategoryService;
 import com.fasterxml.jackson.annotation.JsonView;
+import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
+
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @RestController
 @RequestMapping("/api/books")  //This is how the urls of this restcontroller begin
@@ -80,6 +83,16 @@ public class RestControllerBook {
 
             return ResponseEntity.ok(newBook);
         }
+    }
+
+    @PostMapping("/{id}/image") public ResponseEntity<Object> uploadImage(@PathVariable long id, @RequestParam MultipartFile imageFile) throws IOException {
+        Book book = bookService.findById(id).orElseThrow();
+        URI location = fromCurrentRequest().build().toUri();
+        book.setImage(location.toString());
+        book.setImageFile(BlobProxy.generateProxy(
+                imageFile.getInputStream(), imageFile.getSize()));
+        bookService.save(book);
+        return ResponseEntity.created(location).build();
     }
 
 
