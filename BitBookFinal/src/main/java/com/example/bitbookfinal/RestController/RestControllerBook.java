@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -50,14 +52,14 @@ public class RestControllerBook {
         }
     }
     @JsonView(BookDetail.class)
-    @DeleteMapping("/{id}/delete")
-    public ResponseEntity<Optional<Book>> deleteBook(@PathVariable long id) {  //deletes the book if it exists, to do so its id is passed
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteBook(@PathVariable long id) {  //deletes the book if it exists, to do so its id is passed
 
         Optional<Book> book = bookService.findById(id); //search for the book in the bookservice book map by its id
 
         if (book.isPresent()) {
             bookService.deleteById(id);  //deletes the book in the bookservice book map by its id
-            return ResponseEntity.ok(book);
+            return ResponseEntity.ok("Book deleted successfully");
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -81,6 +83,17 @@ public class RestControllerBook {
             return ResponseEntity.ok(newBook);
         }
     }
+
+
+
+    private Blob createBlob(byte[] data) throws SQLException {
+        try {
+            return new javax.sql.rowset.serial.SerialBlob(data);
+        } catch (SQLException e) {
+            throw new SQLException("Failed to create Blob", e);
+        }
+    }
+
 
    @PostMapping("/{id}/addreview")
     public ResponseEntity<Void> newReview(@RequestBody Review review, @PathVariable long id) { //adds a review to a specific book whose id is passed

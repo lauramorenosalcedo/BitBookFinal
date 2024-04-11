@@ -16,6 +16,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -144,7 +147,11 @@ public class BookService { //This service is dedicated to offer the necesary fun
             Blob imageBlob = new SerialBlob(imageBytes);
             book.setImageFile(imageBlob);
         }else{
-            book.setImage("no-image.jpg");
+            Path defaultImagePath = Paths.get("images", "no-image.jpg");
+            byte[] defaultImageBytes = Files.readAllBytes(defaultImagePath);
+            Blob defaultImageBlob = new SerialBlob(defaultImageBytes);
+            book.setImageFile(defaultImageBlob);
+            //book.setImage("no-image.jpg");
         }
         if (pdfField != null && !pdfField.isEmpty()){
             String path = pdfService.createPDF(pdfField);
