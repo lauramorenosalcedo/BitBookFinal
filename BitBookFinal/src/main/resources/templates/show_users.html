@@ -1,0 +1,31 @@
+<!-- resources/templates/show_users.mustache -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Usuarios</title>
+</head>
+<body>
+<h1>Lista de Usuarios</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Nombre de Usuario</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#users}}
+    <tr>
+        <td>{{username}}</td>
+        <td>
+            <form method="GET" action="/users/{{id}}/delete" style="display:inline;">
+                <button type="submit" onclick="return confirm('¿Estás seguro de que deseas eliminar a este usuario?')">Eliminar</button>
+            </form>
+        </td>
+    </tr>
+    {{/users}}
+    </tbody>
+</table>
+</body>
+</html>

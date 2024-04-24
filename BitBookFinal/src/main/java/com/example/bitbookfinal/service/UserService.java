@@ -18,12 +18,18 @@ import java.util.List;
 public class UserService  {
     @Autowired
     private UserRepository userRepository;
-
-
     public void save(User user) {
         userRepository.save(user);
     }
 
+
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    public void deleteById(long id) {
+        userRepository.deleteById(id);
+    }
 
 
 }

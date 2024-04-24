@@ -52,10 +52,13 @@ public class SecurityConfiguration {
                         .requestMatchers("/register").permitAll()
                         // PRIVATE PAGES
                         .requestMatchers("/newbook").hasAnyRole("ADMIN")
+                        .requestMatchers("/books/{bookId}/addreview").hasAnyRole("USER")
                         .requestMatchers("/newcategory").hasAnyRole("ADMIN")
                         .requestMatchers("/book/{id}/delete").hasRole("ADMIN")
                         .requestMatchers("/categories/{id}/delete").hasRole("ADMIN")
                         .requestMatchers("/categories/{id}/editform").hasRole("ADMIN")
+                        .requestMatchers("/users").hasRole("ADMIN")
+                        .requestMatchers("/users/{id}/delete").hasRole("ADMIN")
                         .anyRequest().authenticated())
 
                 .formLogin(formLogin -> formLogin
