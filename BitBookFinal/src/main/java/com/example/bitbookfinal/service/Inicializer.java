@@ -1,5 +1,6 @@
 package com.example.bitbookfinal.service;
 
+import com.example.bitbookfinal.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.example.bitbookfinal.model.Book;
@@ -25,6 +26,8 @@ public class Inicializer { //The incializer is used to create varius objects of 
 
     @Autowired
     private BookService bookService;
+    @Autowired
+    private UserService userService;
 
     @PostConstruct
     public void init() throws SQLException, IOException {
@@ -66,6 +69,10 @@ public class Inicializer { //The incializer is used to create varius objects of 
         bookService.save(quijote);
         bookService.save(campos);
         bookService.save(znati);
+
+        //Create user
+        User user =new User("admin","admin");
+        userService.save(user);
     }
 
         private byte[] loadImage(String imageName) {

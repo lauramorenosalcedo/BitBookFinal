@@ -2,6 +2,8 @@ package com.example.bitbookfinal.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
+import com.example.bitbookfinal.model.User;
+
 
 @Entity
 public class Review {
@@ -15,8 +17,14 @@ public class Review {
     @Column(columnDefinition = "TEXT")
     @JsonView(Book.Basic.class)
     private String description;
+
     /*@ManyToOne
     private Book book;*/
+    /*@ManyToOne
+    private User user;*/
+
+
+
     public Review(){
 
     }
