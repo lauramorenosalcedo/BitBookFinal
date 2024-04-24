@@ -5,6 +5,7 @@ import com.example.bitbookfinal.model.Category;
 import com.example.bitbookfinal.model.User;
 import com.example.bitbookfinal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,15 +30,6 @@ public class UserController {
         return "login_form";
     }
 
-    @PostMapping("/login")
-    public String loginProcess(@RequestParam("username") String username, @RequestParam("password") String password){
-        User user=new User(username,password);
-        if(userService.exists(user)){
-            return "redirect:/";
-        }else{
-            return "redirect:/login";
-        }
-    }
 
     @GetMapping("/register")
     public String register() {
@@ -46,10 +38,16 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerProcess(@RequestParam("username") String username, @RequestParam("password") String password){
-        User user=new User(username,password);
+        ArrayList<String> roles=new ArrayList<>();
+        roles.add("USER"); //Cada vez que una persona nueva se registra adquiere el rol "USER"
+        User user=new User(username,new BCryptPasswordEncoder().encode(password),roles);
         userService.save(user);
         return "redirect:/";
     }
 
+    @GetMapping("/loginerror")
+    public String loginerror() {
+        return "loginerror_form";
+    }
 
 }

@@ -2,6 +2,7 @@ package com.example.bitbookfinal.service;
 
 import com.example.bitbookfinal.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
@@ -16,6 +17,7 @@ import java.sql.SQLException;
 
 
 import java.sql.Blob;
+import java.util.ArrayList;
 
 
 @Component
@@ -71,7 +73,10 @@ public class Inicializer { //The incializer is used to create varius objects of 
         bookService.save(znati);
 
         //Create user
-        User user =new User("admin","admin");
+        ArrayList<String> roles=new ArrayList<>();
+        roles.add("USER");
+        roles.add("ADMIN");
+        User user =new User("admin",new BCryptPasswordEncoder().encode("admin"),roles);
         userService.save(user);
     }
 

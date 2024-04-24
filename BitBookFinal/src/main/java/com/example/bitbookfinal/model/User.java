@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
 import java.util.List;
-import java.util.Set;
+
 @Entity
 public class User {
     @Id
@@ -14,17 +14,31 @@ public class User {
 
     private String username;
     private String password;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles;
 
     @OneToMany (cascade=CascadeType.ALL)
     @JsonView(Book.Basic.class)
     private List<Review> reviews;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roles;
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
 
     public User( String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public User(String username, String password, List<String> roles) {
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
     }
 
     public User() {
@@ -62,5 +76,4 @@ public class User {
     public void setRoles(List<String> roles) {
         this.roles = roles;
     }
-
 }
