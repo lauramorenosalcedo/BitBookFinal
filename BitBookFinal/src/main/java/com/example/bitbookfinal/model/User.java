@@ -10,7 +10,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonView(Category.Basic.class)
-    private Long id=null;
+    private Long id;
 
     private String username;
     private String password;
@@ -35,10 +35,10 @@ public class User {
         this.password = password;
     }
 
-    public User(String username, String password, List<String> roles) {
+    public User(String username, String password, String... roles) {
         this.username = username;
         this.password = password;
-        this.roles = roles;
+        this.roles = List.of(roles);
     }
 
     public User() {
@@ -76,4 +76,6 @@ public class User {
     public void setRoles(List<String> roles) {
         this.roles = roles;
     }
+
+
 }

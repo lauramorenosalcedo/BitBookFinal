@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService  {
     @Autowired
     private UserRepository userRepository;
 
@@ -25,21 +25,7 @@ public class UserService implements UserDetailsService {
     }
 
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user1 = userRepository.findByUsername(username); //Te devuelve un usuario dado un username
-        //Convertimos user al formato UserDetails
-        if(user1!=null){
-            List<GrantedAuthority> listaroles = new ArrayList<>();
-            for(String rol: user1.getRoles()){
-                listaroles.add(new SimpleGrantedAuthority(rol));
-            }
-            UserDetails new_user = new org.springframework.security.core.userdetails.User(user1.getUsername(),
-                    user1.getPassword(),listaroles);
-            return new_user;
-        }
-        throw new UsernameNotFoundException("Username not found");
-    }
+
 }
 
 

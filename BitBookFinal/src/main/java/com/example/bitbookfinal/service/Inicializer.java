@@ -1,6 +1,7 @@
 package com.example.bitbookfinal.service;
 
 import com.example.bitbookfinal.model.User;
+import com.example.bitbookfinal.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import java.sql.SQLException;
 
 import java.sql.Blob;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 @Component
@@ -30,6 +32,8 @@ public class Inicializer { //The incializer is used to create varius objects of 
     private BookService bookService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     @PostConstruct
     public void init() throws SQLException, IOException {
@@ -73,11 +77,14 @@ public class Inicializer { //The incializer is used to create varius objects of 
         bookService.save(znati);
 
         //Create user
-        ArrayList<String> roles=new ArrayList<>();
+        /*ArrayList<String> roles=new ArrayList<>();
         roles.add("USER");
         roles.add("ADMIN");
         User user =new User("admin",new BCryptPasswordEncoder().encode("admin"),roles);
-        userService.save(user);
+        userService.save(user);*/
+
+        userRepository.save(new User("Paco", new BCryptPasswordEncoder().encode("pacopass"), "ADMIN"));
+        userRepository.save(new User("Juan", new BCryptPasswordEncoder().encode("Juanpass"), "USER"));
     }
 
         private byte[] loadImage(String imageName) {
