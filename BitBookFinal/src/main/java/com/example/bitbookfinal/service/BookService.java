@@ -187,7 +187,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
         return cleanedHTML;
     }
 
-    public void deleteReviewById(long bookId, long reviewId) {
+    public int deleteReviewById(long bookId, long reviewId, String username, String useradmin) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + bookId));
 
@@ -197,10 +197,35 @@ public class BookService { //This service is dedicated to offer the necesary fun
         if (!book.getReviews().contains(review)) {
             throw new IllegalArgumentException("Review not associated with book");
         }
-
-        book.deleteReview(review);
-        bookRepository.save(book);
+        if(review.getName().equals(username) || username.equals(useradmin)){
+            book.deleteReview(review);
+            bookRepository.save(book);
+            return 1;
+        }
+        return 0;
     }
+
+    /*public boolean deleteReviewById(long bookId, long reviewId, String username, String adminName) {
+        Optional<Book> bookOpt = bookRepository.findById(bookId);
+        if (!bookOpt.isPresent()) {
+            return false; // Book not found
+        }
+
+        Book book = bookOpt.get();
+        Optional<Review> reviewOpt = reviewRepository.findById(reviewId);
+        if (!reviewOpt.isPresent() || !book.getReviews().contains(reviewOpt.get())) {
+            return false; // Review not found or not associated with book
+        }
+
+        Review review = reviewOpt.get();
+        if (review.getName().equalsIgnoreCase(username) || review.getName().equalsIgnoreCase(adminName)) {
+            book.deleteReview(review);
+            bookRepository.save(book);
+            return true; // Review deleted successfully
+        }
+
+        return false; // Unauthorized to delete review
+    }*/
 
 
 }

@@ -47,9 +47,7 @@ public class SecurityConfiguration {
                         // PUBLIC PAGES (Paginas a las que cualquier persona (sin iniciar sesion) puede acceder)
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/books").permitAll()
-                        .requestMatchers("/books/{id}").permitAll()
                         .requestMatchers("/categories").permitAll()
-                        .requestMatchers("/categories/{id}").permitAll()
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/**.css").permitAll()
@@ -63,6 +61,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/categories/{id}/editform").hasRole("ADMIN")
                         .requestMatchers("/users").hasRole("ADMIN")
                         .requestMatchers("/users/{id}/delete").hasRole("ADMIN")
+                        .requestMatchers("/categories/{id}").hasAnyRole("USER")
+                        .requestMatchers("/books/{id}").hasAnyRole("USER")
                         .anyRequest().authenticated())
 
                 .formLogin(formLogin -> formLogin

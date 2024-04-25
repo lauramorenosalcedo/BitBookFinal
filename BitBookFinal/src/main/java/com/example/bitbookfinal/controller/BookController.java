@@ -14,6 +14,7 @@ import com.example.bitbookfinal.model.Review;
 import com.example.bitbookfinal.service.BookService;
 import com.example.bitbookfinal.service.CategoryService;
 import com.example.bitbookfinal.service.FileService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -172,22 +173,31 @@ public class BookController {
 
     @PostMapping("/books/{bookId}/addreview")
     // This function recieves data from the form embeded in the show_books html, and saves it in the review list of the specified book.
-    public String newReview(Review review, @PathVariable long bookId) {
+    public String newReview(Review review, @PathVariable long bookId, HttpServletRequest request) {
+        String username =request.getUserPrincipal().getName();
+        review.setName(username);
         bookService.addReview(review, bookId);
-
         return "redirect:/books/" + bookId;
     }
 
     @GetMapping("/book/{id}/review/{reviewid}")
     //This function is used to remove a specific review of a specific book, they are both identified by their id, embeded in the url.
-    public String deleteReview(@PathVariable("id") long id, @PathVariable("reviewid") long reviewid) {
+    public String deleteReview(@PathVariable("id") long id, @PathVariable("reviewid") long reviewid, HttpServletRequest request) {
+        int resultado=0;
+        String username =request.getUserPrincipal().getName();
+        String useradmin="Paco";
 
         Optional<Book> book = bookService.findById(id);
         if (book.isPresent()) {
-            bookService.deleteReviewById(id, reviewid);
+            resultado=bookService.deleteReviewById(id, reviewid, username, useradmin);
+        }
+        if (resultado==1){
+            return "deleted_review";
+        }else {
+            return "error_review";
         }
 
-        return "deleted_review";
+
 
     }
 
