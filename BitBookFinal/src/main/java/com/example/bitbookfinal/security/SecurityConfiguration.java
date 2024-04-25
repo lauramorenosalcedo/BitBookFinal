@@ -5,6 +5,7 @@ package com.example.bitbookfinal.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -50,6 +51,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/categories").permitAll()
                         .requestMatchers("/categories/{id}").permitAll()
                         .requestMatchers("/register").permitAll()
+                        .requestMatchers("/login").permitAll()
                         // PRIVATE PAGES
                         .requestMatchers("/newbook").hasAnyRole("ADMIN")
                         .requestMatchers("/books/{bookId}/addreview").hasAnyRole("USER")
