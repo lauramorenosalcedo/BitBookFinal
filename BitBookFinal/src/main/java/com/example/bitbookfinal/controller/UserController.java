@@ -40,10 +40,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String registerProcess(@RequestParam("username") String username, @RequestParam("password") String password){
-        ArrayList<String> roles=new ArrayList<>();
-       // roles.add("USER"); //Cada vez que una persona nueva se registra adquiere el rol "USER"
-        User user=new User(username,new BCryptPasswordEncoder().encode(password), "USER");
+    public String registerProcess(@RequestParam("username") String username,@RequestParam("email") String email, @RequestParam("password") String password){
+        User user=new User(username,email,new BCryptPasswordEncoder().encode(password), "USER");
         userService.save(user);
         return "redirect:/";
     }

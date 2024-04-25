@@ -83,9 +83,9 @@ public class Inicializer { //The incializer is used to create varius objects of 
         User user =new User("admin",new BCryptPasswordEncoder().encode("admin"),roles);
         userService.save(user);*/
 
-        userService.save(new User("Paco", new BCryptPasswordEncoder().encode("pacopass"), "ADMIN", "USER"));
-        userService.save(new User("Juan", new BCryptPasswordEncoder().encode("juanpass"), "USER"));
-        userService.save(new User("Maria", new BCryptPasswordEncoder().encode("mariapass"), "USER"));
+        userService.save(new User("Paco","paco@gmail.com", new BCryptPasswordEncoder().encode("pacopass"), "ADMIN", "USER"));
+        userService.save(new User("Juan", "juan@gmail.com",new BCryptPasswordEncoder().encode("juanpass"), "USER"));
+        userService.save(new User("Maria","maria@gmail.com", new BCryptPasswordEncoder().encode("mariapass"), "USER"));
     }
 
         private byte[] loadImage(String imageName) {
