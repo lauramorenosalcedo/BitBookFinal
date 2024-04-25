@@ -52,6 +52,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/categories/{id}").permitAll()
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/login").permitAll()
+                        .requestMatchers("/**.css").permitAll()
+                        .requestMatchers("/img/**").permitAll()
                         // PRIVATE PAGES
                         .requestMatchers("/newbook").hasAnyRole("ADMIN")
                         .requestMatchers("/books/{bookId}/addreview").hasAnyRole("USER")
