@@ -1,0 +1,36 @@
+{{> layout/head}}
+<body>
+{{> layout/nav}}
+
+<!-- main -->
+<section class="container mt-5"></section>
+<div class="container-contact100">
+    <div class="wrap-contact100">
+        <form action="/myperfil/editemail" method="post" class="contact100-form validate-form" enctype="multipart/form-data">
+            <span class="contact100-form-title">
+                Edit your email dummy :)
+            </span>
+
+            <div class="wrap-input100 validate-input" data-validate="Please enter a new email retard">
+                <input class="input100" type="text" name="email" placeholder="New email" required>
+                <span class="focus-input100"></span>
+            </div>
+
+
+            <div class="container-contact100-form-btn">
+                <button type="button" onclick="location.href='/';" class="contact100-form-btn" style="margin-right: 10px;">
+                    Cancel
+                </button>
+                <button type="submit" class="contact100-form-btn">
+                    Save
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+</body>
+{{> layout/footer}}
+</html>

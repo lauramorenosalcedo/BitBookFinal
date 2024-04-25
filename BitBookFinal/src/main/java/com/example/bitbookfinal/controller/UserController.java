@@ -4,6 +4,8 @@ import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
 import com.example.bitbookfinal.model.User;
 import com.example.bitbookfinal.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +23,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -64,7 +67,54 @@ public class UserController {
 
         return "deleted_user";
     }
+    @GetMapping("/myperfil")
+    public String showperfil(HttpServletRequest request, Model model) {
+        String username =request.getUserPrincipal().getName();
+        Optional<User> user = userService.findByUsername(username);
+        if(user.isPresent()){
+            User user1 = user.get();
+            model.addAttribute("user", user1);
+            return "myperfil";
+        }else {
+            return "index";
+        }
+    }
 
+
+    @GetMapping("/myperfil/editemail")
+    public String userEditemail() {
+
+        return "edit_email_form";
+    }
+
+    @PostMapping("/myperfil/editemail") // Function used to edit a single category identified by it´s id embeded in the url.
+    public String editUserEmail(HttpServletRequest request, @RequestParam ("email") String email) {
+
+        String username =request.getUserPrincipal().getName();
+        Optional<User> user = userService.findByUsername(username);
+        if(user.isPresent()){
+            User user1 = user.get();
+            userService.editEmail(user1, email);
+        }
+        return "redirect:/myperfil";
+    }
+
+    @GetMapping("/myperfil/deleteAccount")
+    public String deleteAccount(HttpServletRequest request) {
+
+        String username =request.getUserPrincipal().getName();
+        Optional<User> user = userService.findByUsername(username);
+
+        if(user.isPresent()){
+            User user1 = user.get();
+            userService.deleteUser(user1);
+            HttpSession session = request.getSession(false);  // Obtiene la sesión actual
+            if (session != null) {
+                session.invalidate();  // Invalida la sesión para cerrar la sesión del usuario
+            }
+        }
+        return "redirect:/";
+    }
 
 
 }
