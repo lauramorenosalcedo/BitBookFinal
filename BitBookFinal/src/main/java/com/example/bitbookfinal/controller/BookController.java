@@ -184,9 +184,9 @@ public class BookController {
     //This function is used to remove a specific review of a specific book, they are both identified by their id, embeded in the url.
     public String deleteReview(@PathVariable("id") long id, @PathVariable("reviewid") long reviewid, HttpServletRequest request) {
         int resultado=0;
+        //String username =request.isUserInRole().getUserPrincipal().getName();
         String username =request.getUserPrincipal().getName();
         String useradmin="Paco";
-
         Optional<Book> book = bookService.findById(id);
         if (book.isPresent()) {
             resultado=bookService.deleteReviewById(id, reviewid, username, useradmin);
