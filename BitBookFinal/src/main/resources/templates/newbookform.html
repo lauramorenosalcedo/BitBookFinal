@@ -42,8 +42,6 @@
                 {{/availableCategories}}
             </select>
 
-
-
             <div class="container-contact100-form-btn">
                 <button type="button" onclick="location.href='/';" class="contact100-form-btn" style="margin-right: 10px;">
                     Cancel
@@ -52,6 +50,8 @@
                     Save
                 </button>
             </div>
+
+            <input type="hidden" name="_csrf" value="{{token}}"/>
         </form>
     </div>
 </div>

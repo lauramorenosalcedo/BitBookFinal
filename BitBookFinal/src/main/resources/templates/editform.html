@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 {{> layout/head}}
 <body>
 {{> layout/nav}}
@@ -25,6 +27,7 @@
                     Save
                 </button>
             </div>
+            <input type="hidden" name="_csrf" value="{{token}}"/>
         </form>
 
     </div>
