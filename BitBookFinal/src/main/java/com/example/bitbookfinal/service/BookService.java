@@ -65,7 +65,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
     }
 
     public List<Book> findAll(Integer from, Integer to, String author) {
-        String query = "SELECT * FROM Book WHERE 1=1"; // Consulta base
+        String query = "SELECT * FROM book WHERE true "; // Consulta base
 
         Map<String, Object> paramMap = new HashMap<>(); // Mapa de parámetros
 
