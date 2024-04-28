@@ -62,9 +62,7 @@ public class UserController {
     }
     @GetMapping("/users/{id}/delete")
     public String deletePost(@PathVariable long id) {
-
         userService.deleteById(id);
-
         return "deleted_user";
     }
     @GetMapping("/myperfil")
