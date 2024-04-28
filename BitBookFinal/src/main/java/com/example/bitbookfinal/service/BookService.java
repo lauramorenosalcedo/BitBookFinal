@@ -187,7 +187,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
         return cleanedHTML;
     }
 
-    public int deleteReviewById(long bookId, long reviewId, String username, String useradmin) {
+    public int deleteReviewById(long bookId, long reviewId, String username, Boolean useradmin) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + bookId));
 
@@ -197,7 +197,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
         if (!book.getReviews().contains(review)) {
             throw new IllegalArgumentException("Review not associated with book");
         }
-        if(review.getName().equals(username) || username.equals(useradmin)){
+        if(review.getName().equals(username) || useradmin){
             book.deleteReview(review);
             bookRepository.save(book);
             return 1;
@@ -205,27 +205,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
         return 0;
     }
 
-    /*public boolean deleteReviewById(long bookId, long reviewId, String username, String adminName) {
-        Optional<Book> bookOpt = bookRepository.findById(bookId);
-        if (!bookOpt.isPresent()) {
-            return false; // Book not found
-        }
 
-        Book book = bookOpt.get();
-        Optional<Review> reviewOpt = reviewRepository.findById(reviewId);
-        if (!reviewOpt.isPresent() || !book.getReviews().contains(reviewOpt.get())) {
-            return false; // Review not found or not associated with book
-        }
-
-        Review review = reviewOpt.get();
-        if (review.getName().equalsIgnoreCase(username) || review.getName().equalsIgnoreCase(adminName)) {
-            book.deleteReview(review);
-            bookRepository.save(book);
-            return true; // Review deleted successfully
-        }
-
-        return false; // Unauthorized to delete review
-    }*/
 
 
 }

@@ -41,6 +41,19 @@ public class UserController {
     public String register() {
         return "register_form";
     }
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        String username =request.getUserPrincipal().getName();
+        Optional<User> user = userService.findByUsername(username);
+
+        if(user.isPresent()){
+            HttpSession session = request.getSession(false);  // Obtiene la sesión actual
+            if (session != null) {
+                session.invalidate();  // Invalida la sesión para cerrar la sesión del usuario
+            }
+        }
+        return "index";
+    }
 
     @PostMapping("/register")
     public String registerProcess(@RequestParam("username") String username,@RequestParam("email") String email, @RequestParam("password") String password){

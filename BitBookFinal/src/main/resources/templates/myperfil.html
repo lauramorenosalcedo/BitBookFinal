@@ -14,6 +14,12 @@
             <div class="col text-center mb-1">
                 <h1 class="display-4 font-weight-bolder">{{user.username}}</h1>
                 <p class="lead">{{user.email}}</p>
+                <p><b>Rol/Roles:</b></p>
+                <ul>
+                    {{#user.roles}}
+                    <li>{{.}}</li>
+                    {{/user.roles}}
+                </ul>
             </div>
         </div>
     </div>
