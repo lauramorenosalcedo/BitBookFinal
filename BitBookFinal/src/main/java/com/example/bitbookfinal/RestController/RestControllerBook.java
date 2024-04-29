@@ -7,6 +7,7 @@ import com.example.bitbookfinal.service.BookService;
 
 import com.example.bitbookfinal.service.CategoryService;
 import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -107,15 +108,29 @@ public class RestControllerBook {
     }
 
 
-   @PostMapping("/{id}/addreview")
+  /* @PostMapping("/{id}/addreview")
     public ResponseEntity<Void> newReview(@RequestBody Review review, @PathVariable long id) { //adds a review to a specific book whose id is passed
         bookService.addReview(review, id);
 
         return ResponseEntity.noContent().build();
+    }*/
+    @PostMapping("/books/{bookId}/addreview")
+    public ResponseEntity<?> addReview(@RequestBody Review review, @PathVariable("bookId") long bookId, HttpServletRequest request) {
+        // Obtener el nombre de usuario de la solicitud
+        String username = request.getUserPrincipal().getName();
+        review.setName(username);
+
+        // Intentar añadir la reseña al libro especificado
+        try {
+            bookService.addReview(review, bookId);
+            return ResponseEntity.ok().body("Reseña añadida con éxito");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error al añadir la reseña: " + e.getMessage());
+        }
     }
 
     /*@DeleteMapping("/{id}/review/{reviewid}")
-    public ResponseEntity<String> deleteReview(@PathVariable("id") long id, @PathVariable("reviewid") long reviewid) {  //deletes a certain review of a certain book, to do so the id of each one is passed
+    public ResponseEntity<String> deleteReview(@PathVariable("id") long id, @PathVariable("reviewid") long reviewid, ) {  //deletes a certain review of a certain book, to do so the id of each one is passed
         Optional<Book> book = bookService.findById(id);
         if (book.isPresent()) {
             bookService.deleteReviewById(id, reviewid);
@@ -124,5 +139,29 @@ public class RestControllerBook {
             return ResponseEntity.notFound().build();
         }
     }*/
+
+    @DeleteMapping("/book/{id}/review/{reviewid}")
+    public ResponseEntity<String> deleteReview(@PathVariable("id") long bookId, @PathVariable("reviewid") long reviewId, HttpServletRequest request) {
+        // Obtener datos del usuario y roles
+        boolean isAdmin = request.isUserInRole("ADMIN");
+        String username = request.getUserPrincipal().getName();
+
+        // Buscar el libro por su ID
+        Optional<Book> book = bookService.findById(bookId);
+
+        if (book.isPresent()) {
+            // Intentar eliminar la reseña
+            int result = bookService.deleteReviewById(bookId, reviewId, username, isAdmin);
+
+            if (result == 1) {
+                return ResponseEntity.ok("Reseña eliminada con éxito");
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tiene permiso para eliminar esta reseña");
+            }
+        } else {
+            // Si el libro no se encuentra
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Libro no encontrado");
+        }
+    }
 
 }

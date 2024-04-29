@@ -180,6 +180,8 @@ public class BookController {
         return "redirect:/books/" + bookId;
     }
 
+
+
     @GetMapping("/book/{id}/review/{reviewid}")
     //This function is used to remove a specific review of a specific book, they are both identified by their id, embeded in the url.
     public String deleteReview(@PathVariable("id") long id, @PathVariable("reviewid") long reviewid, HttpServletRequest request) {
@@ -196,11 +198,7 @@ public class BookController {
             return "error_review";
         }
 
-
-
     }
-
-
 
     @GetMapping("/descargar-pdf/{pdfName}")
     public ResponseEntity<byte[]> descargarPDF(@PathVariable String pdfName) throws IOException {

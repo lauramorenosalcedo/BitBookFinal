@@ -41,6 +41,14 @@ public class UserController {
     public String register() {
         return "register_form";
     }
+
+    @PostMapping("/register")
+    public String registerProcess(@RequestParam("username") String username,@RequestParam("email") String email, @RequestParam("password") String password){
+        User user=new User(username,email,new BCryptPasswordEncoder().encode(password), "USER");
+        userService.save(user);
+        return "redirect:/";
+    }
+
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         String username =request.getUserPrincipal().getName();
@@ -55,12 +63,6 @@ public class UserController {
         return "index";
     }
 
-    @PostMapping("/register")
-    public String registerProcess(@RequestParam("username") String username,@RequestParam("email") String email, @RequestParam("password") String password){
-        User user=new User(username,email,new BCryptPasswordEncoder().encode(password), "USER");
-        userService.save(user);
-        return "redirect:/";
-    }
 
     @GetMapping("/loginerror")
     public String loginerror() {
@@ -74,7 +76,7 @@ public class UserController {
         return "show_users"; // Nombre de la vista para mostrar los usuarios
     }
     @GetMapping("/users/{id}/delete")
-    public String deletePost(@PathVariable long id) {
+    public String deleteUser(@PathVariable long id) {
         userService.deleteById(id);
         return "deleted_user";
     }
