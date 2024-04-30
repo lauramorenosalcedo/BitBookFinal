@@ -75,6 +75,10 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.DELETE,"/api/categories/{id}/delete").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT,"/api/categories/edit/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST,"/api/categories/newcategory").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/api/users/").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/api/users/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/api/users/myperfil").hasRole("USER")
+                        .requestMatchers(HttpMethod.PUT,"/api/users/myperfil/email").hasRole("USER")
 
                         // PUBLIC ENDPOINTS
                         .requestMatchers(HttpMethod.GET,"/api/books/").permitAll()
@@ -82,6 +86,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST,"/api/register").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/auth/logout").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/users/register").permitAll()
                         .anyRequest().permitAll()
                 );
 
