@@ -79,7 +79,7 @@
             <button class="btn card-button mt-2" type="submit">Save</button>
         </p>
 
-        <input type="hidden" name="_csrf" value="{{token}}"/>
+        <input type="hidden" name="{{_csrf.parameterName}}" value="{{_csrf.token}}"/>
     </form>
 
     <script>

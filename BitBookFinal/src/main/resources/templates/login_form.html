@@ -33,7 +33,7 @@
                 </button>
             </div>
 
-            <input type="hidden" name="_csrf" value="{{token}}"/>
+            <input type="hidden" name="{{_csrf.parameterName}}" value="{{_csrf.token}}"/>
         </form>
     </div>
 </div>

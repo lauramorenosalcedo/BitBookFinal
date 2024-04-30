@@ -1,5 +1,6 @@
 package com.example.bitbookfinal.security;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -29,7 +30,10 @@ class CSRFHandlerInterceptor implements HandlerInterceptor {
 
             CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
             if (token != null) {
-                modelAndView.addObject("token", token.getToken());
+                HttpSession session = request.getSession();
+                session.setAttribute("token", token.getToken());
+
+                modelAndView.addObject("_csrf", token);
             }
         }
     }
