@@ -24,7 +24,7 @@ import com.example.bitbookfinal.security.jwt.UnauthorizedHandlerJwt;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class SecurityConfiguration {
     @Autowired
     private RepositoryUserDetailsService userService;

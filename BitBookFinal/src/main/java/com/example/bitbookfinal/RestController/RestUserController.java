@@ -21,18 +21,14 @@ public class RestUserController {
 
     @PostMapping("/register")
     public ResponseEntity<Void> registerUser(@RequestBody User userRequest) {
-        // Crear una nueva instancia de User con la información proporcionada
+
         User user = new User(
                 userRequest.getUsername(),
                 userRequest.getEmail(),
                 new BCryptPasswordEncoder().encode(userRequest.getPassword()),
                 "USER" // O cualquier rol que necesites
         );
-
-        // Guardar el nuevo usuario
         userService.save(user);
-
-        // Retornar una respuesta con código 201 Created
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
