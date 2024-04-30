@@ -6,6 +6,7 @@ import com.example.bitbookfinal.model.Review;
 import com.example.bitbookfinal.service.BookService;
 
 import com.example.bitbookfinal.service.CategoryService;
+import com.example.bitbookfinal.service.FileService;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.engine.jdbc.BlobProxy;
@@ -23,6 +24,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
@@ -31,6 +34,8 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 public class RestControllerBook {
     @Autowired
     private BookService bookService;
+    @Autowired
+    private FileService fileService;
 
     @Autowired
     private CategoryService categoryService;
@@ -95,6 +100,37 @@ public class RestControllerBook {
                 imageFile.getInputStream(), imageFile.getSize()));
         bookService.save(book);
         return ResponseEntity.created(location).build();
+    }
+
+
+    @PostMapping("/{id}/upload-pdf")
+    public ResponseEntity<?> uploadPDF(@PathVariable("id") Long id, @RequestParam("pdfFile") MultipartFile pdfFile) {
+        // Verificar si el libro existe
+        Book book = bookService.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Libro no encontrado")
+        );
+
+        // Guardar el archivo PDF usando el servicio de archivos
+        String fileName;
+        try {
+            fileName = fileService.createPDF(pdfFile); // Guarda el archivo y obtiene el nombre del archivo
+        } catch (ResponseStatusException e) {
+            // Si hay un error (por ejemplo, no es un PDF), devuelve una respuesta con el código de error y el mensaje
+            return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
+        }
+
+        // Asociar el nombre del archivo con el libro
+        book.setFilename(fileName);
+        bookService.save(book); // Guardar el libro actualizado
+
+        // Construir URI para el archivo guardado
+        URI location = fromCurrentRequest()
+                .replacePath("/files/" + fileName) // Ruta donde se guardan los PDF
+                .build()
+                .toUri();
+
+        // Devolver respuesta HTTP con estado 201 Created y la ubicación del archivo
+        return ResponseEntity.created(location).body("PDF subido exitosamente");
     }
 
 
