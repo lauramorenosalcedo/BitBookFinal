@@ -27,18 +27,28 @@ public class FileService {
         //String fileName =  "/BitBookFinal"+originalName;
 
         Path pdfPath = PDF_FOLDER.resolve(originalName);
-        try {
-            multipartFile.transferTo(pdfPath);
-        } catch (IOException ex) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "No se pudo guardar el PDF localmente.", ex);
+        if (!pdfPath.startsWith(PDF_FOLDER)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No intentes guarradas");
+        }else{
+            try {
+                multipartFile.transferTo(pdfPath);
+            } catch (IOException ex) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "No se pudo guardar el PDF localmente.", ex);
+            }
         }
 
         return originalName;
     }
 
-    public File getPDF(String pdfName) { // Función para recuperar un archivo PDF del directorio de PDF.
+    public File getPDF(String pdfName) throws IOException { // Función para recuperar un archivo PDF del directorio de PDF.
         Path pdfPath = PDF_FOLDER.resolve(pdfName);
-        return pdfPath.toFile();
+        Path canonicalPath = pdfPath.toRealPath();
+
+        if (!canonicalPath.startsWith(PDF_FOLDER)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No intentes guarradas");
+        }else {
+            return pdfPath.toFile();
+        }
     }
 
     public void deletePDF(String pdfName) { // Función para eliminar un archivo PDF del directorio de PDF.
