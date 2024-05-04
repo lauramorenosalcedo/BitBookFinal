@@ -64,14 +64,6 @@ public class SecurityConfiguration {
 
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        // PUBLIC ENDPOINTS
-                        .requestMatchers(HttpMethod.GET,"/api/books/").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/api/categories/").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/register").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/auth/logout").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/users/register").permitAll()
-
                         // PRIVATE ENDPOINTS
                         .requestMatchers(HttpMethod.POST,"/api/books/newbook").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/api/books/{id}").hasRole("USER")
@@ -88,9 +80,15 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET,"/api/users/myperfil").hasRole("USER")
                         .requestMatchers(HttpMethod.PUT,"/api/users/myperfil/email").hasRole("USER")
                         .requestMatchers(HttpMethod.DELETE,"/api/books/{id}/upload-pdf").hasRole("ADMIN")
-                        .anyRequest().authenticated()
 
-
+                        // PUBLIC ENDPOINTS
+                        .requestMatchers(HttpMethod.GET,"/api/books/").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/categories/").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/register").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/auth/logout").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/users/register").permitAll()
+                        .anyRequest().permitAll()
                 );
 
         // Disable Form login Authentication
