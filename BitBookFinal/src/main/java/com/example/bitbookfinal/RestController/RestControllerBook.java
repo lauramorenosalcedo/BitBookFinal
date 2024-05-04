@@ -106,7 +106,7 @@ public class RestControllerBook {
     }
 
 
-    @PostMapping("/{id}/upload-pdf")
+    @PostMapping("/{id}/pdf")
     public ResponseEntity<?> uploadPDF(@PathVariable("id") Long id, @RequestParam("pdfFile") MultipartFile pdfFile) {
         // Verificar si el libro existe
         Book book = bookService.findById(id).orElseThrow(() ->

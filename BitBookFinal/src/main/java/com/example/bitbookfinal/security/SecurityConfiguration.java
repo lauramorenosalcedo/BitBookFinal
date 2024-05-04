@@ -72,14 +72,14 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST,"/api/books/books/{id}/addreview").hasRole("USER")
                         .requestMatchers(HttpMethod.DELETE,"/api/books/book/{id}/review/{reviewid}").hasRole("USER")
                         .requestMatchers(HttpMethod.GET,"/api/categories/{id}").hasRole("USER")
-                        .requestMatchers(HttpMethod.DELETE,"/api/categories/{id}/delete").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT,"/api/categories/edit/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/api/categories/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,"/api/categories/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST,"/api/categories/newcategory").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/api/users/").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE,"/api/users/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/api/users/myperfil").hasRole("USER")
                         .requestMatchers(HttpMethod.PUT,"/api/users/myperfil/email").hasRole("USER")
-                        .requestMatchers(HttpMethod.POST,"/api/books/{id}/upload-pdf").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,"/api/books/{id}/pdf").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/api/books/{id}/pdf").hasRole("USER")
 
                         // PUBLIC ENDPOINTS

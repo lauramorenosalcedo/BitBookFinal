@@ -41,7 +41,7 @@ public class RestControllerCategory {
     }
 
     @JsonView(CategoryDetail.class)
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Optional<Category>> deleteCategory(@PathVariable long id) {  //A category is deleted if it exists, to do so its id is passed
 
         Optional<Category> category = categoryService.findById(id);  //search for the category that has that id
@@ -54,7 +54,7 @@ public class RestControllerCategory {
         }
     }
 
-    @PutMapping("/edit/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> editCategory(@RequestBody Category category, @PathVariable long id) {  //You edit a category to do this, you pass its id and the category you want to replace it with.
         categoryService.editById(category, id);
         return ResponseEntity.status(HttpStatus.OK).body("Category updated successfully");
