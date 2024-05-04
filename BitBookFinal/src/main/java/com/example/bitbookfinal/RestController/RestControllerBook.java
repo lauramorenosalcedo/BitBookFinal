@@ -10,11 +10,13 @@ import com.example.bitbookfinal.service.FileService;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.engine.jdbc.BlobProxy;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -22,7 +24,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -39,6 +40,9 @@ public class RestControllerBook {
 
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private FileService pdfService;
+
     @JsonView(Book.Basic.class)
     @GetMapping("/")
     public Collection<Book> getBooks() {
@@ -198,6 +202,32 @@ public class RestControllerBook {
             // Si el libro no se encuentra
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Libro no encontrado");
         }
+    }
+    @GetMapping("/{id}/pdf")
+    public ResponseEntity<byte[]> descargarPDF(@PathVariable Long id) throws IOException {
+        Optional<Book> book = bookService.findById(id);
+
+        if (book.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String pdfName = book.get().getFilename();
+        if (pdfName == null || pdfName.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
+
+        File archivoPDF = pdfService.getPDF(pdfName);
+        if (archivoPDF == null || !archivoPDF.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        byte[] contenido = Files.readAllBytes(archivoPDF.toPath());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.attachment().filename(pdfName).build());
+
+        return new ResponseEntity<>(contenido, headers, HttpStatus.OK);
     }
 
 }
