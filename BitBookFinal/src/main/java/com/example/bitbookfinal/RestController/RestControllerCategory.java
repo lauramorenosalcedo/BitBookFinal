@@ -2,17 +2,21 @@ package com.example.bitbookfinal.RestController;
 import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
 
+
 import com.example.bitbookfinal.service.CategoryService;
-import org.springframework.http.HttpStatus;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.annotation.JsonView;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
 import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/api/categories")  //This is how the urls of this restcontroller begin
@@ -20,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 public class RestControllerCategory {
     @Autowired
     private CategoryService categoryService;
+
     @JsonView(Category.Basic.class)
     @GetMapping("/")
     public Collection<Category> getCategories() {
@@ -65,6 +70,8 @@ public class RestControllerCategory {
         Category newCategory = categoryService.save(category);
         return ResponseEntity.created(URI.create("/categories/" + newCategory.getId())).body(newCategory);
     }
+
+
 }
 
 

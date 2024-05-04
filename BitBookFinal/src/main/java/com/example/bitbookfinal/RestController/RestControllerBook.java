@@ -10,11 +10,14 @@ import com.example.bitbookfinal.service.FileService;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.engine.jdbc.BlobProxy;
-import org.springframework.http.HttpStatus;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -22,13 +25,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
-
+import com.example.bitbookfinal.service.FileService;
 @RestController
 @RequestMapping("/api/books")  //This is how the urls of this restcontroller begin
 public class RestControllerBook {
@@ -39,6 +41,8 @@ public class RestControllerBook {
 
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private FileService pdfService;
     @JsonView(Book.Basic.class)
     @GetMapping("/")
     public Collection<Book> getBooks() {
@@ -105,31 +109,25 @@ public class RestControllerBook {
 
     @PostMapping("/{id}/upload-pdf")
     public ResponseEntity<?> uploadPDF(@PathVariable("id") Long id, @RequestParam("pdfFile") MultipartFile pdfFile) {
-        // Verificar si el libro existe
         Book book = bookService.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Libro no encontrado")
         );
 
-        // Guardar el archivo PDF usando el servicio de archivos
         String fileName;
         try {
-            fileName = fileService.createPDF(pdfFile); // Guarda el archivo y obtiene el nombre del archivo
+            fileName = fileService.createPDF(pdfFile);
         } catch (ResponseStatusException e) {
-            // Si hay un error (por ejemplo, no es un PDF), devuelve una respuesta con el código de error y el mensaje
+
             return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
         }
 
-        // Asociar el nombre del archivo con el libro
         book.setFilename(fileName);
-        bookService.save(book); // Guardar el libro actualizado
-
-        // Construir URI para el archivo guardado
+        bookService.save(book);
         URI location = fromCurrentRequest()
-                .replacePath("/files/" + fileName) // Ruta donde se guardan los PDF
+                .replacePath("/files/" + fileName)
                 .build()
                 .toUri();
 
-        // Devolver respuesta HTTP con estado 201 Created y la ubicación del archivo
         return ResponseEntity.created(location).body("PDF subido exitosamente");
     }
 
@@ -143,13 +141,6 @@ public class RestControllerBook {
         }
     }
 
-
-  /* @PostMapping("/{id}/addreview")
-    public ResponseEntity<Void> newReview(@RequestBody Review review, @PathVariable long id) { //adds a review to a specific book whose id is passed
-        bookService.addReview(review, id);
-
-        return ResponseEntity.noContent().build();
-    }*/
     @PostMapping("/books/{bookId}/addreview")
     public ResponseEntity<?> addReview(@RequestBody Review review, @PathVariable("bookId") long bookId, HttpServletRequest request) {
         // Obtener el nombre de usuario de la solicitud
@@ -165,16 +156,6 @@ public class RestControllerBook {
         }
     }
 
-    /*@DeleteMapping("/{id}/review/{reviewid}")
-    public ResponseEntity<String> deleteReview(@PathVariable("id") long id, @PathVariable("reviewid") long reviewid, ) {  //deletes a certain review of a certain book, to do so the id of each one is passed
-        Optional<Book> book = bookService.findById(id);
-        if (book.isPresent()) {
-            bookService.deleteReviewById(id, reviewid);
-            return ResponseEntity.ok("Review deleted successfully");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }*/
 
     @DeleteMapping("/book/{id}/review/{reviewid}")
     public ResponseEntity<String> deleteReview(@PathVariable("id") long bookId, @PathVariable("reviewid") long reviewId, HttpServletRequest request) {
@@ -198,6 +179,34 @@ public class RestControllerBook {
             // Si el libro no se encuentra
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Libro no encontrado");
         }
+    }
+
+
+    @GetMapping("/{id}/pdf")
+    public ResponseEntity<byte[]> descargarPDF(@PathVariable Long id) throws IOException {
+        Optional<Book> book = bookService.findById(id);
+
+        if (book.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String pdfName = book.get().getFilename();
+        if (pdfName == null || pdfName.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
+
+        File archivoPDF = pdfService.getPDF(pdfName);
+        if (archivoPDF == null || !archivoPDF.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        byte[] contenido = Files.readAllBytes(archivoPDF.toPath());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.attachment().filename(pdfName).build());
+
+        return new ResponseEntity<>(contenido, headers, HttpStatus.OK);
     }
 
 }

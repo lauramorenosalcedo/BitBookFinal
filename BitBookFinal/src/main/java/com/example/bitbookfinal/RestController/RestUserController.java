@@ -52,18 +52,6 @@ public class RestUserController {
         return user.map(ResponseEntity::ok).orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    /*@PutMapping("/myperfil/email")
-    public ResponseEntity<Void> updateEmail(HttpServletRequest request, @RequestParam("email") String email) {
-        String username = request.getUserPrincipal().getName();
-        Optional<User> user = userService.findByUsername(username);
-        if (user.isPresent()) {
-            User currentUser = user.get();
-            userService.editEmail(currentUser, email);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }*/
     @PutMapping("/myperfil/email")
     public ResponseEntity<Void> updateEmail(HttpServletRequest request, @RequestBody User userrequest) {
         String email = userrequest.getEmail();
