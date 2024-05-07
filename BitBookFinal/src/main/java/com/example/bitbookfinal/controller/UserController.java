@@ -44,6 +44,9 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerProcess(@RequestParam("username") String username,@RequestParam("email") String email, @RequestParam("password") String password){
+        if (userService.findByUsername(username).isPresent()) {
+            return "error_register";
+        }
         User user=new User(username,email,new BCryptPasswordEncoder().encode(password), "USER");
         userService.save(user);
         return "redirect:/";

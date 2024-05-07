@@ -21,7 +21,11 @@ public class RestUserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<Void> registerUser(@RequestBody User userRequest) {
+    public ResponseEntity<String> registerUser(@RequestBody User userRequest) {
+        if (userService.findByUsername(userRequest.getUsername()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("El usuario ya existe");
+        }
 
         User user = new User(
                 userRequest.getUsername(),

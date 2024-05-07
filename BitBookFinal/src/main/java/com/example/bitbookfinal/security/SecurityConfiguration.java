@@ -120,6 +120,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         // PUBLIC PAGES (Paginas a las que cualquier persona (sin iniciar sesion) puede acceder)
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .requestMatchers("/books").permitAll()
                         .requestMatchers("/categories").permitAll()
                         .requestMatchers("/register").permitAll()
