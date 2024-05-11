@@ -206,6 +206,13 @@ public class BookService { //This service is dedicated to offer the necesary fun
     }
 
 
+    public void deleteReview(Long bookid, Long reviewid) {
+        Book book = bookRepository.findById(bookid)
+                .orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + bookid));
 
-
+        Review review = reviewRepository.findById(reviewid)
+                .orElseThrow(() -> new IllegalArgumentException("Review not found with id: " + reviewid));
+        book.deleteReview(review);
+        bookRepository.save(book);
+    }
 }

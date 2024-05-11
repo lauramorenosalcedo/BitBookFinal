@@ -3,6 +3,7 @@ package com.example.bitbookfinal.controller;
 import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
 import com.example.bitbookfinal.model.User;
+import com.example.bitbookfinal.service.ReviewService;
 import com.example.bitbookfinal.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -29,6 +30,8 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private ReviewService reviewService;
 
 
     @GetMapping("/login")
@@ -80,6 +83,12 @@ public class UserController {
     }
     @GetMapping("/users/{id}/delete")
     public String deleteUser(@PathVariable long id) {
+        Optional<User> user= userService.findById(id);
+        if (user.isPresent()){
+            User user1=user.get();
+            String username= user1.getUsername();
+            reviewService.deleteReviewsFromUser(username);
+        }
         userService.deleteById(id);
         return "deleted_user";
     }
@@ -122,6 +131,7 @@ public class UserController {
         Optional<User> user = userService.findByUsername(username);
 
         if(user.isPresent()){
+            reviewService.deleteReviewsFromUser(username);
             User user1 = user.get();
             userService.deleteUser(user1);
             HttpSession session = request.getSession(false);  // Obtiene la sesión actual

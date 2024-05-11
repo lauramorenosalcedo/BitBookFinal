@@ -158,6 +158,7 @@ public class RestControllerBook {
         // Obtener el nombre de usuario de la solicitud
         String username = request.getUserPrincipal().getName();
         review.setName(username);
+        review.setBookIdReview(bookId);
 
         // Intentar añadir la reseña al libro especificado
         try {

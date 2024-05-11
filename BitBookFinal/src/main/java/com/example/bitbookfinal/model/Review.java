@@ -14,6 +14,9 @@ public class Review {
     private Long id;
     @JsonView(Book.Basic.class)
     private String name;
+
+    @JsonView(Book.Basic.class)
+    private Long bookIdReview;
     @Column(columnDefinition = "TEXT")
     @JsonView(Book.Basic.class)
     private String description;
@@ -43,6 +46,14 @@ public class Review {
     public void setName(String name) {
         this.name = name;
     }
+    public Long getBookIdReview() {
+        return bookIdReview;
+    }
+
+    public void setBookIdReview(Long bookId) {
+        this.bookIdReview = bookId;
+    }
+
 
     public String getDescription() {
         return description;

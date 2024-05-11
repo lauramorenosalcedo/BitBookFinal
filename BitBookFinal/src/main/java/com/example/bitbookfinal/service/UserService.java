@@ -1,6 +1,5 @@
 package com.example.bitbookfinal.service;
 
-import com.example.bitbookfinal.model.Category;
 import com.example.bitbookfinal.model.User;
 import com.example.bitbookfinal.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +41,9 @@ public class UserService  {
         deleteById(id1);
     }
 
+    public Optional<User> findById(long id) {
+        return userRepository.findById(id);
+    }
 }
 
 

@@ -175,6 +175,7 @@ public class BookController {
     // This function recieves data from the form embeded in the show_books html, and saves it in the review list of the specified book.
     public String newReview(Review review, @PathVariable long bookId, HttpServletRequest request) {
         String username =request.getUserPrincipal().getName();
+        review.setBookIdReview(bookId);
         review.setName(username);
         bookService.addReview(review, bookId);
         return "redirect:/books/" + bookId;

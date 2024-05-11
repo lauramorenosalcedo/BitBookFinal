@@ -81,6 +81,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT,"/api/users/myperfil/email").hasRole("USER")
                         .requestMatchers(HttpMethod.POST,"/api/books/{id}/pdf").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/api/books/{id}/pdf").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET,"/api/users/myperfil/deleteAccount").hasRole("USER")
 
                         // PUBLIC ENDPOINTS
                         .requestMatchers(HttpMethod.GET,"/api/books/").permitAll()

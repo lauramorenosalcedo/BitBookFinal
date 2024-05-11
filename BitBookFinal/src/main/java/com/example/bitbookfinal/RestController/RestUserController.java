@@ -1,5 +1,7 @@
 package com.example.bitbookfinal.RestController;
 
+import com.example.bitbookfinal.service.ReviewService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,8 @@ public class RestUserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private ReviewService reviewService;
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User userRequest) {
@@ -45,6 +49,12 @@ public class RestUserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable long id) {
+        Optional<User> user= userService.findById(id);
+        if (user.isPresent()){
+            User user1=user.get();
+            String username= user1.getUsername();
+            reviewService.deleteReviewsFromUser(username);
+        }
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
@@ -84,6 +94,25 @@ public class RestUserController {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @GetMapping("/myperfil/deleteAccount")
+    public ResponseEntity<?> deleteAccount(HttpServletRequest request) {
+        String username = request.getUserPrincipal().getName();
+        Optional<User> userOptional = userService.findByUsername(username);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            reviewService.deleteReviewsFromUser(username);
+            userService.deleteUser(user);
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
+            }
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 }
