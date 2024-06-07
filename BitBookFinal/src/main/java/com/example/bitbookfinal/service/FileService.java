@@ -22,14 +22,19 @@ public class FileService {
         if (!originalName.toLowerCase().endsWith(".pdf")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El archivo no es un PDF.");
         }
-
-        //String fileName = "pdf_" + UUID.randomUUID() + "_" + originalName;
-        //String fileName =  "/BitBookFinal"+originalName;
+        
 
         Path pdfPath = PDF_FOLDER.resolve(originalName);
-        if (!pdfPath.startsWith(PDF_FOLDER)) {
+        Path canonicalPath;
+        try {
+            canonicalPath = pdfPath.toRealPath();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (!canonicalPath.startsWith(PDF_FOLDER)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No intentes guarradas");
-        }else{
+        } else {
             try {
                 multipartFile.transferTo(pdfPath);
             } catch (IOException ex) {
