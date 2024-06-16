@@ -7,6 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -16,30 +17,37 @@ public class FileService {
 
     private static final Path PDF_FOLDER = Paths.get(System.getProperty("user.dir"), "files");
 
+
     public String createPDF(MultipartFile multipartFile) { // Función para crear un archivo PDF.
         String originalName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 
+        // Verifica que el archivo tenga extensión PDF
         if (!originalName.toLowerCase().endsWith(".pdf")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El archivo no es un PDF.");
         }
-        
 
-        Path pdfPath = PDF_FOLDER.resolve(originalName);
-        Path canonicalPath;
+        // Asegura que la carpeta PDF_FOLDER exista
         try {
-            canonicalPath = pdfPath.toRealPath();
+            if (!Files.exists(PDF_FOLDER)) {
+                Files.createDirectories(PDF_FOLDER);
+            }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "No se pudo crear el directorio para PDFs.", e);
         }
 
-        if (!canonicalPath.startsWith(PDF_FOLDER)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No intentes guarradas");
-        } else {
-            try {
-                multipartFile.transferTo(pdfPath);
-            } catch (IOException ex) {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "No se pudo guardar el PDF localmente.", ex);
-            }
+        // Resuelve el path del archivo PDF dentro de PDF_FOLDER
+        Path pdfPath = PDF_FOLDER.resolve(originalName).normalize();
+
+        // Verifica que el path resuelto esté dentro de la carpeta PDF_FOLDER
+        if (!pdfPath.startsWith(PDF_FOLDER)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No intentes eso");
+        }
+
+        // Guarda el archivo PDF en la carpeta especificada
+        try {
+            multipartFile.transferTo(pdfPath);
+        } catch (IOException ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "No se pudo guardar el PDF localmente.", ex);
         }
 
         return originalName;
