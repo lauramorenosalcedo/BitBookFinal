@@ -161,16 +161,16 @@ public class BookService { //This service is dedicated to offer the necesary fun
             Book book = optionalBook.get();
             String cleanedDescripion = cleanedHTML(review.getDescription());
             review.setDescription(cleanedDescripion);
-            book.getReviews().add(review);
-            bookRepository.save(book);
+            // A la review le añadimos el usuario
             review.setUser(user);
-            reviewRepository.save(review);
-
+            // Añadimos la review al libro
+            book.getReviews().add(review);
+            // Guardamos el libro
+            bookRepository.save(book);
         } else {
             throw new IllegalArgumentException("Book not found with id: " + bookId);
         }
     }
-
 
     private String cleanedHTML(String inputDescription) {
 
