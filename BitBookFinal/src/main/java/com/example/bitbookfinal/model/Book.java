@@ -37,7 +37,9 @@ public class Book {
     @ManyToMany
     private List<Category> categories;
 
-    @OneToMany (cascade=CascadeType.ALL)
+
+
+   @OneToMany (cascade=CascadeType.ALL)
     @JsonView(Basic.class)
     private List<Review> reviews;
     //private List<Review> reviews=new ArrayList<>();

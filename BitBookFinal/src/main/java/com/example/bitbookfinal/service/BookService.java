@@ -1,19 +1,17 @@
 package com.example.bitbookfinal.service;
 
 import com.example.bitbookfinal.model.Book;
-import com.example.bitbookfinal.model.Category;
 import com.example.bitbookfinal.model.Review;
+import com.example.bitbookfinal.model.User;
 import com.example.bitbookfinal.repository.BookRepository;
-import com.example.bitbookfinal.repository.CategoryRepository;
 import com.example.bitbookfinal.repository.ReviewRepository;
-import jakarta.persistence.Entity;
+import com.example.bitbookfinal.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,12 +22,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -51,6 +45,8 @@ public class BookService { //This service is dedicated to offer the necesary fun
     private BookRepository bookRepository;
     @Autowired
     private ReviewRepository reviewRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private EntityManager entityManager;
@@ -161,7 +157,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
         bookRepository.deleteById(id);;
 
     }
-    public void addReview(Review review, long bookId) {
+    public void addReview(Review review, long bookId, User user) {
 
         Optional<Book> optionalBook = bookRepository.findById(bookId);
 
@@ -171,6 +167,9 @@ public class BookService { //This service is dedicated to offer the necesary fun
             review.setDescription(cleanedDescripion);
             book.getReviews().add(review);
             bookRepository.save(book);
+            reviewRepository.save(review);
+            user.getReviews().add(review);
+            userRepository.save(user);
         } else {
             throw new IllegalArgumentException("Book not found with id: " + bookId);
         }

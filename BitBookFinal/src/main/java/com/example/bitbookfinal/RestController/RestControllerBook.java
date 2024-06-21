@@ -153,7 +153,7 @@ public class RestControllerBook {
 
         return ResponseEntity.noContent().build();
     }*/
-    @PostMapping("/books/{bookId}/addreview")
+  /*  @PostMapping("/books/{bookId}/addreview")
     public ResponseEntity<?> addReview(@RequestBody Review review, @PathVariable("bookId") long bookId, HttpServletRequest request) {
         // Obtener el nombre de usuario de la solicitud
         String username = request.getUserPrincipal().getName();
@@ -162,7 +162,7 @@ public class RestControllerBook {
 
         // Intentar añadir la reseña al libro especificado
         try {
-            bookService.addReview(review, bookId);
+            bookService.addReview(review, bookId,);
             return ResponseEntity.ok().body("Reseña añadida con éxito");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al añadir la reseña: " + e.getMessage());

@@ -11,9 +11,11 @@ import java.util.Optional;
 import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
 import com.example.bitbookfinal.model.Review;
+import com.example.bitbookfinal.model.User;
 import com.example.bitbookfinal.service.BookService;
 import com.example.bitbookfinal.service.CategoryService;
 import com.example.bitbookfinal.service.FileService;
+import com.example.bitbookfinal.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,9 @@ public class BookController {
     private BookService bookService;
     @Autowired
     private FileService pdfService;
+
+    @Autowired
+    private UserService userService;
 
 
     @GetMapping("/")
@@ -171,7 +176,7 @@ public class BookController {
         return "deleted_post";
     }
 
-    @PostMapping("/books/{bookId}/addreview")
+   /* @PostMapping("/books/{bookId}/addreview")
     // This function recieves data from the form embeded in the show_books html, and saves it in the review list of the specified book.
     public String newReview(Review review, @PathVariable long bookId, HttpServletRequest request) {
         String username =request.getUserPrincipal().getName();
@@ -179,7 +184,25 @@ public class BookController {
         review.setName(username);
         bookService.addReview(review, bookId);
         return "redirect:/books/" + bookId;
-    }
+    }*/
+   @PostMapping("/books/{bookId}/addreview")
+   public String newReview(Review review, @PathVariable long bookId, HttpServletRequest request) {
+      /* Long userId = (Long) request.getSession().getAttribute("userId");
+       if (userId == null) {
+           throw new RuntimeException("User ID not found in session");
+       }
+
+       User user = userService.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));*/
+       String username =request.getUserPrincipal().getName();
+       User user=userService.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+       review.setBookIdReview(bookId);
+       review.setName(username);
+       review.setUser(user);
+           bookService.addReview(review, bookId, user);
+
+
+       return "redirect:/books/" + bookId;
+   }
 
 
 

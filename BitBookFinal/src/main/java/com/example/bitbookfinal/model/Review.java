@@ -2,7 +2,8 @@ package com.example.bitbookfinal.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
-import com.example.bitbookfinal.model.User;
+
+import java.util.Optional;
 
 
 @Entity
@@ -21,11 +22,8 @@ public class Review {
     @JsonView(Book.Basic.class)
     private String description;
 
-    /*@ManyToOne
-    private Book book;*/
-    /*@ManyToOne
-    private User user;*/
-
+    @ManyToOne
+    private User user;
 
 
     public Review(){
@@ -70,7 +68,13 @@ public class Review {
         this.id = id;
     }
 
+    public User getUser() {
+        return user;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Override
     public String toString() {

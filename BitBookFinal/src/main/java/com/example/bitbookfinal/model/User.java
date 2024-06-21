@@ -3,6 +3,7 @@ package com.example.bitbookfinal.model;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -10,7 +11,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonView(Category.Basic.class)
-    private Long id;
+    private Long user_id;
 
     private String username;
 
@@ -18,6 +19,11 @@ public class User {
     private String password;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
+
+
 
 
 
@@ -47,11 +53,11 @@ public class User {
     }
 
     public Long getId() {
-        return id;
+        return user_id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.user_id = id;
     }
 
     public String getUsername() {
@@ -78,5 +84,11 @@ public class User {
         this.roles = roles;
     }
 
+    public List<Review> getReviews() {
+        return reviews;
+    }
 
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
 }
