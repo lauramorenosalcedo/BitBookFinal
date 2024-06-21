@@ -66,7 +66,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         // PRIVATE ENDPOINTS
                         .requestMatchers(HttpMethod.POST,"/api/books/newbook").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET,"/api/books/{id}").hasRole("USER")
+                    //   .requestMatchers(HttpMethod.GET,"/api/books/{id}").hasRole("USER")
                         .requestMatchers(HttpMethod.DELETE,"/api/books/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST,"/api/books/{id}/image").hasRole("USER")
                         .requestMatchers(HttpMethod.POST,"/api/books/books/{id}/addreview").hasRole("USER")
@@ -126,8 +126,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/categories").permitAll()
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/login").permitAll()
-                        .requestMatchers("/**.css").permitAll()
-                        .requestMatchers("/img/**").permitAll()
+                       // .requestMatchers("/**.css").permitAll()
+                       // .requestMatchers("/img/**").permitAll()
                         // PRIVATE PAGES
                         .requestMatchers("/newbook").hasAnyRole("ADMIN")
                         .requestMatchers("/books/{bookId}/addreview").hasAnyRole("USER")
@@ -138,8 +138,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/users").hasRole("ADMIN")
                         .requestMatchers("/users/{id}/delete").hasRole("ADMIN")
                         .requestMatchers("/categories/{id}").hasAnyRole("USER")
-                        .requestMatchers("/books/{id}").hasAnyRole("USER")
-                        .anyRequest().authenticated())
+                     //   .requestMatchers("/books/{id}").hasAnyRole("USER")
+                        .anyRequest().permitAll())
 
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
@@ -153,11 +153,6 @@ public class SecurityConfiguration {
                         .permitAll()
 
                 );
-
-
-
-        // Disable CSRF at the moment
-        //http.csrf(csrf -> csrf.disable());
 
         return http.build();
     }

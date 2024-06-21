@@ -1,5 +1,6 @@
 package com.example.bitbookfinal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
@@ -11,11 +12,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonView(Category.Basic.class)
-    private Long user_id;
+    private Long id;
+
 
     private String username;
 
     private String email;
+    @JsonIgnore
     private String password;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles;
@@ -53,11 +56,11 @@ public class User {
     }
 
     public Long getId() {
-        return user_id;
+        return id;
     }
 
     public void setId(Long id) {
-        this.user_id = id;
+        this.id = id;
     }
 
     public String getUsername() {

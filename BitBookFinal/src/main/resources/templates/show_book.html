@@ -66,10 +66,7 @@
 
  <!--Review form -->
     <form action="/books/{{book.id}}/addreview" method="post" enctype="multipart/form-data">
-        <div>
-            <label>Name: </label>
-            <input class="form-control" name="name" placeholder="Name"/>
-        </div>
+
         <div>
             <label>Description: </label>
             <div id="editor"></div>
@@ -98,7 +95,7 @@
 
 
 <!--Show review -->
-   <div class="row mx-auto">
+  <div class="row mx-auto">
         {{#book.reviews}}
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
             <div class="card text-dark card-has-bg click-col" style="background-image:url('/img/ListBookCard.jpg'); background-size: cover;">
@@ -108,7 +105,7 @@
 
                         <div class="review-content">
 
-                            <h4 class="card-title mt-0">{{name}} review:</h4>
+                            <h4 class="card-title mt-0">{{user.username}} review:</h4>
                             <div class="description">{{{description}}}</div>
                         </div>
                         <button class="btn card-button" onclick="location.href='/book/{{book.id}}/review/{{id}}'">Delete Review</button>

@@ -1,6 +1,8 @@
 package com.example.bitbookfinal.service;
 
+import com.example.bitbookfinal.model.Review;
 import com.example.bitbookfinal.model.User;
+import com.example.bitbookfinal.repository.ReviewRepository;
 import com.example.bitbookfinal.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,6 +36,8 @@ public class Inicializer { //The incializer is used to create varius objects of 
     private UserService userService;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @PostConstruct
     public void init() throws SQLException, IOException {
@@ -82,10 +86,16 @@ public class Inicializer { //The incializer is used to create varius objects of 
         roles.add("ADMIN");
         User user =new User("admin",new BCryptPasswordEncoder().encode("admin"),roles);
         userService.save(user);*/
-
-        userService.save(new User("Paco","paco@gmail.com", new BCryptPasswordEncoder().encode("Paco.123_pass"), "ADMIN", "USER"));
+        User user1 = new User("Paco", "paco@gmail.com", new BCryptPasswordEncoder().encode("Paco.123_pass"),
+                "ADMIN", "USER");
+        userService.save(user1);
+       // userService.save(new User("Paco","paco@gmail.com", new BCryptPasswordEncoder().encode("Paco.123_pass"), "ADMIN", "USER"));
         userService.save(new User("Juan", "juan@gmail.com",new BCryptPasswordEncoder().encode("Juan.123_pass"), "USER"));
         userService.save(new User("Maria","maria@gmail.com", new BCryptPasswordEncoder().encode("Maria.123_pass"), "USER"));
+
+        Review review1 = new Review("XXX", "Buen libro");
+        review1.setUser(user1);
+        reviewRepository.save(review1);
     }
 
         private byte[] loadImage(String imageName) {

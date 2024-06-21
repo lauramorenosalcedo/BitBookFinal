@@ -3,10 +3,12 @@ package com.example.bitbookfinal.RestController;
 import com.example.bitbookfinal.model.Book;
 import com.example.bitbookfinal.model.Category;
 import com.example.bitbookfinal.model.Review;
+import com.example.bitbookfinal.model.User;
 import com.example.bitbookfinal.service.BookService;
 
 import com.example.bitbookfinal.service.CategoryService;
 import com.example.bitbookfinal.service.FileService;
+import com.example.bitbookfinal.service.UserService;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.engine.jdbc.BlobProxy;
@@ -42,6 +44,8 @@ public class RestControllerBook {
     private CategoryService categoryService;
     @Autowired
     private FileService pdfService;
+    @Autowired
+    private UserService userService;
     @JsonView(Book.Basic.class)
     @GetMapping("/")
     public Collection<Book> getBooks() {
@@ -153,16 +157,13 @@ public class RestControllerBook {
 
         return ResponseEntity.noContent().build();
     }*/
-  /*  @PostMapping("/books/{bookId}/addreview")
+   @PostMapping("/books/{bookId}/addreview")
     public ResponseEntity<?> addReview(@RequestBody Review review, @PathVariable("bookId") long bookId, HttpServletRequest request) {
-        // Obtener el nombre de usuario de la solicitud
-        String username = request.getUserPrincipal().getName();
-        review.setName(username);
-        review.setBookIdReview(bookId);
-
+       String username =request.getUserPrincipal().getName();
+       User user=userService.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
         // Intentar añadir la reseña al libro especificado
         try {
-            bookService.addReview(review, bookId,);
+            bookService.addReview(review, bookId,user);
             return ResponseEntity.ok().body("Reseña añadida con éxito");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al añadir la reseña: " + e.getMessage());

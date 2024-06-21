@@ -131,7 +131,7 @@ public class UserController {
         Optional<User> user = userService.findByUsername(username);
 
         if(user.isPresent()){
-            reviewService.deleteReviewsFromUser(username);
+
             User user1 = user.get();
             userService.deleteUser(user1);
             HttpSession session = request.getSession(false);  // Obtiene la sesión actual

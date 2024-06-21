@@ -1,5 +1,6 @@
 package com.example.bitbookfinal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
@@ -13,16 +14,13 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.AUTO)
    @JsonView(Book.Basic.class)
     private Long id;
-    @JsonView(Book.Basic.class)
-    private String name;
 
-    @JsonView(Book.Basic.class)
-    private Long bookIdReview;
     @Column(columnDefinition = "TEXT")
     @JsonView(Book.Basic.class)
     private String description;
 
     @ManyToOne
+    @JsonIgnore
     private User user;
 
 
@@ -31,26 +29,14 @@ public class Review {
     }
     public Review( String name, String description){ //This is the category entity, its atributes are a name(author name) and a description.
         super();
-        this.name=name;
+
         this.description=description;
        // this.book=book;
     }
 
     //Getters and setters of this entity.
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-    public Long getBookIdReview() {
-        return bookIdReview;
-    }
 
-    public void setBookIdReview(Long bookId) {
-        this.bookIdReview = bookId;
-    }
 
 
     public String getDescription() {
@@ -78,7 +64,7 @@ public class Review {
 
     @Override
     public String toString() {
-        return "Review [id=" + id + ", name=" + name + ", description=" + description + "]";
+        return "Review [id=" + id  + ", description=" + description + "]";
     }
 
 }

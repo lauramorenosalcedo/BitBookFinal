@@ -195,10 +195,7 @@ public class BookController {
        User user = userService.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));*/
        String username =request.getUserPrincipal().getName();
        User user=userService.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
-       review.setBookIdReview(bookId);
-       review.setName(username);
-       review.setUser(user);
-           bookService.addReview(review, bookId, user);
+       bookService.addReview(review, bookId, user);
 
 
        return "redirect:/books/" + bookId;

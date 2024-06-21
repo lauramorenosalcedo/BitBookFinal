@@ -19,11 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -167,9 +163,9 @@ public class BookService { //This service is dedicated to offer the necesary fun
             review.setDescription(cleanedDescripion);
             book.getReviews().add(review);
             bookRepository.save(book);
+            review.setUser(user);
             reviewRepository.save(review);
-            user.getReviews().add(review);
-            userRepository.save(user);
+
         } else {
             throw new IllegalArgumentException("Book not found with id: " + bookId);
         }
@@ -187,6 +183,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
     }
 
     public int deleteReviewById(long bookId, long reviewId, String username, Boolean useradmin) {
+        User user=userRepository.findByUsername(username).orElseThrow();
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + bookId));
 
@@ -196,7 +193,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
         if (!book.getReviews().contains(review)) {
             throw new IllegalArgumentException("Review not associated with book");
         }
-        if(review.getName().equals(username) || useradmin){
+        if(Objects.equals(review.getUser().getId(), user.getId()) || useradmin){
             book.deleteReview(review);
             bookRepository.save(book);
             return 1;

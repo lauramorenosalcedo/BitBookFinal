@@ -53,7 +53,7 @@ public class RestUserController {
         if (user.isPresent()){
             User user1=user.get();
             String username= user1.getUsername();
-            reviewService.deleteReviewsFromUser(username);
+
         }
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
@@ -104,7 +104,7 @@ public class RestUserController {
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            reviewService.deleteReviewsFromUser(username);
+
             userService.deleteUser(user);
             HttpSession session = request.getSession(false);
             if (session != null) {
