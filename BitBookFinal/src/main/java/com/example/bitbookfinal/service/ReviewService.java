@@ -18,6 +18,7 @@ public class ReviewService { //This service is dedicated to offer the necesary f
    ReviewRepository reviewRepository;
     @Autowired
    BookService bookService;
+
     public void save(Review review) { // This function saves a review into the map of reviews.
        /* long id = nextId.getAndIncrement();
         review.setId(id);
@@ -27,6 +28,14 @@ public class ReviewService { //This service is dedicated to offer the necesary f
     }
 
 
+    public void deleteReviewsFromUser(String username) {
+            List<Review>reviewList=reviewRepository.findAllByUser_Username(username);
+            for (Review review:reviewList){
+                Long bookid=review.getBookIdReview();
+                Long reviewid=review.getId();
+                bookService.deleteReview(bookid,reviewid);
+            }
+        }
 
 
 

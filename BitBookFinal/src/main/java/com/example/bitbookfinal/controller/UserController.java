@@ -83,12 +83,12 @@ public class UserController {
     }
     @GetMapping("/users/{id}/delete")
     public String deleteUser(@PathVariable long id) {
-       /* Optional<User> user= userService.findById(id);
+        Optional<User> user= userService.findById(id);
         if (user.isPresent()){
             User user1=user.get();
             String username= user1.getUsername();
             reviewService.deleteReviewsFromUser(username);
-        }*/
+        }
         userService.deleteById(id);
         return "deleted_user";
     }
@@ -131,7 +131,7 @@ public class UserController {
         Optional<User> user = userService.findByUsername(username);
 
         if(user.isPresent()){
-
+            reviewService.deleteReviewsFromUser(username);
             User user1 = user.get();
             userService.deleteUser(user1);
             HttpSession session = request.getSession(false);  // Obtiene la sesión actual

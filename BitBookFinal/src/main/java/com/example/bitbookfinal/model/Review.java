@@ -18,6 +18,8 @@ public class Review {
     @Column(columnDefinition = "TEXT")
     @JsonView(Book.Basic.class)
     private String description;
+    @JsonView(Book.Basic.class)
+    private Long bookIdReview;
 
     @ManyToOne
     @JsonIgnore
@@ -60,6 +62,14 @@ public class Review {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Long getBookIdReview() {
+        return bookIdReview;
+    }
+
+    public void setBookIdReview(Long bookIdReview) {
+        this.bookIdReview = bookIdReview;
     }
 
     @Override
