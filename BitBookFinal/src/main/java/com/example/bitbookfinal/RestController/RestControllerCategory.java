@@ -60,7 +60,7 @@ public class RestControllerCategory {
         return ResponseEntity.status(HttpStatus.OK).body("Category updated successfully");
     }
 
-    @PostMapping("/newcategory")
+    @PostMapping("/category")
     public ResponseEntity<Category> newCategory(@RequestBody Category category) {  //a new category is added
         Category newCategory = categoryService.save(category);
         return ResponseEntity.created(URI.create("/categories/" + newCategory.getId())).body(newCategory);

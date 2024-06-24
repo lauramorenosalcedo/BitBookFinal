@@ -80,8 +80,8 @@ public class RestControllerBook {
         }
     }
 
-    @PostMapping("/newbook")
-    public ResponseEntity<Book> newBook(@RequestBody Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile imageFile, MultipartFile pdfFile) throws SQLException, IOException {  //adds a book, passes a book, accepts several categories and an image
+    @PostMapping("/")
+    public ResponseEntity<?>  newBook(@RequestBody Book book, @RequestParam(required = false) List<Long> selectedCategories, MultipartFile imageFile, MultipartFile pdfFile) throws SQLException, IOException {  //adds a book, passes a book, accepts several categories and an image
         if (bookService.exist(book.getTitle())) {  //If the title already exists, the book is not created
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } else {
@@ -95,7 +95,7 @@ public class RestControllerBook {
 
             Book newBook = bookService.save(book, imageFile, pdfFile);  //the book is saved with its corresponding image
 
-            return ResponseEntity.ok(newBook);
+            return ResponseEntity.status(201).body("book creado");
         }
     }
 
@@ -151,37 +151,21 @@ public class RestControllerBook {
     }
 
 
-  /* @PostMapping("/{id}/addreview")
-    public ResponseEntity<Void> newReview(@RequestBody Review review, @PathVariable long id) { //adds a review to a specific book whose id is passed
-        bookService.addReview(review, id);
-
-        return ResponseEntity.noContent().build();
-    }*/
-   @PostMapping("/books/{bookId}/addreview")
+   @PostMapping("/{bookId}/review")
     public ResponseEntity<?> addReview(@RequestBody Review review, @PathVariable("bookId") long bookId, HttpServletRequest request) {
        String username =request.getUserPrincipal().getName();
        User user=userService.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
         // Intentar añadir la reseña al libro especificado
         try {
             bookService.addReview(review, bookId,user);
-            return ResponseEntity.ok().body("Reseña añadida con éxito");
+            return ResponseEntity.status(201).body("reseña creada");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al añadir la reseña: " + e.getMessage());
         }
     }
 
-    /*@DeleteMapping("/{id}/review/{reviewid}")
-    public ResponseEntity<String> deleteReview(@PathVariable("id") long id, @PathVariable("reviewid") long reviewid, ) {  //deletes a certain review of a certain book, to do so the id of each one is passed
-        Optional<Book> book = bookService.findById(id);
-        if (book.isPresent()) {
-            bookService.deleteReviewById(id, reviewid);
-            return ResponseEntity.ok("Review deleted successfully");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }*/
 
-    @DeleteMapping("/book/{id}/review/{reviewid}")
+    @DeleteMapping("/{id}/review/{reviewid}")
     public ResponseEntity<String> deleteReview(@PathVariable("id") long bookId, @PathVariable("reviewid") long reviewId, HttpServletRequest request) {
         // Obtener datos del usuario y roles
         boolean isAdmin = request.isUserInRole("ADMIN");

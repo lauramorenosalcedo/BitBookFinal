@@ -30,13 +30,7 @@ public class RestUserController {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body("El usuario ya existe");
         }
-
-        User user = new User(
-                userRequest.getUsername(),
-                userRequest.getEmail(),
-                new BCryptPasswordEncoder().encode(userRequest.getPassword()),
-                "USER" // O cualquier rol que necesites
-        );
+        User user=new User(userRequest.getUsername(),userRequest.getEmail(),new BCryptPasswordEncoder().encode(userRequest.getPassword()), "USER");
         userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -53,7 +47,7 @@ public class RestUserController {
         if (user.isPresent()){
             User user1=user.get();
             String username= user1.getUsername();
-
+            reviewService.deleteReviewsFromUser(username);
         }
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
@@ -66,18 +60,7 @@ public class RestUserController {
         return user.map(ResponseEntity::ok).orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    /*@PutMapping("/myperfil/email")
-    public ResponseEntity<Void> updateEmail(HttpServletRequest request, @RequestParam("email") String email) {
-        String username = request.getUserPrincipal().getName();
-        Optional<User> user = userService.findByUsername(username);
-        if (user.isPresent()) {
-            User currentUser = user.get();
-            userService.editEmail(currentUser, email);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }*/
+
     @PutMapping("/myperfil/email")
     public ResponseEntity<Void> updateEmail(HttpServletRequest request, @RequestBody User userrequest) {
         String email = userrequest.getEmail();
@@ -97,14 +80,14 @@ public class RestUserController {
         }
     }
 
-    @GetMapping("/myperfil/deleteAccount")
+    @DeleteMapping("/myperfil")
     public ResponseEntity<?> deleteAccount(HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
         Optional<User> userOptional = userService.findByUsername(username);
 
         if (userOptional.isPresent()) {
+            reviewService.deleteReviewsFromUser(username);
             User user = userOptional.get();
-
             userService.deleteUser(user);
             HttpSession session = request.getSession(false);
             if (session != null) {
