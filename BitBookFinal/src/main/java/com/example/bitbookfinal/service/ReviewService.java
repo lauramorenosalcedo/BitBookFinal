@@ -28,14 +28,7 @@ public class ReviewService { //This service is dedicated to offer the necesary f
     }
 
 
-    public void deleteReviewsFromUser(String username) {
-            List<Review>reviewList=reviewRepository.findAllByUser_Username(username);
-            for (Review review:reviewList){
-                Long bookid=review.getBookIdReview();
-                Long reviewid=review.getId();
-                bookService.deleteReview(bookid,reviewid);
-            }
-        }
+
 
 
 

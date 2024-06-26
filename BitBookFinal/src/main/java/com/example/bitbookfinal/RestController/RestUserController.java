@@ -65,12 +65,6 @@ public class RestUserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable long id) {
-        Optional<User> user= userService.findById(id);
-        if (user.isPresent()){
-            User user1=user.get();
-            String username= user1.getUsername();
-            reviewService.deleteReviewsFromUser(username);
-        }
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
@@ -108,7 +102,6 @@ public class RestUserController {
         Optional<User> userOptional = userService.findByUsername(username);
 
         if (userOptional.isPresent()) {
-            reviewService.deleteReviewsFromUser(username);
             User user = userOptional.get();
             userService.deleteUser(user);
             HttpSession session = request.getSession(false);

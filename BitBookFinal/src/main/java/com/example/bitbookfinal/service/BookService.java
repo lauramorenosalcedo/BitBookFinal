@@ -163,7 +163,7 @@ public class BookService { //This service is dedicated to offer the necesary fun
             review.setDescription(cleanedDescripion);
             // A la review le añadimos el usuario
             review.setUser(user);
-            review.setBookIdReview(bookId);
+            review.setBook(book);
             // Añadimos la review al libro
             book.getReviews().add(review);
             // Guardamos el libro

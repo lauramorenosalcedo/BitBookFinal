@@ -39,7 +39,7 @@ public class Book {
 
 
 
-   @OneToMany (cascade=CascadeType.ALL)
+   @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonView(Basic.class)
     private List<Review> reviews;
     //private List<Review> reviews=new ArrayList<>();
