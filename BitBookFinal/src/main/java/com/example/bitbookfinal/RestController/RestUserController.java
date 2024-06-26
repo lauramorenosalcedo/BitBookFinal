@@ -1,6 +1,8 @@
 package com.example.bitbookfinal.RestController;
 
+import com.example.bitbookfinal.model.Review;
 import com.example.bitbookfinal.service.ReviewService;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +26,33 @@ public class RestUserController {
     @Autowired
     private ReviewService reviewService;
 
-    @PostMapping("/register")
+   /* @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User userRequest) {
         if (userService.findByUsername(userRequest.getUsername()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body("El usuario ya existe");
         }
         User user=new User(userRequest.getUsername(),userRequest.getEmail(),new BCryptPasswordEncoder().encode(userRequest.getPassword()), "USER");
+        userService.save(user);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }*/
+
+
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@RequestBody User userRequest) {
+
+        if (userRequest.getPassword() == null || userRequest.getPassword().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Password cannot be null or empty");
+        }
+
+        if (userService.findByUsername(userRequest.getUsername()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("El usuario ya existe");
+        }
+
+        User user = new User(userRequest.getUsername(), userRequest.getEmail(),
+                new BCryptPasswordEncoder().encode(userRequest.getPassword()), "USER");
         userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -52,7 +74,7 @@ public class RestUserController {
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-
+    @JsonView(User.Basic.class)
     @GetMapping("/myperfil")
     public ResponseEntity<User> getMyProfile(HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
@@ -80,7 +102,7 @@ public class RestUserController {
         }
     }
 
-    @DeleteMapping("/myperfil")
+    @GetMapping("/myperfil/")
     public ResponseEntity<?> deleteAccount(HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
         Optional<User> userOptional = userService.findByUsername(username);

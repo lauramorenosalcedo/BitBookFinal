@@ -12,13 +12,13 @@ public class Review {
     public interface Basic{}
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-   @JsonView(Book.Basic.class)
+   @JsonView(Basic.class)
     private Long id;
 
     @Column(columnDefinition = "TEXT")
-    @JsonView(Book.Basic.class)
+    @JsonView({Basic.class, User.Basic.class})
     private String description;
-    @JsonView(Book.Basic.class)
+   // @JsonView(Book.Basic.class)
     private Long bookIdReview;
 
     @ManyToOne

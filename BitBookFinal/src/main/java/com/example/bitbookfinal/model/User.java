@@ -9,21 +9,25 @@ import java.util.List;
 
 @Entity
 public class User {
+
+    public interface Basic{}
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(Category.Basic.class)
+    @JsonView(Basic.class)
     private Long id;
 
-
+    @JsonView(Basic.class)
     private String username;
-
+    @JsonView(Basic.class)
     private String email;
-    @JsonIgnore
+    //@JsonIgnore
     private String password;
+    @JsonView(Basic.class)
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonView(Basic.class)
     private List<Review> reviews = new ArrayList<>();
 
 
