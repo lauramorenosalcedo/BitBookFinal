@@ -16,7 +16,7 @@ public class Review {
     private Long id;
 
     @Column(columnDefinition = "TEXT")
-    @JsonView({Basic.class, User.Basic.class})
+    @JsonView({Basic.class, User.Basic.class, Book.Basic.class})
     private String description;
 
     @ManyToOne

@@ -56,7 +56,7 @@ public class RestUserController {
         userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-
+    @JsonView(User.Basic.class)
     @GetMapping("/")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.findAll();
